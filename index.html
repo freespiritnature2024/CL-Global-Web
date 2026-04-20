@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MATRIX-EXIT // The Lab - Statik-Prüfung</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@400;900&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg: #121212; --card: #1c1c1c; --accent: #ef4444; --border: #333; }
+        body { background-color: var(--bg); color: #e5e5e5; font-family: 'Inter', sans-serif; }
+        .mono { font-family: 'JetBrains Mono', monospace; }
+        .input-group { background: var(--card); border: 1px solid var(--border); transition: all 0.2s; }
+        .input-group:focus-within { border-color: var(--accent); }
+        input { background: transparent; border: none; outline: none; color: white; width: 100%; }
+        .chart-segment { transition: width 0.5s ease-in-out; }
+    </style>
+</head>
+<body class="p-4 md:p-12">
+
+    <header class="max-w-5xl mx-auto mb-16 border-b border-gray-800 pb-8">
+        <div class="flex justify-between items-end mb-4">
+            <h1 class="text-3xl md:text-5xl font-black uppercase tracking-tighter">Matrix-Exit <span class="text-red-600">//</span> The Lab</h1>
+            <span class="mono text-xs text-gray-500 hidden md:block">V 1.0.4_STABLE</span>
+        </div>
+        <div id="headline" class="text-lg md:text-2xl text-gray-400 font-light italic">
+            "Dein Haus ist keine Festung. Es ist ein Klotz am Bein."
+        </div>
+    </header>
+
+    <main class="max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12">
+        
+        <section class="space-y-8">
+            <div class="border-l-2 border-red-600 pl-4 mb-8">
+                <h2 class="text-xl font-bold uppercase tracking-widest">Diagnose-Parameter</h2>
+                <p class="text-sm text-gray-500">Trage deine ungeschönten Zahlen ein.</p>
+            </div>
+
+            <div class="space-y-4">
+                <div class="p-4 input-group rounded">
+                    <label class="block text-[10px] uppercase text-gray-500 font-bold mb-1">Haushalt Netto (€/Monat)</label>
+                    <input type="number" id="income" value="4500" class="text-xl font-bold">
+                </div>
+                <div class="p-4 input-group rounded">
+                    <label class="block text-[10px] uppercase text-gray-500 font-bold mb-1">Kredite, Miete, Fixkosten (€/Monat)</label>
+                    <input type="number" id="fixed" value="2100" class="text-xl font-bold">
+                </div>
+            </div>
+
+            <div class="p-6 bg-[#181818] border border-gray-800 rounded">
+                <h3 class="text-sm font-bold uppercase mb-4 text-gray-400">Mobilitäts-Lüge</h3>
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="p-2 border-b border-gray-700">
+                        <label class="block text-[10px] uppercase text-gray-500">Kaufpreis Kfz</label>
+                        <input type="number" id="carPrice" value="35000">
+                    </div>
+                    <div class="p-2 border-b border-gray-700">
+                        <label class="block text-[10px] uppercase text-gray-500">Fahrleistung (km/Jahr)</label>
+                        <input type="number" id="carKm" value="15000">
+                    </div>
+                </div>
+                <div class="mt-4 flex gap-4">
+                    <label class="text-xs uppercase"><input type="radio" name="carStatus" value="neu" checked> Neuwagen</label>
+                    <label class="text-xs uppercase"><input type="radio" name="carStatus" value="gebraucht"> Gebraucht</label>
+                </div>
+            </div>
+
+            <div class="p-6 bg-[#181818] border border-gray-800 rounded">
+                <h3 class="text-sm font-bold uppercase mb-4 text-gray-400">Immobilien-Statik</h3>
+                <div class="p-2 border-b border-gray-700">
+                    <label class="block text-[10px] uppercase text-gray-500">Aktueller Marktwert Haus/Wohnung</label>
+                    <input type="number" id="houseValue" value="450000">
+                </div>
+            </div>
+
+            <button onclick="runAudit()" class="w-full bg-red-600 hover:bg-red-700 text-white font-black py-5 uppercase tracking-widest transition-all">Audit Starten</button>
+        </section>
+
+        <section id="results" class="hidden space-y-8">
+            <div class="p-8 border-2 border-red-600 bg-black">
+                <span class="text-xs uppercase font-bold text-gray-500">Dein Sklaven-Stichtag:</span>
+                <div id="stichtag-output" class="text-8xl font-black text-white italic">18.</div>
+                <p id="verdict" class="mt-4 text-red-500 font-bold uppercase text-sm"></p>
+            </div>
+
+            <div>
+                <h3 class="text-xs uppercase font-bold text-gray-500 mb-4 tracking-widest text-center">Visualisierung der Geldverbrennung</h3>
+                <div class="w-full h-12 bg-gray-900 flex rounded overflow-hidden">
+                    <div id="bar-fixed" class="chart-segment bg-gray-600 h-full" title="Fixkosten"></div>
+                    <div id="bar-invisible" class="chart-segment bg-red-900 h-full" title="Unsichtbare Kosten"></div>
+                    <div id="bar-free" class="chart-segment bg-green-600 h-full" title="Lebens-Energie"></div>
+                </div>
+                <div class="flex justify-between mt-2 text-[10px] uppercase font-bold text-gray-500">
+                    <span>Fixkosten</span>
+                    <span>Unsichtbarer Zerfall</span>
+                    <span class="text-green-500">Lebens-Energie</span>
+                </div>
+            </div>
+
+            <div id="detailed-report" class="mono text-xs space-y-2 bg-gray-900 p-6 border border-gray-800">
+                </div>
+            
+            <button onclick="alert('Export-Funktion im PDF-Modul verfügbar.')" class="w-full border border-gray-600 text-gray-400 py-3 text-xs uppercase hover:text-white transition-colors">Gutachten als PDF exportieren</button>
+        </section>
+    </main>
+
+    <footer class="max-w-5xl mx-auto mt-24 pt-8 border-t border-gray-800 text-[10px] text-gray-600 flex justify-between">
+        <div>&copy; 2026 THE CL GLOBAL LLC // WYOMING, USA</div>
+        <div class="space-x-4">
+            <a href="#" class="hover:text-white">IMPRESSUM</a>
+            <a href="#" class="hover:text-white">DATENSCHUTZ</a>
+        </div>
+    </footer>
+
+    <script>
+        const headlines = [
+            "Dein Haus ist keine Festung. Es ist ein Klotz am Bein.",
+            "Dein Auto gehört nicht dir. Du bist sein Leasing-Sklave.",
+            "Wieviel Lebenszeit kostet dich dein Lifestyle wirklich?",
+            "Freiheit beginnt dort, wo die Statik der Schulden endet."
+        ];
+        let i = 0;
+        setInterval(() => {
+            document.getElementById('headline').innerText = `"${headlines[i % headlines.length]}"`;
+            i++;
+        }, 5000);
+
+        function runAudit() {
+            const income = parseFloat(document.getElementById('income').value);
+            const fixed = parseFloat(document.getElementById('fixed').value);
+            const carPrice = parseFloat(document.getElementById('carPrice').value);
+            const carKm = parseFloat(document.getElementById('carKm').value);
+            const houseValue = parseFloat(document.getElementById('houseValue').value);
+            const isNeu = document.querySelector('input[name="carStatus"]:checked').value === 'neu';
+
+            // Logik: Auto-Wertverlust (15% Neu / 8% Alt) + Opportunität (4%)
+            const carDepreciation = (carPrice * (isNeu ? 0.15 : 0.08)) / 12;
+            const carOpportunity = (carPrice * 0.04) / 12;
+            const carMaintenance = (carKm * 0.05) / 12;
+            const totalCarReal = carDepreciation + carOpportunity + carMaintenance;
+
+            // Logik: Haus-Instandhaltungsstau (1,5% Marktwert p.a.)
+            const houseShadowDebt = (houseValue * 0.015) / 12;
+
+            const realTotalCosts = fixed + totalCarReal + houseShadowDebt;
+            const stichtag = Math.ceil((realTotalCosts / income) * 30);
+            
+            // UI Update
+            document.getElementById('results').classList.remove('hidden');
+            document.getElementById('stichtag-output').innerText = stichtag + ".";
+            
+            // Bar Chart Update
+            const fixedWidth = (fixed / income) * 100;
+            const invisibleWidth = ((totalCarReal + houseShadowDebt) / income) * 100;
+            const freeWidth = Math.max(0, 100 - fixedWidth - invisibleWidth);
+
+            document.getElementById('bar-fixed').style.width = fixedWidth + "%";
+            document.getElementById('bar-invisible').style.width = invisibleWidth + "%";
+            document.getElementById('bar-free').style.width = freeWidth + "%";
+
+            // Detailed Report
+            document.getElementById('detailed-report').innerHTML = `
+                <div class="flex justify-between"><span>Unsichtbarer Kfz-Abfluss:</span><span>${totalCarReal.toFixed(2)} €</span></div>
+                <div class="flex justify-between"><span>Haus-Instandhaltungsstau:</span><span>${houseShadowDebt.toFixed(2)} €</span></div>
+                <div class="flex justify-between border-t border-gray-700 pt-2 font-bold text-red-500"><span>Gesamte System-Last:</span><span>${realTotalCosts.toFixed(2)} €</span></div>
+                <div class="flex justify-between text-green-500"><span>Echte Lebens-Energie:</span><span>${(income - realTotalCosts).toFixed(2)} €</span></div>
+            `;
+
+            const verdict = document.getElementById('verdict');
+            if(stichtag > 25) verdict.innerText = "STATUS: TOTALE SYSTEM-ABHÄNGIGKEIT.";
+            else if(stichtag > 15) verdict.innerText = "STATUS: INSTABILE STATIK.";
+            else verdict.innerText = "STATUS: TEILFREIHEIT ERREICHT.";
+        }
+    </script>
+</body>
+</html>
