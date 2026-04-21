@@ -57,17 +57,24 @@ select.ifield { cursor:pointer; }
 .cb-box.crimson.on { background:#DC2626; border-color:#DC2626; }
 
 /* Hero headline */
-.hl { position:absolute; top:0; left:0; right:0;
-  opacity:0; visibility:hidden; transform:translateY(10px);
+.hl {
+  position:absolute !important;
+  top:0; left:0; right:0;
+  opacity:0;
+  visibility:hidden;
+  transform:translateY(10px);
   transition:opacity 0.5s, transform 0.5s;
-  font-family:'Inter',sans-serif;
-  font-size:clamp(2rem,5vw,3.5rem);
-  font-weight:700;
-  line-height:1.15;
-  letter-spacing:-0.025em;
-  color:#111827; }
-.hl.on { opacity:1; visibility:visible; transform:translateY(0); }
-.hl.out { opacity:0; transform:translateY(-10px); }
+  font-family:'Inter',sans-serif !important;
+  font-size:clamp(2rem,5vw,3.5rem) !important;
+  font-weight:700 !important;
+  line-height:1.15 !important;
+  letter-spacing:-0.025em !important;
+  color:#111827 !important;
+  margin:0 !important;
+  padding:0 !important;
+}
+.hl.on { opacity:1 !important; visibility:visible !important; transform:translateY(0) !important; }
+.hl.out { opacity:0 !important; visibility:hidden !important; transform:translateY(-10px) !important; }
 .hero-dot, .dot { width:6px; height:6px; border-radius:50%; background:#e5e7eb; cursor:pointer; transition:background 0.15s; }
 .hero-dot.active, .dot.active { background:#374151; }
 
@@ -119,7 +126,7 @@ select.ifield { cursor:pointer; }
 <section class="bg-white border-b border-gray-200 min-h-[85vh] flex items-center">
   <div class="max-w-5xl mx-auto px-6 py-24 w-full">
     <p class="mono text-xs tracking-[0.2em] uppercase text-gray-400 mb-8">— Freiheit durch Klarheit</p>
-    <div id="hlWrap" class="relative mb-10" style="min-height:260px;overflow:visible;padding-bottom:24px"></div>
+    <div id="hlWrap" class="relative mb-10" style="min-height:280px;overflow:visible;padding-bottom:24px;position:relative"></div>
     <div class="flex gap-5 flex-wrap">
       <a href="#rechner" class="bg-gray-900 text-white text-sm font-medium px-6 py-3 hover:bg-gray-700 transition-colors">→ Zum System-Check</a>
       <a href="#angebote" class="border border-gray-300 text-gray-700 text-sm font-medium px-6 py-3 hover:border-gray-900 transition-colors">Angebote ansehen</a>
@@ -844,7 +851,7 @@ const hlWrap = document.getElementById('hlWrap');
 const dotsCont = document.getElementById('heroDots');
 
 TRUTHS.forEach((t, i) => {
-  const h = document.createElement('h1');
+  const h = document.createElement('div');
   h.className = 'hl' + (i === todayIdx ? ' on' : '');
   h.textContent = t;
   hlWrap.appendChild(h);
