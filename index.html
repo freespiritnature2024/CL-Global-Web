@@ -701,7 +701,7 @@ footer{border-top:var(--bw) solid var(--bk);padding:22px 0}
       <div class="cell no-bb">
         <div class="flbl">Partner Netto (€/Monat)</div>
         <input class="inp" type="number" id="pBrutto" placeholder="2000" min="0" oninput="liveB()">
-        <div class="fform">→ Real-Netto = Netto × 80%</div>
+        <div class="fform">→ Deckungsbeitrag = Netto − Kita − Pendelkosten</div>
       </div>
       <div class="cell no-bb">
         <div class="flbl">Kita-Kosten (€/Monat)</div>
@@ -717,7 +717,7 @@ footer{border-top:var(--bw) solid var(--bk);padding:22px 0}
         <div class="flbl" style="color:var(--red)">⟶ Deckungsbeitrag</div>
         <div class="lval" id="pDB" style="color:var(--grn)">—</div>
         <div class="llbl" id="pDBLbl">Wahrer Wert des Partner-Jobs</div>
-        <div class="lform" id="pFormula">Formel: (Netto × 80%) − Kita − Pendeln</div>
+        <div class="lform" id="pFormula">Formel: Netto − Kita − Pendelkosten</div>
       </div>
     </div>
     <div class="toggle-row" id="kfz2Toggle" onclick="toggleKfz2()">
@@ -945,6 +945,16 @@ footer{border-top:var(--bw) solid var(--bk);padding:22px 0}
         Doch am Ende verändert diese Art der Manipulation zwar das Dokument, aber niemals deine tatsächliche Lebenslage. <strong>Sei ehrlich zu dir selbst, auch wenn es im ersten Moment wehtut. Nur auf einem ehrlichen Fundament kannst du echte Freiheit aufbauen.</strong>
       </blockquote>
       <div class="rc-sig">— Dominic, CL Global · Freiheit durch Klarheit</div>
+
+      <!-- Bestätigungs-Button -->
+      <div style="margin-top:32px;padding-top:24px;border-top:1px solid var(--g2);">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--g3);margin-bottom:14px;letter-spacing:.04em;">
+          Ich habe das gelesen und bin bereit, mein Ergebnis ungeschönt zu sehen:
+        </div>
+        <button onclick="showResults()" style="background:var(--bk);color:#fff;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;padding:14px 36px;border:var(--bw) solid var(--bk);cursor:pointer;transition:background .12s,color .12s;display:inline-flex;align-items:center;gap:10px;" onmouseover="this.style.background='#fff';this.style.color='#000'" onmouseout="this.style.background='#000';this.style.color='#fff'">
+          <span>⟶</span> Mein Ergebnis ansehen
+        </button>
+      </div>
       <!-- Plausibilitäts-Warnung (nur wenn Eingaben verdächtig) -->
       <div id="rcWarning" style="display:none;margin-top:24px;padding:14px 18px;background:var(--warn-s,rgba(220,38,38,.06));border-left:3px solid var(--red);">
         <div style="font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--red);margin-bottom:6px;" id="rcWarnTitle">PLAUSIBILITÄTS-ALARM</div>
@@ -954,8 +964,8 @@ footer{border-top:var(--bw) solid var(--bk);padding:22px 0}
   </div>
 </div>
 
-<!-- RESULTS -->
-<div id="results">
+<!-- RESULTS — hidden until user confirms intervention -->
+<div id="results" style="display:none">
 
   <!-- Status Banner (unrealistisch schöngerechnet) -->
   <div id="statusBanner" class="status-banner">
@@ -1050,7 +1060,7 @@ footer{border-top:var(--bw) solid var(--bk);padding:22px 0}
           </div>
         </div>
         <div class="brow">
-          <div class="bmeta"><div class="bname"><div class="bswatch" style="background:#1d4ed8"></div>System/Abzüge (Partner-Verlust)</div><div class="bval" id="bv-sys">—</div></div>
+          <div class="bmeta"><div class="bname"><div class="bswatch" style="background:#1d4ed8"></div>Partner-Kosten (Kita + Pendeln)</div><div class="bval" id="bv-sys">—</div></div>
           <div class="btrack"><div class="bfill" id="bf-sys" style="background:#1d4ed8;width:0%"></div></div>
         </div>
         <div class="brow">
@@ -1066,7 +1076,7 @@ footer{border-top:var(--bw) solid var(--bk);padding:22px 0}
           <div class="btrack"><div class="bfill" id="bf-life" style="background:#15803d;width:0%"></div></div>
         </div>
         <div class="legend">
-          <div class="leg"><div class="leg-d" style="background:#1d4ed8"></div>System/Abzüge</div>
+          <div class="leg"><div class="leg-d" style="background:#1d4ed8"></div>Partner-Kosten</div>
           <div class="leg"><div class="leg-d" style="background:#374151"></div>Fixkosten</div>
           <div class="leg"><div class="leg-d" style="background:#dc2626"></div>Zerfall</div>
           <div class="leg"><div class="leg-d" style="background:#15803d"></div>Freie Energie</div>
@@ -1351,7 +1361,7 @@ function liveA() {
   const n = g('netto'), st = g('steuerR');
   const adj = n + (st / 12);
   const pb = g('pBrutto'), ki = g('kita'), pe = g('pendel');
-  const rn = pb * 0.80, db = rn - ki - pe;
+  const db = pb - ki - pe;
   const contrib = Math.max(0, db);
   const total = adj + contrib;
   if (n || st) {
@@ -1375,12 +1385,12 @@ function liveA() {
 /* ── Live B ── */
 function liveB() {
   const pb = g('pBrutto'), ki = g('kita'), pe = g('pendel');
-  if (!pb) { s('pDB').textContent = '—'; s('pDB').style.color = 'var(--grn)'; s('pFormula').textContent = 'Formel: (Netto × 80%) − Kita − Pendeln'; return; }
-  const rn = pb * 0.80, db = rn - ki - pe;
+  if (!pb) { s('pDB').textContent = '—'; s('pDB').style.color = 'var(--grn)'; s('pFormula').textContent = 'Formel: Netto − Kita − Pendelkosten'; return; }
+  const db = pb - ki - pe;
   s('pDB').textContent = fm(db) + ' €';
   s('pDB').style.color = db >= 0 ? 'var(--grn)' : 'var(--red)';
-  s('pDBLbl').textContent = db >= 0 ? 'Wahrer Wert des Partner-Jobs' : '⚠ Negativer Deckungsbeitrag';
-  s('pFormula').textContent = `(${fm(pb)} × 80% = ${fm(rn)}) − ${fm(ki)} − ${fm(pe)} = ${fm(db)} €`;
+  s('pDBLbl').textContent = db >= 0 ? 'Wahrer Deckungsbeitrag nach Partnerkosten' : '⚠ Negativer Deckungsbeitrag';
+  s('pFormula').textContent = `${fm(pb)} − ${fm(ki)} (Kita) − ${fm(pe)} (Pendeln) = ${fm(db)} €`;
   // Live: update nettoAdj display mit partner-beitrag
   liveA();
 }
@@ -1493,11 +1503,11 @@ function runAnalysis() {
     computeAll();
     setTimeout(() => {
       s('loading').style.display = 'none';
-      s('results').style.display = 'block';
+      // Show intervention first — results revealed by user confirmation
+      s('results').style.display = 'none';
       btn.classList.remove('busy'); btn.innerHTML = '<span>⟶</span> Neu analysieren';
-      s('results').scrollIntoView({ behavior: 'smooth', block: 'start' });
-      setTimeout(doAnims, 200);
-      setTimeout(doLog, 500);
+      // RC block is shown by buildPlausibilityCheck() — scroll there
+      s('rcBlock').scrollIntoView({ behavior: 'smooth', block: 'start' });
     }, 400);
   }, STEPS.length * 260 + 200);
 }
@@ -1509,9 +1519,9 @@ function computeAll() {
   const nettoAdj = netto + (stR / 12);
   const fixk     = g('fixk');
   const pb = g('pBrutto'), ki = g('kita'), pe = g('pendel');
-  const realNetto = pb * 0.80;
-  const sysLoss   = pb - realNetto;
-  const partnerDB = realNetto - ki - pe;
+  const realNetto = pb;  // Netto-Eingabe direkt, kein Abzug
+  const sysLoss   = 0;   // kein System-Abzug auf Netto
+  const partnerDB = pb - ki - pe;
   const partnerCosts = ki + pe;
   // Partner-Deckungsbeitrag wird dem Gesamteinkommen zugeführt (wenn positiv)
   const partnerContrib = Math.max(0, partnerDB);
@@ -1618,6 +1628,13 @@ function buildPlausibilityCheck() {
 function hideRC() {
   s('rcBlock').classList.remove('show');
   s('statusBanner').classList.remove('show');
+}
+
+function showResults() {
+  s('results').style.display = 'block';
+  setTimeout(doAnims, 100);
+  setTimeout(doLog, 300);
+  s('results').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 /* ── Finanzielle Klarheit Dashboard ── */
@@ -1730,12 +1747,10 @@ function buildTable() {
 
   if (d.pb > 0) {
     addS('MODUL_B — PARTNER-CHECK');
-    addR('Partner Netto','Eingabe',d.pb,'',false);
-    addR('Abzüge (20%)',`${fm(d.pb)} × 20%`,-d.sysLoss,'r',false);
-    addR('Partner Real-Netto',`${fm(d.pb)} × 80%`,d.realNetto,'',false);
+    addR('Partner Netto-Einkommen','Eingabe',d.pb,'',false);
     if (d.ki) addR('Kita-Kosten','Eingabe',-d.ki,'r',false);
     if (d.pe) addR('Pendelkosten','Eingabe',-d.pe,'r',false);
-    addR('Wahrer Deckungsbeitrag','Real-Netto − Kita − Pendeln',d.partnerDB,d.partnerDB>=0?'a':'r',true);
+    addR('Wahrer Deckungsbeitrag','Netto − Kita − Pendelkosten',d.partnerDB,d.partnerDB>=0?'a':'r',true);
   }
 
   const addKfz = (lbl, c, p, km, st, lfd, art) => {
@@ -1780,7 +1795,7 @@ function buildTable() {
 function doAnims() {
   const d = D, t = d.totalIncome || 1;
   const fixAll = d.fixk + d.lmk + d.engk + d.urlaubk; // all living costs
-  const pSys  = Math.min(100, (d.sysLoss/t)*100);
+  const pSys  = Math.min(100, (d.partnerCosts/t)*100);
   const pFix  = Math.min(100-pSys, (fixAll/t)*100);
   const pDec  = Math.min(100-pSys-pFix, (d.decay/t)*100);
   const pLife = Math.max(0, 100-pSys-pFix-pDec);
@@ -1793,7 +1808,7 @@ function doAnims() {
   sl('sl-sys',pSys); sl('sl-fix',pFix); sl('sl-dec',pDec); sl('sl-life',pLife);
 
   const vl = (id,v,p) => s(id).textContent = `${fm(v)} € (${Math.round(p)}%)`;
-  vl('bv-sys',d.sysLoss,pSys); vl('bv-fix',fixAll,pFix); vl('bv-dec',d.decay,pDec); vl('bv-life',d.life,pLife);
+  vl('bv-sys',d.partnerCosts,pSys); vl('bv-fix',fixAll,pFix); vl('bv-dec',d.decay,pDec); vl('bv-life',d.life,pLife);
 }
 
 /* ── Typewriter log ── */
@@ -1820,8 +1835,7 @@ function doLog() {
 
   if (d.pb > 0) {
     lines.push({t:'lh',s:'// MODUL_B: PARTNER-CHECK'});
-    lines.push({t:'li',s:`   Netto: ${fm(d.pb)} €  →  Real-Netto: ${fm(d.realNetto)} € (nach 20% Abzügen)`});
-    lines.push({t:'lw',s:`   [WARN] Abzüge kosten ${fm(d.sysLoss)} €/Mo vom Partner-Netto.`});
+    lines.push({t:'li',s:`   Partner Netto: ${fm(d.pb)} € → Deckungsbeitrag nach Kita/Pendeln: ${fm(d.partnerDB)} €`});
     lines.push(d.partnerDB<500
       ? {t:'la',s:d.partnerDB<0?`   [ALARM] PARTNER-ERWERBSTÄTIGKEIT UNRENTABEL. DB: ${fm(d.partnerDB)} €/Mo.`:`   [ALARM] PARTNER-DB GRENZWERTIG. Nur ${fm(d.partnerDB)} €/Mo.`}
       : {t:'lo',s:`   Wahrer Deckungsbeitrag: +${fm(d.partnerDB)} €`});
