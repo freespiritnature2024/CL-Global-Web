@@ -7,1112 +7,1427 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
-/* ══════════════════════════════════════════════
-   RESET & TOKENS
-══════════════════════════════════════════════ */
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --bk:#000000;--wh:#ffffff;--red:#dc2626;--red2:#b91c1c;
-  --grn:#15803d;--amb:#b45309;--blu:#1d4ed8;--pur:#6d28d9;
-  --g1:#f5f5f3;--g2:#e8e8e4;--g3:#9ca3af;--g4:#d1d5db;
-  --bw:2px;--thin:1px;
+/* ─────────────────────────────────────────
+   RESET
+───────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 16px; scroll-behavior: smooth; }
+
+body {
+  background: #faf9f6;
+  color: #1c1c1a;
+  font-family: 'Inter', sans-serif;
+  font-weight: 300;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
 }
-html{font-size:14px;scroll-behavior:smooth}
-body{background:var(--wh);color:var(--bk);font-family:'Inter',sans-serif;line-height:1.6;-webkit-font-smoothing:antialiased}
-.mono{font-family:'JetBrains Mono',monospace}
-img{max-width:100%}
 
-/* ══════════════════════════════════════════════
+/* ─────────────────────────────────────────
+   VARIABLES
+───────────────────────────────────────── */
+:root {
+  --ink:      #1c1c1a;
+  --ink2:     #3a3a36;
+  --ink3:     #6b6b64;
+  --ink4:     #9a9a90;
+  --line:     #e0e0d8;
+  --bg:       #fafaf8;
+  --bg2:      #f4f4f0;
+  --warn:     #b84040;
+  --ok:       #3a7a4a;
+  --amber:    #8a6020;
+  --max:      800px;
+  --serif:    'Inter', sans-serif;
+  --sans:     'Inter', sans-serif;
+  --mono:     'JetBrains Mono', monospace;
+}
+
+/* ─────────────────────────────────────────
    LAYOUT
-══════════════════════════════════════════════ */
-.wrap{max-width:1100px;margin:0 auto;padding:0 28px}
-@media(max-width:560px){.wrap{padding:0 16px}}
+───────────────────────────────────────── */
+.page { max-width: var(--max); margin: 0 auto; padding: 0 32px; }
+@media(max-width:560px) { .page { padding: 0 20px; } }
 
-/* ══════════════════════════════════════════════
+/* ─────────────────────────────────────────
    HEADER
-══════════════════════════════════════════════ */
-header{border-bottom:var(--bw) solid var(--bk);background:var(--wh);position:sticky;top:0;z-index:200}
-.hdr{height:52px;display:flex;align-items:center;justify-content:space-between}
-.logo{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;letter-spacing:.08em}
-.logo b{color:var(--red)}
-.hdr-r{display:flex;align-items:center;gap:14px}
-.hdr-tag{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.16em;text-transform:uppercase;border:var(--thin) solid var(--bk);padding:3px 10px}
-.hdr-cta{font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;background:var(--bk);color:var(--wh);border:var(--thin) solid var(--bk);padding:5px 14px;text-decoration:none;transition:background .12s,color .12s}
-.hdr-cta:hover{background:var(--wh);color:var(--bk)}
+───────────────────────────────────────── */
+header {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(250,250,248,0.96);
+  backdrop-filter: blur(6px);
+  border-bottom: 1px solid var(--line);
+  padding: 20px 0;
+}
+.hdr-inner {
+  max-width: var(--max); margin: 0 auto; padding: 0 32px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+@media(max-width:560px) { .hdr-inner { padding: 0 20px; } }
+.logo {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px; font-weight: 700; letter-spacing: .06em;
+  color: var(--ink);
+  text-decoration: none;
+}
+.logo span { font-style: italic; }
+nav { display: flex; gap: 32px; }
+nav a {
+  font-size: 13px; font-weight: 400; color: var(--accent2);
+  text-decoration: none; letter-spacing: .02em;
+  transition: color .15s;
+}
+nav a:hover { color: var(--ink); }
 
-/* ══════════════════════════════════════════════
+/* ─────────────────────────────────────────
+   SECTIONS
+───────────────────────────────────────── */
+section { padding: 96px 0; }
+section + section { padding-top: 0; }
+.section-label {
+  font-family: var(--mono);
+  font-size: 11px; letter-spacing: .14em; text-transform: uppercase;
+  color: var(--accent); margin-bottom: 28px;
+}
+
+/* ─────────────────────────────────────────
+   TYPOGRAPHY
+───────────────────────────────────────── */
+h1, h2, h3 { font-family: 'Inter', sans-serif; font-weight: 800; line-height: 1.15; letter-spacing: -.025em; }
+
+.hero-headline {
+  font-size: clamp(36px, 6vw, 58px);
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -.025em;
+  color: var(--ink);
+  margin-bottom: 32px;
+}
+.hero-headline em { font-style: italic; color: var(--ink2); }
+
+h2.sec-heading {
+  font-size: clamp(26px, 3.5vw, 38px);
+  font-weight: 800; letter-spacing: -.025em;
+  color: var(--ink);
+  margin-bottom: 24px;
+}
+h2.sec-heading em { font-style: italic; }
+
+h3.sub-heading {
+  font-family: 'Inter', sans-serif;
+  font-size: 18px; font-weight: 700; letter-spacing: -.01em;
+  color: var(--ink); margin-bottom: 12px;
+}
+
+p { font-size: 17px; color: var(--ink2); line-height: 1.8; }
+p + p { margin-top: 20px; }
+
+.lead {
+  font-size: 20px; font-weight: 300;
+  color: var(--ink2); line-height: 1.7;
+  max-width: 640px;
+}
+
+/* ─────────────────────────────────────────
    HERO
-══════════════════════════════════════════════ */
-.hero{min-height:calc(100vh - 52px);border-bottom:var(--bw) solid var(--bk);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:60px 24px 80px;position:relative;overflow:hidden}
-.hero::before{content:'';position:absolute;inset:0;background-image:linear-gradient(var(--g2) 1px,transparent 1px),linear-gradient(90deg,var(--g2) 1px,transparent 1px);background-size:40px 40px;opacity:.45;pointer-events:none}
-.hero-inner{position:relative;z-index:1;max-width:860px;width:100%}
+───────────────────────────────────────── */
+.hero {
+  padding: 120px 0 96px;
+  border-bottom: 1px solid var(--line);
+  min-height: 85vh;
+  display: flex; align-items: center;
+}
+.hl-wrap {
+  min-height: 200px;
+  position: relative;
+  overflow: visible;
+  padding-bottom: 20px;
+}
+@media(max-width:600px) { .hl-wrap { min-height: 300px; } }
+@media(max-width:420px) { .hl-wrap { min-height: 400px; } }
 
-/* Fixed slogan */
-.hero-slogan{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;letter-spacing:.3em;text-transform:uppercase;color:var(--bk);margin-bottom:32px;display:flex;align-items:center;justify-content:center;gap:14px}
-.hero-slogan::before,.hero-slogan::after{content:'';flex:0 0 28px;height:2px;background:var(--bk)}
+.hl {
+  position: absolute; top: 0; left: 0; right: 0;
+  font-family: 'Inter', sans-serif;
+  font-size: clamp(28px, 5vw, 48px);
+  font-weight: 800; line-height: 1.15; letter-spacing: -.025em;
+  color: var(--ink);
+  opacity: 0; visibility: hidden;
+  transform: translateY(6px);
+  transition: opacity .5s ease, transform .5s ease;
+  pointer-events: none;
+}
+.hl.on  { opacity: 1; visibility: visible; transform: translateY(0); pointer-events: auto; }
+.hl.out { opacity: 0; transform: translateY(-6px); }
 
-/* Rotating headline */
-.hl-wrap{min-height:200px;position:relative;margin-bottom:32px;overflow:visible;padding-bottom:20px}
-@media(max-width:760px){.hl-wrap{min-height:320px;padding-bottom:20px}}
-@media(max-width:500px){.hl-wrap{min-height:420px;padding-bottom:20px}}
-.hl{position:absolute;top:0;left:0;right:0;font-size:clamp(20px,3.6vw,42px);font-weight:900;line-height:1.15;letter-spacing:-.025em;color:var(--bk);opacity:0;visibility:hidden;transform:translateY(8px);transition:opacity .5s ease,transform .5s ease;pointer-events:none}
-.hl.on{opacity:1;visibility:visible;transform:translateY(0);pointer-events:auto}
-.hl.out{opacity:0;transform:translateY(-8px)}
+.hero-sub {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px; letter-spacing: .18em; text-transform: uppercase;
+  color: var(--ink4); margin-bottom: 48px;
+}
 
-.hero-sub{font-family:'JetBrains Mono',monospace;font-size:clamp(10px,1.4vw,13px);letter-spacing:.16em;text-transform:uppercase;color:var(--red);margin-bottom:36px;display:flex;align-items:center;justify-content:center;gap:10px}
-.hero-sub::before,.hero-sub::after{content:'';flex:0 0 20px;height:2px;background:var(--red)}
+.hero-cta-group { display: flex; gap: 24px; align-items: center; flex-wrap: wrap; }
 
-.hero-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
-.btn-primary{display:inline-flex;align-items:center;gap:8px;background:var(--bk);color:var(--wh);font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;padding:14px 32px;border:var(--bw) solid var(--bk);text-decoration:none;cursor:pointer;transition:background .12s,color .12s}
-.btn-primary:hover{background:var(--wh);color:var(--bk)}
-.btn-outline{display:inline-flex;align-items:center;gap:8px;background:var(--wh);color:var(--bk);font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;padding:14px 32px;border:var(--bw) solid var(--bk);text-decoration:none;cursor:pointer;transition:background .12s,color .12s}
-.btn-outline:hover{background:var(--bk);color:var(--wh)}
+.cta-link {
+  font-size: 14px; font-weight: 500; letter-spacing: .04em;
+  color: var(--accent2); text-decoration: none;
+  border-bottom: 1px solid var(--accent2);
+  padding-bottom: 2px;
+  transition: color .15s, border-color .15s;
+}
+.cta-link:hover { color: var(--ink); border-color: var(--ink); }
+.cta-link.secondary { color: var(--ink3); border-color: var(--line); }
+.cta-link.secondary:hover { color: var(--accent2); border-color: var(--accent2); }
 
-/* Dots */
-.hero-dots{position:absolute;bottom:24px;left:50%;transform:translateX(-50%);display:flex;gap:8px;z-index:2}
-.hero-dot{width:6px;height:6px;border:1px solid var(--bk);border-radius:50%;cursor:pointer;transition:background .15s}
-.hero-dot.active{background:var(--bk)}
+.dot-nav { display: flex; gap: 10px; margin-top: 48px; }
+.dot {
+  width: 5px; height: 5px; border-radius: 50%;
+  background: var(--line); cursor: pointer;
+  transition: background .15s;
+}
+.dot.active { background: var(--accent2); }
 
-/* ══════════════════════════════════════════════
-   UNIVERSAL SECTION STYLES
-══════════════════════════════════════════════ */
-.section{padding:72px 0;border-bottom:var(--bw) solid var(--bk)}
-.sec-eyebrow{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:var(--g3);margin-bottom:16px;display:flex;align-items:center;gap:10px}
-.sec-eyebrow::before{content:'';width:16px;height:1px;background:var(--g3)}
-.sec-title{font-size:clamp(22px,3vw,36px);font-weight:800;letter-spacing:-.025em;line-height:1.15;margin-bottom:24px}
-.sec-title em{color:var(--red);font-style:normal}
-.sec-text{font-size:15px;color:#444;line-height:1.85;max-width:700px}
-.sec-text p+p{margin-top:14px}
+/* ─────────────────────────────────────────
+   DIVIDER
+───────────────────────────────────────── */
+.divider { border: none; border-top: 1px solid var(--line); margin: 0; }
 
-/* ══════════════════════════════════════════════
-   VORWORT SECTION
-══════════════════════════════════════════════ */
-.vorwort-grid{display:grid;grid-template-columns:1fr 1fr;gap:0;border:var(--bw) solid var(--bk);margin-top:40px}
-@media(max-width:700px){.vorwort-grid{grid-template-columns:1fr}}
-.vorwort-cell{padding:36px 36px}
-.vorwort-cell+.vorwort-cell{border-left:var(--bw) solid var(--bk)}
-@media(max-width:700px){.vorwort-cell+.vorwort-cell{border-left:none;border-top:var(--bw) solid var(--bk)}}
-.vorwort-quote{font-size:clamp(18px,2.5vw,28px);font-weight:800;letter-spacing:-.02em;line-height:1.2;color:var(--bk)}
-.vorwort-quote span{color:var(--red)}
-.vorwort-body{font-size:14px;color:#444;line-height:1.9}
-.vorwort-body p+p{margin-top:12px}
+/* ─────────────────────────────────────────
+   VORWORT
+───────────────────────────────────────── */
+.vorwort-body { max-width: 640px; }
 
-/* ══════════════════════════════════════════════
+blockquote.pull {
+  font-family: 'Inter', sans-serif;
+  font-size: clamp(18px, 2.5vw, 24px);
+  font-style: italic; font-weight: 300;
+  line-height: 1.6;
+  color: var(--ink);
+  margin: 48px 0;
+  padding-left: 24px;
+  border-left: 2px solid var(--ink);
+}
+
+/* ─────────────────────────────────────────
    ÜBER MICH
-══════════════════════════════════════════════ */
-.story-grid{display:grid;grid-template-columns:1fr 2fr;gap:0;border:var(--bw) solid var(--bk);margin-top:40px}
-@media(max-width:720px){.story-grid{grid-template-columns:1fr}}
-.story-left{padding:36px;background:var(--bk);color:var(--wh);display:flex;flex-direction:column;justify-content:space-between}
-.story-name{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--red);margin-bottom:16px}
-.story-headline{font-size:clamp(20px,2.5vw,30px);font-weight:900;letter-spacing:-.025em;line-height:1.15;color:var(--wh)}
-.story-headline em{color:var(--red);font-style:normal}
-.story-stats{margin-top:28px;display:flex;flex-direction:column;gap:10px}
-.story-stat{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.06em;color:#aaa;border-top:1px solid #333;padding-top:10px}
-.story-stat b{color:var(--wh);display:block;font-size:13px;margin-bottom:2px}
-.story-right{padding:36px;border-left:var(--bw) solid var(--bk)}
-@media(max-width:720px){.story-right{border-left:none;border-top:var(--bw) solid var(--bk)}}
-.story-timeline{display:flex;flex-direction:column;gap:20px}
-.tline-item{display:flex;gap:16px;align-items:flex-start}
-.tline-dot{width:10px;height:10px;border:var(--bw) solid var(--bk);flex-shrink:0;margin-top:4px;position:relative}
-.tline-dot.red{background:var(--red);border-color:var(--red)}
-.tline-dot.grn{background:var(--grn);border-color:var(--grn)}
-.tline-body{}
-.tline-label{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--g3);margin-bottom:4px}
-.tline-text{font-size:14px;color:#333;line-height:1.7}
-.tline-text b{color:var(--bk);font-weight:700}
+───────────────────────────────────────── */
+.story-body { max-width: 640px; }
+.timeline { margin-top: 48px; }
+.tl-item { padding: 0 0 40px 28px; position: relative; }
+.tl-item::before {
+  content: '';
+  position: absolute; left: 0; top: 6px;
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--ink4);
+}
+.tl-item.current::before { background: var(--accent); }
+.tl-item + .tl-item { border-top: none; }
+.tl-label {
+  font-family: var(--mono);
+  font-size: 11px; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--accent2); margin-bottom: 8px;
+}
+.tl-text { font-size: 16px; color: var(--ink2); line-height: 1.75; }
+.tl-text strong { color: var(--ink); font-weight: 500; }
 
-/* ══════════════════════════════════════════════
-   MODULE HEADERS (Audit)
-══════════════════════════════════════════════ */
-.mod-hdr{display:flex;align-items:center;gap:0;border:var(--bw) solid var(--bk);border-bottom:none}
-.mod-badge{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.15em;text-transform:uppercase;background:var(--bk);color:var(--wh);padding:9px 16px;flex-shrink:0}
-.mod-title{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.1em;text-transform:uppercase;padding:9px 14px}
-.mod-rule{flex:1;height:var(--bw);background:var(--bk)}
+/* ─────────────────────────────────────────
+   RECHNER — INPUT FELDER
+───────────────────────────────────────── */
+.audit-section { padding: 56px 0 48px; }
+.audit-section:first-of-type { padding-top: 80px; }
 
-/* Grid cells */
-.grid{border:var(--bw) solid var(--bk);display:grid}
-.g2{grid-template-columns:1fr 1fr}
-.g3{grid-template-columns:1fr 1fr 1fr}
-.g4{grid-template-columns:1fr 1fr 1fr 1fr}
-.g5{grid-template-columns:1fr 1fr 1fr 1fr 1fr}
-@media(max-width:760px){.g3,.g4,.g5{grid-template-columns:1fr 1fr}}
-@media(max-width:520px){.g2,.g3,.g4,.g5{grid-template-columns:1fr}}
+.module-label {
+  font-family: var(--mono);
+  font-size: 11px; letter-spacing: .14em; text-transform: uppercase;
+  color: var(--accent); margin-bottom: 8px;
+}
+.module-title {
+  font-family: 'Inter', sans-serif;
+  font-size: 20px; font-weight: 700; letter-spacing: -.01em;
+  color: var(--ink); margin-bottom: 40px;
+}
 
-.cell{padding:18px 18px 20px;border-right:var(--thin) solid var(--bk);border-bottom:var(--thin) solid var(--bk);background:var(--wh)}
-.cell.no-bb{border-bottom:none}
-.cell.shade{background:var(--g1)}
-.cell.result{background:var(--g1)}
+.field-group { margin-bottom: 36px; }
+.field-group:last-child { margin-bottom: 0; }
 
-/* ══════════════════════════════════════════════
-   FIELD LABELS & INPUTS
-══════════════════════════════════════════════ */
-.flbl{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--g3);margin-bottom:9px;display:flex;align-items:center;gap:6px}
-.fhint{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--g3);margin-top:6px}
-.fform{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--g3);margin-top:5px;font-style:italic}
-.inp{width:100%;background:var(--wh);border:var(--thin) solid var(--bk);color:var(--bk);font-family:'JetBrains Mono',monospace;font-size:16px;font-weight:600;padding:9px 11px;outline:none;-webkit-appearance:none;border-radius:0;transition:border-color .12s,box-shadow .12s}
-.inp:focus{border-color:var(--red);box-shadow:0 0 0 2px rgba(220,38,38,.12)}
-.inp::placeholder{color:#d1d5db;font-weight:300}
-select.inp{cursor:pointer}
-.lval{font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:700;line-height:1;margin-top:6px;transition:color .2s}
-.llbl{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--g3);margin-top:8px}
-.lform{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--g3);margin-top:8px;line-height:1.75}
+label.flbl {
+  display: block;
+  font-family: var(--mono);
+  font-size: 11px; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--ink4); margin-bottom: 8px;
+}
+.field-hint {
+  font-family: var(--mono);
+  font-size: 12px; color: var(--ink3);
+  margin-top: 6px; line-height: 1.6;
+}
+.field-formula {
+  font-family: var(--mono);
+  font-size: 12px; color: var(--accent2);
+  margin-top: 5px; font-style: italic;
+}
+
+input.inp, select.inp {
+  display: block; width: 100%;
+  background: transparent;
+  border: none; border-bottom: 1px solid var(--line);
+  color: var(--ink);
+  font-family: var(--mono); font-size: 22px; font-weight: 400;
+  padding: 12px 0;
+  outline: none; border-radius: 0;
+  -webkit-appearance: none;
+  transition: border-color .15s;
+}
+input.inp:focus, select.inp:focus { border-bottom-color: var(--accent2); }
+input.inp::placeholder { color: var(--line); }
+select.inp { cursor: pointer; color: var(--ink); }
+select.inp option { font-size: 14px; }
+
+/* Two col inputs */
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+.three-col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 40px; }
+@media(max-width:600px) { .two-col, .three-col { grid-template-columns: 1fr; gap: 24px; } }
+
+/* Live result line */
+.live-result {
+  margin-top: 44px; padding-top: 32px;
+  border-top: 1px solid var(--line);
+}
+.live-result-label {
+  font-family: var(--mono);
+  font-size: 11px; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--accent); margin-bottom: 6px;
+}
+.live-result-val {
+  font-family: var(--mono);
+  font-size: 30px; font-weight: 500; color: var(--ink);
+  transition: color .2s;
+}
+.live-result-formula {
+  font-family: var(--mono);
+  font-size: 12px; color: var(--ink4); margin-top: 4px; line-height: 1.6;
+}
+
+/* Toggle for leasing / finanzierung */
+.toggle-group { display: flex; gap: 28px; margin-top: 0; flex-wrap: wrap; padding: 16px 0; border-bottom: 1px solid var(--line); }
+.toggle-item { display: flex; align-items: center; gap: 8px; cursor: pointer; }
+.tcb {
+  width: 14px; height: 14px;
+  border: 1px solid var(--ink4);
+  background: transparent;
+  flex-shrink: 0; position: relative;
+  transition: border-color .12s;
+}
+.tcb.on { border-color: var(--ink); background: var(--ink); }
+.tcb.on::after {
+  content: '';
+  position: absolute; top: 2px; left: 4px;
+  width: 3px; height: 6px;
+  border: 1.5px solid #fff; border-top: none; border-left: none;
+  transform: rotate(45deg);
+}
+.toggle-label {
+  font-family: var(--mono);
+  font-size: 12px; color: var(--ink2); letter-spacing: .03em;
+}
 
 /* Psychologie checkboxes */
-.psych-row{display:flex;flex-direction:column;gap:6px;margin-top:10px;padding-top:10px;border-top:1px solid var(--g2)}
-.psych-item{display:flex;align-items:center;gap:8px;cursor:pointer}
-.psych-cb{width:13px;height:13px;border:var(--thin) solid var(--g3);flex-shrink:0;background:var(--wh);position:relative;transition:background .12s,border-color .12s}
-.psych-cb.on{background:var(--bk);border-color:var(--bk)}
-.psych-cb.on::after{content:'';position:absolute;top:1px;left:4px;width:3px;height:6px;border:1.5px solid var(--wh);border-top:none;border-left:none;transform:rotate(45deg)}
-.psych-lbl{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--g3);letter-spacing:.04em;user-select:none}
-.psych-lbl.happiness{color:var(--grn)}
-.psych-lbl.status{color:var(--amb)}
+.psych-group { margin-top: 16px; display: flex; flex-direction: column; gap: 10px; padding-top: 14px; border-top: 1px solid var(--line); }
+.psych-item { display: flex; align-items: center; gap: 8px; cursor: pointer; }
+.psych-cb {
+  width: 12px; height: 12px;
+  border: 1px solid var(--line);
+  background: transparent; flex-shrink: 0; position: relative;
+  transition: border-color .12s, background .12s;
+}
+.psych-cb.on { border-color: var(--ink); background: var(--ink); }
+.psych-cb.on::after {
+  content: ''; position: absolute; top: 1px; left: 3px;
+  width: 3px; height: 6px;
+  border: 1.5px solid #fff; border-top: none; border-left: none;
+  transform: rotate(45deg);
+}
+.psych-lbl { font-family: var(--mono); font-size: 12px; color: var(--ink4); letter-spacing: .03em; }
+.psych-lbl.happiness { color: var(--ok); }
+.psych-lbl.status { color: var(--amber); }
 
-/* ══════════════════════════════════════════════
-   INFO TOOLTIP
-══════════════════════════════════════════════ */
-.tip-wrap{position:relative;display:inline-flex}
-.tip-icon{display:inline-flex;align-items:center;justify-content:center;width:14px;height:14px;border:1px solid var(--bk);background:var(--wh);font-family:'Inter',sans-serif;font-size:9px;font-weight:700;color:var(--bk);cursor:pointer;flex-shrink:0;transition:background .12s,color .12s}
-.tip-icon:hover,.tip-wrap.open .tip-icon{background:var(--bk);color:var(--wh)}
-.tip-box{position:absolute;top:calc(100% + 6px);left:50%;transform:translateX(-50%);background:var(--bk);color:var(--wh);font-family:'JetBrains Mono',monospace;font-size:10px;line-height:1.75;padding:14px 16px;width:290px;z-index:300;border:var(--bw) solid var(--bk);pointer-events:none;opacity:0;transition:opacity .15s}
-.tip-wrap:hover .tip-box,.tip-wrap.open .tip-box{opacity:1;pointer-events:auto}
-.tip-box b{color:#f87171}
+/* Info tooltip */
+.tip-wrap { position: relative; display: inline-flex; margin-left: 6px; }
+.tip-icon {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 14px; height: 14px;
+  border: 1px solid var(--ink4); border-radius: 50%;
+  font-family: var(--sans); font-size: 9px; font-weight: 500;
+  color: var(--ink4); cursor: pointer;
+  transition: border-color .12s, color .12s;
+}
+.tip-icon:hover { border-color: var(--ink); color: var(--ink); }
+.tip-box {
+  position: absolute; top: calc(100% + 8px); left: 50%; transform: translateX(-50%);
+  background: var(--ink); color: #f0f0ec;
+  font-family: var(--mono); font-size: 11px; line-height: 1.75;
+  padding: 16px 18px; width: 280px; z-index: 300;
+  pointer-events: none; opacity: 0; transition: opacity .15s;
+}
+.tip-wrap:hover .tip-box, .tip-wrap.open .tip-box { opacity: 1; pointer-events: auto; }
 
 /* Term tooltip */
-.term{position:relative;display:inline}
-.term-lbl{border-bottom:1px dashed var(--g3);cursor:help;font-family:'JetBrains Mono',monospace}
-.term-box{position:absolute;bottom:calc(100% + 6px);left:0;background:var(--bk);color:var(--wh);font-family:'JetBrains Mono',monospace;font-size:10px;line-height:1.6;padding:10px 13px;width:240px;z-index:300;border:var(--bw) solid var(--bk);opacity:0;pointer-events:none;transition:opacity .15s}
-.term:hover .term-box{opacity:1}
+.term { position: relative; display: inline; }
+.term-lbl { border-bottom: 1px dotted var(--ink4); cursor: help; font-family: var(--mono); }
+.term-box {
+  position: absolute; bottom: calc(100% + 6px); left: 0;
+  background: var(--ink); color: #f0f0ec;
+  font-family: var(--mono); font-size: 11px; line-height: 1.6;
+  padding: 12px 14px; width: 240px; z-index: 300;
+  opacity: 0; pointer-events: none; transition: opacity .15s;
+}
+.term:hover .term-box { opacity: 1; }
 
-/* ══════════════════════════════════════════════
-   TOGGLE CHECKBOX
-══════════════════════════════════════════════ */
-.toggle-row{display:flex;align-items:center;gap:12px;padding:13px 18px;border:var(--bw) solid var(--bk);border-top:none;cursor:pointer;background:var(--g1);transition:background .12s}
-.toggle-row:hover{background:var(--bk)}
-.toggle-row:hover .toggle-lbl{color:var(--wh)}
-.toggle-row:hover .tcb{border-color:var(--wh)}
-.tcb{width:16px;height:16px;border:var(--bw) solid var(--bk);background:var(--wh);flex-shrink:0;position:relative;transition:background .12s,border-color .12s}
-.tcb.on{background:var(--red);border-color:var(--red)}
-.tcb.on::after{content:'';position:absolute;top:1px;left:5px;width:4px;height:8px;border:2px solid var(--wh);border-top:none;border-left:none;transform:rotate(45deg)}
-.toggle-lbl{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.06em;color:var(--bk)}
+/* Vehicle block */
+.vehicle-block { margin-bottom: 48px; padding-top: 8px; }
+.vehicle-block + .vehicle-block { margin-top: 48px; }
+.vehicle-name {
+  font-family: var(--mono);
+  font-size: 11px; letter-spacing: .14em; text-transform: uppercase;
+  color: var(--accent); margin-bottom: 32px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.vehicle-costs {
+  font-family: var(--mono); font-size: 13px; color: var(--warn);
+}
+.breakdown-row {
+  display: grid; grid-template-columns: 1fr 1fr 1fr;
+  gap: 28px; margin-top: 36px; padding-top: 32px;
+  border-top: 1px solid var(--line);
+}
+@media(max-width:560px) { .breakdown-row { grid-template-columns: 1fr; gap: 16px; } }
+.bd-item-label {
+  font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase;
+  color: var(--accent2); margin-bottom: 4px;
+}
+.bd-item-val {
+  font-family: var(--mono); font-size: 18px; font-weight: 500; color: var(--warn);
+}
+.rep-input {
+  display: block; width: 100%;
+  background: transparent;
+  border: none; border-bottom: 1px solid var(--line);
+  color: var(--ink);
+  font-family: var(--mono); font-size: 18px; font-weight: 400;
+  padding: 6px 0; outline: none; border-radius: 0;
+  transition: border-color .15s;
+}
+.rep-input:focus { border-bottom-color: var(--ink); }
+.rep-input::placeholder { color: var(--line); }
 
-/* ══════════════════════════════════════════════
-   VEHICLE BLOCK
-══════════════════════════════════════════════ */
-.veh-hdr{display:flex;align-items:center;gap:0;border:var(--bw) solid var(--bk);border-bottom:none;margin-top:20px}
-.veh-badge{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.16em;text-transform:uppercase;background:var(--bk);color:var(--wh);padding:7px 12px;flex-shrink:0}
-.veh-live{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--g3);padding:8px 14px;margin-left:auto}
-.veh-live b{color:var(--red);font-weight:700}
-.veh-bd{border:var(--bw) solid var(--bk);border-top:var(--thin) solid var(--g2);display:grid;grid-template-columns:1fr 1fr 1fr}
-@media(max-width:480px){.veh-bd{grid-template-columns:1fr}}
-.veh-cell{padding:12px 16px;border-right:var(--thin) solid var(--bk);background:var(--g1)}
-.veh-cell:last-child{border-right:none}
-.veh-lbl{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--g3);margin-bottom:5px}
-.veh-val{font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:700;color:var(--red)}
-#kfz2-wrap{display:none}
-#kfz2-wrap.vis{display:block}
+/* Module separator */
+.module-sep { border: none; border-top: 1px solid var(--line); margin: 64px 0; }
 
-/* ══════════════════════════════════════════════
+/* ─────────────────────────────────────────
    ANALYSE BUTTON
-══════════════════════════════════════════════ */
-.analyse-sec{padding:28px 0 44px;margin-top:20px}
-.analyse-inner{display:flex;align-items:center;gap:20px;flex-wrap:wrap}
-.abtn{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;background:var(--bk);color:var(--wh);border:var(--bw) solid var(--bk);cursor:pointer;padding:14px 40px;display:flex;align-items:center;gap:10px;transition:background .12s,color .12s;white-space:nowrap}
-.abtn:hover{background:var(--wh);color:var(--bk)}
-.abtn.busy{background:var(--g3);border-color:var(--g3);cursor:wait}
-.ahint{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--g3);line-height:1.9;letter-spacing:.03em}
+───────────────────────────────────────── */
+.analyse-wrap { padding: 56px 0 72px; border-top: 1px solid var(--line); margin-top: 8px; }
+.analyse-btn {
+  font-family: var(--mono);
+  font-size: 14px; font-weight: 500; letter-spacing: .08em;
+  color: var(--accent2); background: transparent; border: none;
+  cursor: pointer; padding: 0;
+  border-bottom: 1px solid var(--accent2);
+  padding-bottom: 2px;
+  transition: color .15s, border-color .15s;
+}
+.analyse-btn:hover { color: var(--ink); border-color: var(--ink); }
+.analyse-hint {
+  font-family: var(--mono); font-size: 12px; color: var(--ink4);
+  margin-top: 12px; line-height: 1.7;
+}
 
-/* ══════════════════════════════════════════════
+/* ─────────────────────────────────────────
    LOADING
-══════════════════════════════════════════════ */
-#loading{display:none;padding:44px 0;border-bottom:var(--bw) solid var(--bk)}
-.load-box{border:var(--bw) solid var(--bk);padding:22px;max-width:600px}
-.load-lbl{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--g3);margin-bottom:8px}
-.load-track{background:var(--g1);border:1px solid var(--bk);height:4px;margin-bottom:18px}
-.load-fill{height:100%;background:var(--bk);width:0%;transition:width .1s linear}
-.load-line{font-family:'JetBrains Mono',monospace;font-size:11px;line-height:2.1;opacity:0;color:var(--g3)}
-.load-line.done{opacity:1}
-.load-line.act{opacity:1;color:var(--bk)}
-.load-line.act::after{content:'█';animation:blink .9s step-end infinite;color:var(--red)}
-@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+───────────────────────────────────────── */
+#loading { display: none; padding: 64px 0; }
+.load-label {
+  font-family: var(--mono); font-size: 11px; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--ink4); margin-bottom: 20px;
+}
+.load-bar-wrap {
+  width: 100%; height: 1px; background: var(--line);
+  margin-bottom: 32px; position: relative;
+}
+.load-fill { height: 100%; background: var(--ink); width: 0%; transition: width .12s linear; }
+.load-lines { font-family: var(--mono); font-size: 13px; line-height: 2.2; color: var(--ink4); }
+.load-line { opacity: 0; }
+.load-line.done { opacity: 1; }
+.load-line.act { opacity: 1; color: var(--ink); }
+.load-line.act::after { content: '▌'; animation: blink .9s step-end infinite; color: var(--ink3); }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
 
-/* ══════════════════════════════════════════════
+/* ─────────────────────────────────────────
+   INTERVENTION
+───────────────────────────────────────── */
+#rcBlock { display: none; padding: 80px 0; border-top: 1px solid var(--line); }
+#rcBlock.show { display: block; }
+.rc-eyebrow {
+  font-family: var(--mono); font-size: 11px; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--accent); margin-bottom: 32px;
+}
+.rc-blockquote {
+  font-family: 'Inter', sans-serif;
+  font-size: clamp(16px, 2vw, 20px);
+  line-height: 1.85; font-style: italic; font-weight: 300;
+  color: var(--ink); max-width: 640px;
+  padding-left: 24px; border-left: 2px solid var(--ink);
+  margin-bottom: 40px;
+}
+.rc-blockquote strong { font-style: normal; font-weight: 600; }
+.rc-sig {
+  font-family: var(--mono); font-size: 12px; color: var(--ink4); letter-spacing: .04em;
+  margin-bottom: 48px;
+}
+.rc-warning {
+  display: none;
+  margin-bottom: 40px; padding: 20px 24px;
+  background: #fdf6f6;
+}
+.rc-warning.show { display: block; }
+.rc-warning-title {
+  font-family: var(--mono); font-size: 11px; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--warn); margin-bottom: 8px;
+}
+.rc-warning-text {
+  font-family: var(--mono); font-size: 13px; color: var(--warn); line-height: 1.7;
+}
+.confirm-btn {
+  font-family: var(--mono);
+  font-size: 13px; font-weight: 500; letter-spacing: .08em;
+  color: var(--accent2); background: transparent; border: none;
+  cursor: pointer; padding: 0;
+  border-bottom: 1px solid var(--accent2); padding-bottom: 2px;
+  transition: color .15s, border-color .15s;
+}
+.confirm-btn:hover { color: var(--ink); border-color: var(--ink); }
+.confirm-label {
+  font-family: var(--mono); font-size: 12px; color: var(--ink4);
+  margin-bottom: 14px;
+}
+
+/* ─────────────────────────────────────────
+   STATUS BANNER
+───────────────────────────────────────── */
+#statusBanner { display: none; padding: 20px 0; border-bottom: 1px solid var(--line); }
+#statusBanner.show { display: block; }
+.status-txt {
+  font-family: var(--mono); font-size: 12px; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--warn);
+}
+.status-sub {
+  font-family: var(--mono); font-size: 12px; color: var(--ink4); margin-top: 4px;
+}
+
+/* ─────────────────────────────────────────
    RESULTS
-══════════════════════════════════════════════ */
-#results{display:none}
+───────────────────────────────────────── */
+#results { display: none; }
 
-.res-sec{padding:52px 0;border-bottom:var(--bw) solid var(--bk)}
-.res-hdr{display:flex;align-items:center;gap:0;border:var(--bw) solid var(--bk);border-bottom:none}
-.res-badge{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;background:var(--bk);color:var(--wh);padding:8px 14px}
-.res-title{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.1em;text-transform:uppercase;padding:8px 14px}
+.result-section { padding: 80px 0; border-top: 1px solid var(--line); }
 
-/* Autonomie-Breakpoint (was slave-day) */
-.abp-grid{display:grid;grid-template-columns:260px 1fr;gap:0;border:var(--bw) solid var(--bk);border-top:none;margin-bottom:0}
-@media(max-width:680px){.abp-grid{grid-template-columns:1fr}}
-.abp-card{padding:36px 32px 32px;border-right:var(--bw) solid var(--bk);border-top:4px solid var(--red)}
-@media(max-width:680px){.abp-card{border-right:none}}
-.abp-tag{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--red);margin-bottom:10px}
-.abp-num{font-family:'JetBrains Mono',monospace;font-size:clamp(60px,11vw,96px);font-weight:700;line-height:1;letter-spacing:-.04em;color:var(--red)}
-.abp-sfx{font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:300;color:var(--g3);margin-left:4px}
-.abp-desc{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--text2,#444);margin-top:12px;line-height:1.75}
-.abp-free{font-family:'JetBrains Mono',monospace;font-size:32px;font-weight:700;color:var(--grn);margin-top:16px}
-.abp-free-l{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--g3)}
+/* Arbeitstage */
+.arbeitstage-display { margin: 48px 0; }
+.at-label {
+  font-family: var(--mono); font-size: 11px; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--accent); margin-bottom: 16px;
+}
+.at-number {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: clamp(80px, 16vw, 140px);
+  font-weight: 700; line-height: 1; letter-spacing: -.04em;
+  color: var(--ink);
+}
+.at-unit {
+  font-family: var(--sans); font-size: 18px; font-weight: 300;
+  color: var(--ink3); margin-left: 8px;
+}
+.at-desc {
+  font-family: var(--mono); font-size: 14px; color: var(--ink4);
+  margin-top: 16px; line-height: 1.7; max-width: 480px;
+}
+.at-free {
+  font-family: 'JetBrains Mono', monospace; font-size: 32px; font-weight: 700;
+  color: var(--ok); margin-top: 24px;
+}
+.at-free-label {
+  font-family: var(--mono); font-size: 11px; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--ink4); margin-top: 4px;
+}
 
-.kpi-grid{display:grid;grid-template-columns:1fr 1fr}
-@media(max-width:440px){.kpi-grid{grid-template-columns:1fr}}
-.kpi-cell{padding:22px 22px;border-bottom:var(--thin) solid var(--bk);border-right:var(--thin) solid var(--bk)}
-.kpi-cell:nth-child(2n){border-right:none}
-.kpi-cell:nth-last-child(-n+2){border-bottom:none}
-.kpi-tag{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:var(--g3);margin-bottom:7px}
-.kpi-num{font-family:'JetBrains Mono',monospace;font-size:26px;font-weight:700;line-height:1}
-.kpi-num.r{color:var(--red)}
-.kpi-num.g{color:var(--grn)}
-.kpi-num.a{color:var(--amb)}
-.kpi-num.b{color:var(--blu)}
-.kpi-eur{font-size:14px;font-weight:300;color:var(--g3);margin-left:3px}
-.kpi-sub{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--g3);margin-top:6px;line-height:1.5}
-
-/* Status-Overhead card */
-.overhead-card{border:var(--bw) solid var(--bk);border-top:none;padding:20px 24px;background:var(--g1);display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;background:var(--bk)}
-@media(max-width:560px){.overhead-card{grid-template-columns:1fr}}
-.oh-cell{background:var(--g1);padding:22px 22px}
-.oh-tag{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:var(--g3);margin-bottom:7px}
-.oh-val{font-family:'JetBrains Mono',monospace;font-size:24px;font-weight:700;color:var(--amb)}
-.oh-sub{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--g3);margin-top:6px;line-height:1.5}
+/* KPI grid — no boxes, just text columns */
+.kpi-row {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 48px; margin-top: 64px; padding-top: 48px;
+  border-top: 1px solid var(--line);
+}
+@media(max-width:500px) { .kpi-row { grid-template-columns: 1fr; gap: 36px; } }
+.kpi-item {}
+.kpi-label {
+  font-family: var(--mono); font-size: 11px; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--accent2); margin-bottom: 10px;
+}
+.kpi-value {
+  font-family: var(--mono); font-size: 32px; font-weight: 500;
+  color: var(--ink); line-height: 1;
+}
+.kpi-value.warn { color: var(--warn); }
+.kpi-value.ok   { color: var(--ok); }
+.kpi-value.amb  { color: var(--amber); }
+.kpi-eur { font-size: 18px; font-weight: 300; color: var(--ink4); margin-left: 3px; }
+.kpi-note {
+  font-family: var(--mono); font-size: 12px; color: var(--ink4);
+  margin-top: 8px; line-height: 1.6;
+}
 
 /* Alerts */
-.alerts{display:flex;flex-direction:column;gap:0;border:var(--bw) solid var(--bk);border-top:none;margin-bottom:0}
-.alert{display:flex;align-items:flex-start;gap:0;border-bottom:1px solid var(--bk);font-family:'JetBrains Mono',monospace;font-size:12px;line-height:1.7}
-.alert:last-child{border-bottom:none}
-.alert-pre{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:12px 14px;flex-shrink:0;min-width:110px;text-align:center;border-right:var(--thin) solid var(--bk)}
-.alert-txt{padding:10px 14px}
-.alert.critical .alert-pre{background:var(--red);color:var(--wh)}
-.alert.critical .alert-txt{color:var(--red2);background:#fff5f5}
-.alert.warn .alert-pre{background:var(--bk);color:#fbbf24}
-.alert.warn .alert-txt{color:var(--amb)}
-.alert.alarm .alert-pre{background:var(--pur);color:var(--wh)}
-.alert.alarm .alert-txt{color:var(--pur)}
-.alert.ok .alert-pre{background:var(--grn);color:var(--wh)}
-.alert.ok .alert-txt{color:var(--grn)}
+.alerts-section { margin-top: 56px; padding-top: 40px; border-top: 1px solid var(--line); }
+.alert-item {
+  padding: 20px 0;
+  border-bottom: 1px solid var(--line);
+  display: grid; grid-template-columns: 120px 1fr; gap: 24px;
+  align-items: start;
+}
+@media(max-width:560px) { .alert-item { grid-template-columns: 1fr; gap: 8px; } }
+.alert-tag {
+  font-family: var(--mono); font-size: 10px; letter-spacing: .1em; text-transform: uppercase;
+  font-weight: 500; padding-top: 2px;
+}
+.alert-tag.c { color: var(--warn); }
+.alert-tag.w { color: var(--amber); }
+.alert-tag.a { color: #6040a0; }
+.alert-tag.o { color: var(--ok); }
+.alert-text {
+  font-family: var(--mono); font-size: 13px; line-height: 1.75;
+}
+.alert-text.c { color: var(--warn); }
+.alert-text.w { color: var(--amber); }
+.alert-text.a { color: #6040a0; }
+.alert-text.o { color: var(--ok); }
 
-/* Chart */
-.chart-sec{padding:52px 0;border-bottom:var(--bw) solid var(--bk)}
-.chart-box{border:var(--bw) solid var(--bk);border-top:none;padding:32px}
-.chart-ttl{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:var(--g3);margin-bottom:22px}
-.stacked-wrap{margin-bottom:24px}
-.stacked-l{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:var(--g3);margin-bottom:9px}
-.stacked-track{height:48px;background:var(--g1);border:var(--thin) solid var(--bk);overflow:hidden;display:flex}
-.sseg{height:100%;display:flex;align-items:center;justify-content:center;overflow:hidden;transition:width 1.1s cubic-bezier(.4,0,.2,1)}
-.sseg-lbl{font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;color:rgba(255,255,255,.9);white-space:nowrap;padding:0 5px}
-.brow{margin-bottom:18px}
-.bmeta{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px}
-.bname{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--g3);display:flex;align-items:center;gap:7px}
-.bswatch{width:8px;height:8px;flex-shrink:0;border:1px solid rgba(0,0,0,.2)}
-.bval{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--bk);font-weight:600}
-.btrack{height:26px;background:var(--g1);border:1px solid var(--g2);overflow:hidden}
-.bfill{height:100%;transition:width 1s cubic-bezier(.4,0,.2,1)}
-.legend{display:flex;flex-wrap:wrap;gap:16px;margin-top:18px;padding-top:16px;border-top:1px solid var(--g2)}
-.leg{display:flex;align-items:center;gap:7px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--g3)}
-.leg-d{width:9px;height:9px;border:1px solid rgba(0,0,0,.1)}
+/* Status-Overhead */
+.overhead-section { margin-top: 64px; padding-top: 48px; border-top: 1px solid var(--line); }
+.overhead-title {
+  font-family: 'Inter', sans-serif; font-size: 18px; font-weight: 700; letter-spacing: -.01em;
+  color: var(--ink); margin-bottom: 32px;
+}
+.overhead-row {
+  display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 40px; margin-top: 0;
+}
+@media(max-width:560px) { .overhead-row { grid-template-columns: 1fr; gap: 28px; } }
 
-/* Terminal */
-.term-sec{padding:44px 0;border-bottom:var(--bw) solid var(--bk)}
-.terminal{border:var(--bw) solid var(--bk);border-top:none;overflow:hidden}
-.term-bar{background:var(--bk);padding:9px 16px;display:flex;align-items:center;gap:10px;border-bottom:var(--bw) solid var(--bk)}
-.tdots{display:flex;gap:5px}
-.tdot{width:9px;height:9px;border-radius:50%}
-.term-ttl{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:#666}
-.term-body{padding:28px 28px 32px;background:var(--wh);min-height:160px;border-left:3px solid var(--bk)}
-.log-line{font-family:'JetBrains Mono',monospace;font-size:12px;line-height:2;opacity:0}
-.log-line.vis{opacity:1}
-.log-line.lw{color:var(--red)}
-.log-line.lo{color:var(--grn)}
-.log-line.li{color:var(--g3)}
-.log-line.lh{color:var(--bk);font-weight:700}
-.log-line.la{color:var(--pur)}
-.log-line.lm{color:var(--amb)}
-.log-prompt{color:#ccc;margin-right:6px;user-select:none}
+/* Chart — no boxes, inline bars */
+.chart-section { padding: 80px 0; border-top: 1px solid var(--line); }
+.chart-title {
+  font-family: var(--mono); font-size: 11px; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--accent); margin-bottom: 48px;
+}
+.bar-group { margin-bottom: 28px; }
+.bar-meta { display: flex; justify-content: space-between; margin-bottom: 8px; }
+.bar-name {
+  font-family: var(--mono); font-size: 12px; letter-spacing: .06em; text-transform: uppercase;
+  color: var(--ink2);
+}
+.bar-pct { font-family: var(--mono); font-size: 12px; color: var(--ink); font-weight: 500; }
+.bar-track {
+  height: 3px; background: var(--line); position: relative;
+}
+.bar-fill {
+  height: 100%; background: var(--ink);
+  transition: width 1s cubic-bezier(.4,0,.2,1);
+}
 
-/* Detail table */
-.det-sec{padding:44px 0;border-bottom:var(--bw) solid var(--bk)}
-.det-table{width:100%;border-collapse:collapse;border:var(--bw) solid var(--bk);border-top:none}
-.det-table th{background:var(--bk);color:var(--wh);padding:11px 14px;text-align:left;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;border-right:1px solid #333}
-.det-table th:last-child{text-align:right;border-right:none}
-.det-table td{padding:11px 14px;font-family:'JetBrains Mono',monospace;font-size:12px;border-bottom:1px solid var(--g2);color:var(--g3);border-right:1px solid var(--g2)}
-.det-table td:first-child{color:var(--bk);font-weight:500}
-.det-table td:last-child{text-align:right;font-weight:600;border-right:none}
-.det-table tr:last-child td{border-bottom:none}
-.det-table tr.sec-row td{background:var(--g1);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--g3);padding:8px 14px;border-right:none;font-weight:600}
-.det-table tr.tot-row td{background:var(--bk);color:var(--wh)!important;font-weight:700;font-size:14px;border-color:#333;padding:13px 14px}
-.det-table tbody tr:not(.sec-row):not(.tot-row):hover td{background:var(--g1)}
+/* Stacked bar */
+.stacked-section { margin-bottom: 56px; }
+.stacked-label {
+  font-family: var(--mono); font-size: 11px; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--accent); margin-bottom: 12px;
+}
+.stacked-track {
+  height: 8px; background: var(--line); display: flex; overflow: hidden;
+}
+.sseg { height: 100%; transition: width 1.1s cubic-bezier(.4,0,.2,1); }
+.chart-legend {
+  display: flex; flex-wrap: wrap; gap: 24px; margin-top: 20px;
+}
+.leg-item {
+  display: flex; align-items: center; gap: 8px;
+  font-family: var(--mono); font-size: 12px; color: var(--ink4);
+}
+.leg-dot { width: 8px; height: 8px; border-radius: 50%; }
 
-/* ══════════════════════════════════════════════
-   PRODUKTE / ANGEBOTE
-══════════════════════════════════════════════ */
-.products-sec{padding:72px 0;border-bottom:var(--bw) solid var(--bk)}
-.products-grid{display:grid;grid-template-columns:1fr 1fr;gap:0;border:var(--bw) solid var(--bk);margin-top:40px}
-@media(max-width:700px){.products-grid{grid-template-columns:1fr}}
-.product-card{padding:36px;border-right:var(--bw) solid var(--bk)}
-.product-card:last-child{border-right:none}
-@media(max-width:700px){.product-card{border-right:none;border-bottom:var(--bw) solid var(--bk)}}
-@media(max-width:700px){.product-card:last-child{border-bottom:none}}
-.prod-eyebrow{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--g3);margin-bottom:14px}
-.prod-name{font-size:clamp(18px,2.2vw,26px);font-weight:800;letter-spacing:-.02em;margin-bottom:8px}
-.prod-sub{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--g3);letter-spacing:.08em;margin-bottom:20px}
-.prod-price{font-family:'JetBrains Mono',monospace;font-size:32px;font-weight:700;color:var(--bk);margin-bottom:6px}
-.prod-price span{font-size:13px;color:var(--g3);font-weight:300}
-.prod-desc{font-size:13px;color:#555;line-height:1.75;margin-bottom:24px}
-.prod-features{list-style:none;margin-bottom:24px}
-.prod-features li{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--g3);line-height:1.9;padding-left:14px;position:relative}
-.prod-features li::before{content:'→';position:absolute;left:0;color:var(--bk)}
-.prod-btn{display:inline-flex;align-items:center;gap:8px;background:var(--bk);color:var(--wh);font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:12px 24px;text-decoration:none;border:var(--bw) solid var(--bk);transition:background .12s,color .12s}
-.prod-btn:hover{background:var(--wh);color:var(--bk)}
-.prod-btn.red{background:var(--red);border-color:var(--red)}
-.prod-btn.red:hover{background:var(--wh);color:var(--red)}
+/* Terminal log */
+.log-section { padding: 80px 0; border-top: 1px solid var(--line); }
+.log-header {
+  font-family: var(--mono); font-size: 11px; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--accent); margin-bottom: 32px;
+}
+.log-body { font-family: var(--mono); font-size: 13px; line-height: 2.1; }
+.log-line { opacity: 0; }
+.log-line.vis { opacity: 1; }
+.log-line.lw { color: var(--warn); }
+.log-line.lo { color: var(--ok); }
+.log-line.li { color: var(--ink4); }
+.log-line.lh { color: var(--ink); font-weight: 500; }
+.log-line.la { color: #6040a0; }
+.log-line.lm { color: var(--amber); }
 
-/* Toolkit cards */
-.toolkit-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border:var(--bw) solid var(--bk);border-top:none}
-@media(max-width:680px){.toolkit-grid{grid-template-columns:1fr}}
-.tk-card{padding:28px;border-right:var(--thin) solid var(--bk)}
-.tk-card:last-child{border-right:none}
-@media(max-width:680px){.tk-card{border-right:none;border-bottom:var(--thin) solid var(--bk)}}
-@media(max-width:680px){.tk-card:last-child{border-bottom:none}}
-.tk-tag{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--g3);margin-bottom:10px;background:var(--g1);padding:3px 8px;display:inline-block}
-.tk-name{font-size:16px;font-weight:800;letter-spacing:-.01em;margin-bottom:8px}
-.tk-desc{font-size:12px;color:#666;line-height:1.7;margin-bottom:16px}
-.tk-status{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--g3);border:var(--thin) solid var(--g3);padding:3px 8px;display:inline-block}
+/* Detail table — no box, just lines */
+.detail-section { padding: 80px 0; border-top: 1px solid var(--line); }
+.detail-title {
+  font-family: var(--mono); font-size: 11px; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--accent); margin-bottom: 40px;
+}
+table.det-table { width: 100%; border-collapse: collapse; }
+.det-table th {
+  text-align: left; padding: 10px 0;
+  font-family: var(--mono); font-size: 11px; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--ink4); border-bottom: 1px solid var(--line);
+}
+.det-table th:last-child { text-align: right; }
+.det-table td {
+  padding: 12px 0;
+  font-family: var(--mono); font-size: 13px;
+  border-bottom: 1px solid var(--line); color: var(--ink3);
+}
+.det-table td:last-child { text-align: right; font-weight: 500; }
+.det-table td:first-child { color: var(--ink); }
+.det-table tr.sec-row td {
+  background: none; padding: 20px 0 8px;
+  font-family: var(--mono); font-size: 10px; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--ink4); border-bottom: 1px solid var(--line);
+  font-weight: 500;
+}
+.det-table tr.tot-row td {
+  color: var(--ink); font-weight: 600; font-size: 14px;
+  padding-top: 16px; border-bottom: 1px solid var(--ink);
+}
+.det-table tr.tot-row td:last-child { }
+.det-table tbody tr:not(.sec-row):not(.tot-row):hover td { color: var(--ink); }
 
-/* ══════════════════════════════════════════════
+/* Finanzielle Klarheit */
+.klarheit-section { padding: 80px 0; border-top: 1px solid var(--line); }
+.klarheit-title {
+  font-family: 'Inter', sans-serif; font-size: 26px; font-weight: 800; letter-spacing: -.02em;
+  color: var(--ink); margin-bottom: 48px;
+}
+.klarheit-row {
+  display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 48px;
+}
+@media(max-width:620px) { .klarheit-row { grid-template-columns: 1fr; gap: 36px; } }
+.kl-item {}
+.kl-label {
+  font-family: var(--mono); font-size: 11px; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--accent2); margin-bottom: 10px;
+}
+.kl-value {
+  font-family: var(--mono);
+  font-size: clamp(26px, 4vw, 36px);
+  font-weight: 500; line-height: 1; color: var(--ink);
+}
+.kl-value.warn { color: var(--warn); }
+.kl-value.ok   { color: var(--ok); }
+.kl-value.amb  { color: var(--amber); }
+.kl-desc { font-family: var(--mono); font-size: 12px; color: var(--ink4); margin-top: 10px; line-height: 1.7; }
+.kl-warn-text {
+  font-family: var(--mono); font-size: 13px; color: var(--warn);
+  margin-top: 8px; line-height: 1.7;
+}
+
+/* Statement */
+.statement-section { margin-top: 64px; padding-top: 48px; border-top: 1px solid var(--line); }
+.statement-text {
+  font-family: 'Inter', sans-serif;
+  font-size: clamp(16px, 2vw, 19px);
+  line-height: 1.85; font-style: italic; font-weight: 300;
+  color: var(--ink); max-width: 600px;
+  padding-left: 24px; border-left: 2px solid var(--ink);
+  margin-bottom: 24px;
+}
+.statement-text strong { font-style: normal; font-weight: 600; }
+.statement-sig {
+  font-family: var(--mono); font-size: 12px; color: var(--ink4); letter-spacing: .04em;
+}
+
+/* ─────────────────────────────────────────
+   ANGEBOTE
+───────────────────────────────────────── */
+.offers-section { padding: 96px 0; border-top: 1px solid var(--line); }
+.offer-item { margin-bottom: 64px; }
+.offer-item:last-of-type { margin-bottom: 0; }
+.offer-meta {
+  font-family: var(--mono); font-size: 11px; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--accent2); margin-bottom: 12px;
+}
+.offer-name {
+  font-family: 'Inter', sans-serif; font-size: 26px; font-weight: 800; letter-spacing: -.02em;
+  color: var(--ink); margin-bottom: 8px;
+}
+.offer-price {
+  font-family: var(--mono); font-size: 20px; color: var(--ink3);
+  margin-bottom: 20px;
+}
+.offer-desc { font-size: 16px; color: var(--ink2); line-height: 1.8; max-width: 560px; }
+.offer-features { margin-top: 20px; }
+.offer-features li {
+  font-family: var(--mono); font-size: 13px; color: var(--ink3); line-height: 2;
+  list-style: none; padding-left: 16px; position: relative;
+}
+.offer-features li::before { content: '—'; position: absolute; left: 0; color: var(--ink4); }
+.offer-link {
+  display: inline-block; margin-top: 24px;
+  font-family: var(--mono); font-size: 13px; font-weight: 500; letter-spacing: .04em;
+  color: var(--accent2); text-decoration: none;
+  border-bottom: 1px solid var(--accent2); padding-bottom: 2px;
+  transition: color .15s, border-color .15s;
+}
+.offer-link:hover { color: var(--ink); border-color: var(--ink); }
+
+/* Toolkit */
+.toolkit-grid {
+  display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 40px;
+  margin-top: 48px; padding-top: 48px; border-top: 1px solid var(--line);
+}
+@media(max-width:600px) { .toolkit-grid { grid-template-columns: 1fr; gap: 32px; } }
+.tk-meta { font-family: var(--mono); font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: var(--ink4); margin-bottom: 8px; }
+.tk-name { font-family: 'Inter', sans-serif; font-size: 17px; font-weight: 700; letter-spacing: -.01em; color: var(--ink); margin-bottom: 8px; }
+.tk-desc { font-size: 14px; color: var(--ink3); line-height: 1.7; }
+.tk-status { font-family: var(--mono); font-size: 11px; color: var(--ink4); margin-top: 10px; letter-spacing: .06em; }
+
+/* ─────────────────────────────────────────
    CTA
-══════════════════════════════════════════════ */
-.cta-sec{padding:64px 0}
-.cta-box{border:var(--bw) solid var(--bk);border-top:4px solid var(--red);display:grid;grid-template-columns:1fr auto;gap:0;align-items:stretch}
-@media(max-width:620px){.cta-box{grid-template-columns:1fr}}
-.cta-left{padding:36px;border-right:var(--bw) solid var(--bk)}
-@media(max-width:620px){.cta-left{border-right:none;border-bottom:var(--bw) solid var(--bk)}}
-.cta-right{padding:36px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;min-width:220px}
-.cta-ey{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--red);margin-bottom:10px}
-.cta-h{font-size:clamp(20px,2.8vw,30px);font-weight:800;letter-spacing:-.025em;line-height:1.15;margin-bottom:12px}
-.cta-h em{color:var(--red);font-style:normal}
-.cta-p{font-size:14px;color:#555;line-height:1.75;max-width:460px}
-.trust{display:flex;flex-wrap:wrap;gap:12px;margin-top:18px}
-.trust-i{display:flex;align-items:center;gap:6px;font-family:'JetBrains Mono',monospace;font-size:10px}
-.ck{color:var(--grn);font-weight:700}
+───────────────────────────────────────── */
+.cta-section { padding: 96px 0; border-top: 1px solid var(--line); }
+.cta-heading { font-family: 'Inter', sans-serif; font-size: clamp(26px,3.5vw,38px); font-weight: 800; letter-spacing: -.025em; line-height: 1.15; color: var(--ink); margin-bottom: 24px; }
+.cta-heading em { font-style: italic; }
+.cta-body { font-size: 17px; color: var(--ink2); line-height: 1.8; max-width: 560px; margin-bottom: 32px; }
+.cta-trust { display: flex; flex-wrap: wrap; gap: 20px; margin-bottom: 32px; }
+.cta-trust-item { font-family: var(--mono); font-size: 12px; color: var(--ink4); letter-spacing: .03em; }
+.cta-trust-item::before { content: '✓  '; color: var(--accent); }
+.cta-pricing {
+  font-family: var(--mono); font-size: 13px; color: var(--ink4);
+  margin-top: 16px; letter-spacing: .04em;
+}
 
-/* ── Reality Check ── */
-.rc-block{display:none;padding:0;margin-bottom:0;border-bottom:var(--bw) solid var(--bk)}
-.rc-block.show{display:block}
-.rc-header{background:var(--bk);color:#fff;padding:12px 0;display:flex;align-items:center;gap:12px;font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;letter-spacing:.18em;text-transform:uppercase}
-.rc-icon{font-size:14px;flex-shrink:0;color:var(--red)}
-.rc-body{padding:44px 0}
-.rc-eyebrow{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--g3);margin-bottom:20px;display:flex;align-items:center;gap:10px}
-.rc-eyebrow::before{content:'';width:16px;height:1px;background:var(--g3)}
-.rc-quote{font-size:clamp(15px,2vw,19px);line-height:1.85;color:var(--bk);font-style:italic;max-width:820px;border-left:3px solid var(--bk);padding-left:24px}
-.rc-quote strong{font-style:normal;font-weight:800;color:var(--bk)}
-.rc-sig{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--g3);margin-top:20px;padding-left:27px;letter-spacing:.06em}
-
-/* Dashboard-Status Banner */
-.status-banner{display:none;background:var(--red);padding:12px 0;border-bottom:var(--bw) solid var(--bk)}
-.status-banner.show{display:block}
-.status-banner-txt{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;letter-spacing:.12em;color:#fff;text-transform:uppercase}
-.status-banner-sub{font-family:'JetBrains Mono',monospace;font-size:9px;color:rgba(255,255,255,.7);margin-top:3px;letter-spacing:.04em}
-
-/* ── Finanzielle Klarheit Dashboard ── */
-.klarheit-sec{padding:44px 0;border-bottom:var(--bw) solid var(--bk)}
-.klarheit-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0;border:var(--bw) solid var(--bk);margin-top:24px}
-@media(max-width:680px){.klarheit-grid{grid-template-columns:1fr}}
-.kl-cell{padding:34px 28px;border-right:var(--bw) solid var(--bk)}
-.kl-cell:last-child{border-right:none}
-@media(max-width:680px){.kl-cell{border-right:none;border-bottom:var(--bw) solid var(--bk)}}
-@media(max-width:680px){.kl-cell:last-child{border-bottom:none}}
-.kl-tag{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.11em;text-transform:uppercase;color:var(--g3);margin-bottom:10px}
-.kl-val{font-family:'JetBrains Mono',monospace;font-size:clamp(28px,3.8vw,42px);font-weight:700;line-height:1;letter-spacing:-.03em}
-.kl-val.warn{color:var(--red)}
-.kl-val.amb{color:var(--amb)}
-.kl-val.ok{color:var(--grn)}
-.kl-desc{font-size:13px;color:var(--text2,#444);margin-top:10px;line-height:1.75}
-.kl-cell.critical{background:var(--g1);border-top:3px solid var(--red)}
-
-/* Abschluss-Statement */
-.statement-box{margin-top:28px;border:var(--bw) solid var(--bk);border-left:4px solid var(--bk);padding:24px 28px;background:var(--bk);color:#fff}
-.statement-txt{font-size:14px;line-height:1.85;font-style:italic;color:#e8e8e8}
-.statement-txt strong{font-style:normal;color:#fff;font-weight:800}
-.statement-sig{font-family:'JetBrains Mono',monospace;font-size:10px;color:#666;margin-top:14px;letter-spacing:.08em}
-
-footer{border-top:var(--bw) solid var(--bk);padding:22px 0}
-.ftr{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}
-.ftr-l{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700}
-.ftr-l b{color:var(--red)}
-.ftr-r{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--g3);letter-spacing:.1em}
+/* ─────────────────────────────────────────
+   FOOTER
+───────────────────────────────────────── */
+footer {
+  padding: 40px 0;
+  border-top: 1px solid var(--line);
+}
+.ftr-inner {
+  max-width: var(--max); margin: 0 auto; padding: 0 32px;
+  display: flex; justify-content: space-between; align-items: center;
+  flex-wrap: wrap; gap: 12px;
+}
+@media(max-width:560px) { .ftr-inner { padding: 0 20px; } }
+.ftr-left {
+  font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--ink3);
+  font-weight: 500; letter-spacing: .04em;
+}
+.ftr-right {
+  font-family: var(--mono); font-size: 11px; color: var(--ink4);
+  letter-spacing: .08em; text-transform: uppercase;
+}
 </style>
 </head>
 <body>
 
-<!-- ══ HEADER ══ -->
+<!-- ═══ HEADER ═══ -->
 <header>
-  <div class="wrap">
-    <div class="hdr">
-      <div class="logo"><b>CL</b> GLOBAL</div>
-      <div class="hdr-r">
-        <div class="hdr-tag">Leben in Freiheit</div>
-        <a href="#angebote" class="hdr-cta">Angebote</a>
-      </div>
-    </div>
+  <div class="hdr-inner">
+    <a class="logo" href="/">CL Global</a>
+    <nav>
+      <a href="#rechner">Rechner</a>
+      <a href="#angebote">Angebote</a>
+    </nav>
   </div>
 </header>
 
-<!-- ══ HERO ══ -->
-<section class="hero" id="hero">
-  <div class="hero-inner">
-    <div class="hero-slogan">Freiheit durch Klarheit</div>
-    <div class="hl-wrap" id="hlWrap"></div>
+<!-- ═══ HERO ═══ -->
+<section class="hero">
+  <div class="page">
     <div class="hero-sub">Freiheit durch Klarheit</div>
-    <div class="hero-btns">
-      <a href="#system-check" class="btn-primary"><span>▾</span> Zum System-Check</a>
-      <a href="#angebote" class="btn-outline">Angebote ansehen</a>
+    <div class="hl-wrap" id="hlWrap"></div>
+    <div class="hero-cta-group">
+      <a href="#rechner" class="cta-link">Zum System-Check</a>
+      <a href="#angebote" class="cta-link secondary">Angebote ansehen</a>
     </div>
+    <div class="dot-nav" id="heroDots"></div>
   </div>
-  <div class="hero-dots" id="heroDots"></div>
 </section>
 
-<!-- ══ VORWORT ══ -->
-<section class="section" id="vorwort">
-  <div class="wrap">
-    <div class="sec-eyebrow">Die Architektur deines Lebens</div>
-    <h2 class="sec-title">Mehr als<br>nur <em>Zahlen.</em></h2>
-    <div class="vorwort-grid">
-      <div class="vorwort-cell">
-        <div class="vorwort-quote">
-          Hast du dich jemals gefragt, was der eigentliche <span>Sinn hinter all dem</span> ist?
-        </div>
-        <p style="margin-top:20px;font-size:13px;color:var(--g3);font-family:'JetBrains Mono',monospace;line-height:1.7;letter-spacing:.03em">DIE ARCHITEKTUR DEINES LEBENS: MEHR ALS NUR ZAHLEN</p>
-      </div>
-      <div class="vorwort-cell">
-        <div class="vorwort-body">
-          <p>Du stehst morgens auf, funktionierst, zahlst Rechnungen. Soll das wirklich alles gewesen sein? Ein Leben lang im Hamsterrad, nur um den Schein zu wahren?</p>
-          <p>Die meisten Menschen stecken in einer Matrix fest — Gewohnheiten und Denkmuster seit der Kindheit, unsichtbare Bindungen, die uns kontrollieren. Dinge besitzen uns. Der Kredit, das Haus, das Auto, der Status — alles schöne Gitterstäbe.</p>
-          <p>Freiheit beginnt im Kopf, nicht auf dem Konto. Ich sage dir: Es geht anders. Ich bin Dominic. Ich helfe dir dabei, beides in Einklang zu bringen — deine Glaubenssätze, deine Ziele und die harten Fakten.</p>
-        </div>
-      </div>
+<hr class="divider">
+
+<!-- ═══ VORWORT ═══ -->
+<section id="vorwort">
+  <div class="page">
+    <div class="section-label">Die Architektur deines Lebens</div>
+    <h2 class="sec-heading">Mehr als<br><em>nur Zahlen.</em></h2>
+    <div class="vorwort-body">
+      <p>Hast du dich jemals gefragt, was der eigentliche Sinn hinter all dem ist? Du stehst morgens auf, funktionierst, zahlst Rechnungen. Soll das wirklich alles gewesen sein?</p>
+      <blockquote class="pull">
+        Freiheit beginnt im Kopf, nicht auf dem Konto.
+      </blockquote>
+      <p>Die meisten Menschen stecken in einer Matrix fest — Gewohnheiten und Denkmuster seit der Kindheit, unsichtbare Bindungen, die uns kontrollieren. Dinge besitzen uns. Der Kredit, das Haus, das Auto, der Status.</p>
+      <p>Ich bin Dominic. Ich helfe dir dabei, beides in Einklang zu bringen — deine Glaubenssätze, deine Ziele und die harten Fakten.</p>
     </div>
   </div>
 </section>
 
-<!-- ══ ÜBER MICH ══ -->
-<section class="section" id="ueber-mich">
-  <div class="wrap">
-    <div class="sec-eyebrow">Die Radikal-Story</div>
-    <h2 class="sec-title">Ich kenne<br>beide <em>Welten.</em></h2>
-    <div class="story-grid">
-      <div class="story-left">
-        <div>
-          <div class="story-name">Dominic — CL Global</div>
-          <div class="story-headline">Vom goldenen Käfig<br><em>zum freien Leben.</em></div>
+<hr class="divider">
+
+<!-- ═══ ÜBER MICH ═══ -->
+<section id="ueber-mich">
+  <div class="page">
+    <div class="section-label">Die Radikal-Story</div>
+    <h2 class="sec-heading">Ich kenne<br><em>beide Welten.</em></h2>
+    <div class="story-body">
+      <p>Mein Weg führte vom Hausbesitzer und Unternehmer mit 6 Angestellten, Immobilien in Kolumbien, Expeditionsmobil und SUV-Pickup — über einen Verlust von 200.000 Euro im Laufe der Selbstständigkeit — zum radikalen Schnitt.</p>
+      <div class="timeline">
+        <div class="tl-item">
+          <div class="tl-label">Phase 1 — Das System</div>
+          <div class="tl-text">Hausbesitzer, Unternehmer mit <strong>6 Angestellten</strong>, Immobilien in Kolumbien, Expeditionsmobil und SUV-Pickup. Von außen: Erfolg. Von innen: maximale Abhängigkeit.</div>
         </div>
-        <div class="story-stats">
-          <div class="story-stat"><b>Hausbesitzer &amp; Unternehmer</b>6 Angestellte, Immobilien in Kolumbien, Expeditionsmobil, SUV-Pickup</div>
-          <div class="story-stat"><b>−200.000 €</b>Verlust im Laufe der Selbstständigkeit — der Preis der falschen Matrix</div>
-          <div class="story-stat"><b>Heute</b>15 Jahre alter Van. Weltweit. Frei.</div>
+        <div class="tl-item">
+          <div class="tl-label">Der Wendepunkt</div>
+          <div class="tl-text">Ein Verlust von <strong>200.000 Euro</strong>. Nicht durch Pech — sondern weil ich in der falschen Matrix operiert habe. Das System hatte mich, nicht ich das System.</div>
         </div>
-      </div>
-      <div class="story-right">
-        <div class="story-timeline">
-          <div class="tline-item">
-            <div class="tline-dot"></div>
-            <div class="tline-body">
-              <div class="tline-label">Phase 1 — Das System</div>
-              <div class="tline-text">Hausbesitzer, Unternehmer mit <b>6 Angestellten</b>, Immobilien in Kolumbien, Expeditionsmobil und SUV-Pickup. Von außen: Erfolg. Von innen: maximale Abhängigkeit.</div>
-            </div>
-          </div>
-          <div class="tline-item">
-            <div class="tline-dot red"></div>
-            <div class="tline-body">
-              <div class="tline-label">Der Wendepunkt</div>
-              <div class="tline-text">Ein Verlust von <b>200.000 Euro</b> im Laufe der Selbstständigkeit. Nicht durch Pech — sondern weil ich in der falschen Matrix operiert habe. Das System hatte mich, nicht ich das System.</div>
-            </div>
-          </div>
-          <div class="tline-item">
-            <div class="tline-dot"></div>
-            <div class="tline-body">
-              <div class="tline-label">Der radikale Schnitt</div>
-              <div class="tline-text"><b>Alles verkauft. Alles verschenkt.</b> Kein Haus, kein Fuhrpark, keine Angestellten. Vollständige Entschuldung des Lebens.</div>
-            </div>
-          </div>
-          <div class="tline-item">
-            <div class="tline-dot grn"></div>
-            <div class="tline-body">
-              <div class="tline-label">Heute — Freiheit durch Klarheit</div>
-              <div class="tline-text">Ich lebe und arbeite in einem <b>15 Jahre alten Van</b>. Starlink, Dual-Laptop, Europa-Tour ab Mitte 2026. Freiheit statt Ballast. Ich kenne beide Welten — und habe die Matrix selbst verlassen.</div>
-            </div>
-          </div>
+        <div class="tl-item">
+          <div class="tl-label">Der radikale Schnitt</div>
+          <div class="tl-text"><strong>Alles verkauft. Alles verschenkt.</strong> Kein Haus, kein Fuhrpark, keine Angestellten. Vollständige Entschuldung des Lebens.</div>
+        </div>
+        <div class="tl-item current">
+          <div class="tl-label">Heute</div>
+          <div class="tl-text">Ich lebe und arbeite in einem <strong>15 Jahre alten Van</strong>. Starlink, Dual-Laptop, Europa-Tour. Freiheit statt Ballast. Ich kenne beide Welten — und habe die Matrix selbst verlassen.</div>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ══ AUDIT RECHNER ══ -->
-<div id="system-check">
+<hr class="divider">
+
+<!-- ═══ RECHNER ═══ -->
+<div id="rechner" style="border-top:1px solid var(--line)">
 
 <!-- MODUL A -->
-<section class="section" style="padding-bottom:0">
-  <div class="wrap">
-    <div class="sec-eyebrow">Deep Audit</div>
-    <h2 class="sec-title">Dein <em>System-Check.</em></h2>
-    <div style="height:32px"></div>
-    <div class="mod-hdr">
-      <div class="mod-badge">Modul A</div>
-      <div class="mod-title">Reales Einkommen, Nebenkosten &amp; Lebenshaltung</div>
-      <div class="mod-rule"></div>
-    </div>
-    <div class="grid g3">
-      <div class="cell no-bb">
-        <div class="flbl">Gehalt Netto (€/Monat)</div>
+<div style="background:var(--bg);">
+<div class="page">
+  <div class="audit-section">
+    <div class="module-label">Modul A</div>
+    <div class="module-title">Reales Einkommen &amp; Ausgaben</div>
+
+    <div class="three-col">
+      <div class="field-group">
+        <label class="flbl" for="netto">Gehalt Netto (€/Monat)</label>
         <input class="inp" type="number" id="netto" placeholder="3500" min="0" oninput="liveA()">
-        <div class="fhint">Dein persönliches Netto nach Steuern</div>
+        <div class="field-hint">Dein persönliches Netto nach Steuern</div>
       </div>
-      <div class="cell no-bb">
-        <div class="flbl">Steuerrückerstattung (€/Jahr)</div>
+      <div class="field-group">
+        <label class="flbl" for="steuerR">Steuerrückerstattung (€/Jahr)</label>
         <input class="inp" type="number" id="steuerR" placeholder="600" min="0" oninput="liveA()">
-        <div class="fform">→ wird auf Monatsbasis verteilt (÷12)</div>
+        <div class="field-formula">→ wird auf Monatsbasis verteilt (÷ 12)</div>
       </div>
-      <div class="cell no-bb">
-        <div class="flbl">
+      <div class="field-group">
+        <label class="flbl" for="fixk">
           Nebenkosten (€/Monat)
           <div class="tip-wrap" id="fixTip" onclick="toggleTip('fixTip')">
             <div class="tip-icon">i</div>
             <div class="tip-box">
-              <b>NEBENKOSTEN — Alles erfasst?</b><br><br>
-              · Miete / Kreditrate<br>
-              · KFZ-Versicherung<br>
-              · Haftpflicht / Rechtsschutz<br>
-              · Streaming, Gym, Cloud-Abos<br>
-              · Rundfunkbeitrag (18,36 €)<br>
-              · Wartungsverträge<br>
-              · Notfall-Puffer<br>
-              · Taschengeld Kinder<br>
-              · Haustiere (Futter, Tierarzt, Versicherung)<br>
-              · Kontoführungsgebühren<br>
-              · Telefon / Internet
+              Nebenkosten — Prüfliste<br><br>
+              · Miete / Kreditrate<br>· KFZ-Versicherung<br>· Haftpflicht / Rechtsschutz<br>
+              · Streaming, Gym, Cloud-Abos<br>· Rundfunkbeitrag (18,36 €)<br>
+              · Wartungsverträge<br>· Notfall-Puffer<br>· Taschengeld Kinder<br>
+              · Haustiere (Futter, Tierarzt)<br>· Kontoführungsgebühren<br>· Telefon / Internet
             </div>
           </div>
-        </div>
+        </label>
         <input class="inp" type="number" id="fixk" placeholder="1400" min="0">
-        <div class="fhint">Miete/Kredit + Abos + Versicherungen + Haustiere</div>
-        <div class="psych-row" id="psych-fixk">
+        <div class="field-hint">Miete/Kredit + Abos + Versicherungen</div>
+        <div class="psych-group">
           <div class="psych-item" onclick="togglePsych('pf1')">
             <div class="psych-cb" id="pf1"></div>
-            <div class="psych-lbl happiness">✓ Macht mich wirklich glücklich</div>
+            <span class="psych-lbl happiness">✓ Macht mich wirklich glücklich</span>
           </div>
           <div class="psych-item" onclick="togglePsych('pf2')">
             <div class="psych-cb" id="pf2"></div>
-            <div class="psych-lbl status">△ Gehört in meiner Position einfach dazu (Status)</div>
+            <span class="psych-lbl status">△ Status / gehört dazu</span>
           </div>
         </div>
       </div>
-      <div class="cell no-bb">
-        <div class="flbl">
+    </div>
+
+    <div class="three-col" style="margin-top:32px">
+      <div class="field-group">
+        <label class="flbl" for="lmk">
           Lebensmittel &amp; Haushalt (€/Monat)
           <div class="tip-wrap" id="lmTip" onclick="toggleTip('lmTip')">
             <div class="tip-icon">i</div>
             <div class="tip-box">
-              <b>LEBENSMITTEL &amp; HAUSHALT</b><br><br>
-              · Supermarkt / Wocheneinkauf<br>
-              · Drogerie &amp; Hygieneartikel<br>
-              · Lieferdienste / Takeaway<br>
-              · Restaurants &amp; Café<br>
-              · Haushaltsartikel &amp; Reinigung<br>
-              · Kleidung (monatlicher Durchschnitt)<br>
-              · Apotheke / Rezepte
+              · Supermarkt / Wocheneinkauf<br>· Drogerie &amp; Hygieneartikel<br>
+              · Lieferdienste / Takeaway<br>· Restaurants &amp; Café<br>
+              · Haushaltsartikel &amp; Reinigung<br>· Kleidung (Durchschnitt)<br>· Apotheke
             </div>
           </div>
-        </div>
+        </label>
         <input class="inp" type="number" id="lmk" placeholder="600" min="0" oninput="liveA()">
-        <div class="fhint">Supermarkt, Drogerie, Restaurants, Kleidung</div>
       </div>
-      <div class="cell no-bb">
-        <div class="flbl">
+      <div class="field-group">
+        <label class="flbl" for="engk">
           Energie &amp; Grundkosten (€/Monat)
           <div class="tip-wrap" id="engTip" onclick="toggleTip('engTip')">
             <div class="tip-icon">i</div>
             <div class="tip-box">
-              <b>ENERGIE &amp; GRUNDKOSTEN</b><br><br>
-              · Strom<br>
-              · Gas / Heizung / Fernwärme<br>
-              · Wasser &amp; Abwasser<br>
-              · Grundbesitzabgaben (monatlich anteilig)<br>
-              · Müllgebühren<br>
-              · Schornsteinfeger (anteilig)<br>
-              · Hausverwaltung / WEG-Gebühren<br>
-              · Straßenreinigung
+              · Strom<br>· Gas / Heizung / Fernwärme<br>· Wasser &amp; Abwasser<br>
+              · Grundbesitzabgaben (anteilig)<br>· Müllgebühren<br>
+              · Schornsteinfeger (anteilig)<br>· WEG-Gebühren / Hausverwaltung
             </div>
           </div>
-        </div>
+        </label>
         <input class="inp" type="number" id="engk" placeholder="280" min="0" oninput="liveA()">
-        <div class="fhint">Strom, Gas, Wasser, Abwasser, Grundabgaben</div>
       </div>
-      <div class="cell no-bb">
-        <div class="flbl">
+      <div class="field-group">
+        <label class="flbl" for="urlaubk">
           Urlaub &amp; Freizeit (€/Jahr)
           <div class="tip-wrap" id="urlaubTip" onclick="toggleTip('urlaubTip')">
             <div class="tip-icon">i</div>
             <div class="tip-box">
-              <b>URLAUB &amp; FREIZEIT</b><br><br>
-              · Flugreisen / Bahntickets<br>
-              · Hotel / Unterkunft / Camping<br>
-              · Mietwagen &amp; Transfers<br>
-              · Aktivitäten &amp; Ausflüge vor Ort<br>
-              · Urlaubsverpflegung &amp; Restaurants<br>
-              · Freizeitaktivitäten (Kino, Konzerte, Sport)<br>
-              · Hobbys &amp; Ausrüstung<br><br>
-              <b>Jahreswert eingeben</b> → wird auf<br>
-              Monatsbasis verteilt (÷ 12)
+              · Flugreisen / Bahntickets<br>· Hotel / Unterkunft / Camping<br>
+              · Mietwagen &amp; Transfers<br>· Aktivitäten vor Ort<br>
+              · Freizeitaktivitäten (Kino, Sport)<br>· Hobbys &amp; Ausrüstung<br><br>
+              Jahreswert — wird auf Monatsbasis verteilt (÷ 12)
             </div>
           </div>
-        </div>
+        </label>
         <input class="inp" type="number" id="urlaubk" placeholder="2400" min="0" oninput="liveA()">
-        <div class="fform">→ monatlich: Jahresbetrag ÷ 12</div>
-      </div>
-      <div class="cell no-bb result">
-        <div class="flbl" style="color:var(--red)">⟶ Gesamtausgaben / Monat</div>
-        <div class="lval" id="ausgabenLive" style="color:var(--red)">—</div>
-        <div class="llbl">Nebenkosten + Lebensm. + Energie + Urlaub</div>
-        <div class="lform" id="ausgabenFormula" style="margin-top:8px">Nebenkosten + Lebensmittel + Energie + Urlaub</div>
+        <div class="field-formula">→ monatlich: Jahresbetrag ÷ 12</div>
       </div>
     </div>
-    <div style="border:var(--bw) solid var(--bk);border-top:1px solid var(--g2);padding:14px 18px;display:flex;align-items:center;gap:28px;flex-wrap:wrap;background:var(--g1);">
-      <div>
-        <div class="flbl" style="color:var(--red);margin-bottom:4px">⟶ Angepasstes Gehalt Netto</div>
-        <div class="lval" id="nettoAdj" style="color:var(--bk)">—</div>
-      </div>
-      <div class="lform" id="nettoFormula" style="margin-top:0">Netto + (Steuerrückerstattung ÷ 12)</div>
+
+    <div class="live-result">
+      <div class="live-result-label">Angepasstes Gehalt Netto</div>
+      <div class="live-result-val" id="nettoAdj">—</div>
+      <div class="live-result-formula" id="nettoFormula">Netto + (Steuerrückerstattung ÷ 12) + Partner-Deckungsbeitrag</div>
+    </div>
+
+    <div class="live-result" style="margin-top:0">
+      <div class="live-result-label">Gesamtausgaben Lebenshaltung / Monat</div>
+      <div class="live-result-val" id="ausgabenLive" style="color:var(--warn)">—</div>
+      <div class="live-result-formula" id="ausgabenFormula">Nebenkosten + Lebensmittel + Energie + Urlaub</div>
     </div>
   </div>
-</section>
+</div>
+</div>
+
+<hr class="divider">
 
 <!-- MODUL B -->
-<section style="padding:40px 0 0;border-bottom:none">
-  <div class="wrap">
-    <div class="mod-hdr">
-      <div class="mod-badge">Modul B</div>
-      <div class="mod-title">Partner-Check — Wahrer Deckungsbeitrag</div>
-      <div class="mod-rule"></div>
-    </div>
-    <div class="grid g4">
-      <div class="cell no-bb">
-        <div class="flbl">Partner Netto (€/Monat)</div>
+<div style="background:var(--bg2);">
+<div class="page">
+  <div class="audit-section">
+    <div class="module-label">Modul B</div>
+    <div class="module-title">Partner-Check</div>
+
+    <div class="three-col">
+      <div class="field-group">
+        <label class="flbl" for="pBrutto">Partner Netto (€/Monat)</label>
         <input class="inp" type="number" id="pBrutto" placeholder="2000" min="0" oninput="liveB()">
-        <div class="fform">→ Deckungsbeitrag = Netto − Kita − Pendelkosten</div>
+        <div class="field-formula">→ Deckungsbeitrag = Netto − Kita − Pendelkosten</div>
       </div>
-      <div class="cell no-bb">
-        <div class="flbl">Kita-Kosten (€/Monat)</div>
+      <div class="field-group">
+        <label class="flbl" for="kita">Kita-Kosten (€/Monat)</label>
         <input class="inp" type="number" id="kita" placeholder="800" min="0" oninput="liveB()">
-        <div class="fhint">Alle Kinderbetreuungskosten</div>
+        <div class="field-hint">Alle Kinderbetreuungskosten</div>
       </div>
-      <div class="cell no-bb">
-        <div class="flbl">Pendelkosten (€/Monat)</div>
+      <div class="field-group">
+        <label class="flbl" for="pendel">Pendelkosten (€/Monat)</label>
         <input class="inp" type="number" id="pendel" placeholder="150" min="0" oninput="liveB()">
-        <div class="fhint">ÖPNV / Fahrtkosten / Parking</div>
-      </div>
-      <div class="cell no-bb result">
-        <div class="flbl" style="color:var(--red)">⟶ Deckungsbeitrag</div>
-        <div class="lval" id="pDB" style="color:var(--grn)">—</div>
-        <div class="llbl" id="pDBLbl">Wahrer Wert des Partner-Jobs</div>
-        <div class="lform" id="pFormula">Formel: Netto − Kita − Pendelkosten</div>
+        <div class="field-hint">ÖPNV / Fahrtkosten / Parking</div>
       </div>
     </div>
-    <div class="toggle-row" id="kfz2Toggle" onclick="toggleKfz2()">
-      <div class="tcb" id="kfz2Cb"></div>
-      <div class="toggle-lbl">Zweitwagen für Partner vorhanden? → öffnet Fahrzeug 2 in Modul C</div>
+
+    <div class="live-result">
+      <div class="live-result-label" id="pDBLbl">Wahrer Deckungsbeitrag nach Partnerkosten</div>
+      <div class="live-result-val" id="pDB" style="color:var(--ok)">—</div>
+      <div class="live-result-formula" id="pFormula">Formel: Netto − Kita − Pendelkosten</div>
+    </div>
+
+    <div class="toggle-group" style="margin-top:32px" id="kfz2Toggle" onclick="toggleKfz2()">
+      <div class="toggle-item">
+        <div class="tcb" id="kfz2Cb"></div>
+        <span class="toggle-label">Zweitwagen für Partner vorhanden</span>
+      </div>
     </div>
   </div>
-</section>
+</div>
+</div>
+
+<hr class="divider">
 
 <!-- MODUL C -->
-<section style="padding:40px 0 0;border-bottom:none">
-  <div class="wrap">
-    <div class="mod-hdr">
-      <div class="mod-badge">Modul C</div>
-      <div class="mod-title">Mobilitäts-Matrix — Wahrer Kfz-Kostensatz</div>
-      <div class="mod-rule"></div>
-    </div>
+<div style="background:var(--bg);">
+<div class="page">
+  <div class="audit-section">
+    <div class="module-label">Modul C</div>
+    <div class="module-title">Mobilitäts-Matrix</div>
 
     <!-- Fahrzeug 1 -->
-    <div class="veh-hdr">
-      <div class="veh-badge">Fahrzeug 1</div>
-      <div class="veh-live" id="k1live">Kosten: <b>— €/Mo</b></div>
-    </div>
-    <!-- Finanzierungsart Fahrzeug 1 -->
-    <div style="display:grid;grid-template-columns:1fr 1fr;border:var(--bw) solid var(--bk);border-top:var(--bw) solid var(--bk);border-bottom:none;">
-      <div class="toggle-row" id="k1leasingToggle" onclick="setFahrzeugArt(1,'leasing')" style="border:none;border-right:var(--thin) solid var(--bk);">
-        <div class="tcb" id="k1leasingCb"></div>
-        <div class="toggle-lbl">Leasing → kein Wertverlust (Fahrzeug gehört dir nicht)</div>
+    <div class="vehicle-block">
+      <div class="vehicle-name">
+        <span>Fahrzeug 1</span>
+        <span class="vehicle-costs" id="k1live">—</span>
       </div>
-      <div class="toggle-row" id="k1finanzToggle" onclick="setFahrzeugArt(1,'finanz')" style="border:none;">
-        <div class="tcb" id="k1finanzCb"></div>
-        <div class="toggle-lbl">Finanzierung → Wertverlust bleibt (du wirst Eigentümer)</div>
-      </div>
-    </div>
-    <div class="grid g4">
-      <div class="cell no-bb" id="k1p-cell">
-        <div class="flbl">Kaufpreis (€)</div>
-        <input class="inp" type="number" id="k1p" placeholder="25000" min="0" oninput="liveKfz(1)">
-      </div>
-      <div class="cell no-bb" id="k1s-cell">
-        <div class="flbl">Status</div>
-        <select class="inp" id="k1s" onchange="liveKfz(1)">
-          <option value="used">Gebrauchtwagen — 8% p.a.</option>
-          <option value="new">Neuwagen — 15% p.a.</option>
-        </select>
-        <div class="fform">→ Wertverlust-Rate p.a.</div>
-      </div>
-      <div class="cell no-bb">
-        <div class="flbl">Fahrleistung (km/Jahr)</div>
-        <input class="inp" type="number" id="k1km" placeholder="15000" min="0" oninput="liveKfz(1)">
-        <div class="fform">→ Verschleiß: 0,05 €/km</div>
-      </div>
-      <div class="cell no-bb">
-        <div class="flbl">Laufende Kosten (€/Mo)</div>
-        <input class="inp" type="number" id="k1lfd" placeholder="180" min="0" oninput="liveKfz(1)">
-        <div class="fhint" id="k1lfd-hint">Rate/Leasing + Versicherung + Steuer</div>
-        <div class="psych-row">
-          <div class="psych-item" onclick="togglePsych('pk1h')">
-            <div class="psych-cb" id="pk1h"></div>
-            <div class="psych-lbl happiness">✓ Wirklich notwendig</div>
-          </div>
-          <div class="psych-item" onclick="togglePsych('pk1s')">
-            <div class="psych-cb" id="pk1s"></div>
-            <div class="psych-lbl status">△ Status-Symbol</div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="veh-bd" id="k1-bd" style="grid-template-columns:1fr 1fr 1fr 1fr;">
-      <div class="veh-cell" id="k1wv-cell">
-        <div class="veh-lbl"><span class="term"><span class="term-lbl">Wertverlust</span><div class="term-box">Jährlicher Wertverfall: Neuwagen ~15%, Gebrauchtwagen ~8% — monatlich, ob du fährst oder nicht. Bei Leasing entfällt dieser Posten.</div></span></div>
-        <div class="veh-val" id="k1wv">— €</div>
-      </div>
-      <div class="veh-cell" id="k1op-cell">
-        <div class="veh-lbl"><span class="term"><span class="term-lbl">Opportunität</span><div class="term-box">Entgangene Zinsen: 4% p.a. auf den Kaufpreis. Das Kapital hätte für dich arbeiten können.</div></span></div>
-        <div class="veh-val" id="k1op">— €</div>
-      </div>
-      <div class="veh-cell">
-        <div class="veh-lbl"><span class="term"><span class="term-lbl">Verschleiß-Puffer</span><div class="term-box">Kalkulatorischer Rückstellungsbetrag für Reifen, Bremsen und regulären Verschleiß: 0,05 €/km.</div></span></div>
-        <div class="veh-val" id="k1ver">— €</div>
-      </div>
-      <div class="veh-cell" style="border-right:none">
-        <div class="veh-lbl">
-          <span class="term"><span class="term-lbl">Reparaturrücklage</span><div class="term-box">Kalkulatorische Rücklage für ungeplante Reparaturen: Werkstattkosten, Hauptuntersuchung, Austauschteile. Empfehlung: 50–150 €/Mo je nach Fahrzeugalter.</div></span>
-        </div>
-        <input style="width:100%;background:#fff;border:1px solid #000;font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:600;padding:8px 10px;outline:none;border-radius:0;" type="number" id="k1rep" placeholder="80" min="0" oninput="liveKfz(1)">
-      </div>
-    </div>
 
-    <!-- Fahrzeug 2 (optional) -->
-    <div id="kfz2-wrap">
-      <div class="veh-hdr" style="margin-top:16px">
-        <div class="veh-badge">Fahrzeug 2 — Partner</div>
-        <div class="veh-live" id="k2live">Kosten: <b>— €/Mo</b></div>
-      </div>
-      <!-- Finanzierungsart Fahrzeug 2 -->
-      <div style="display:grid;grid-template-columns:1fr 1fr;border:var(--bw) solid var(--bk);border-top:var(--bw) solid var(--bk);border-bottom:none;">
-        <div class="toggle-row" id="k2leasingToggle" onclick="setFahrzeugArt(2,'leasing')" style="border:none;border-right:var(--thin) solid var(--bk);">
-          <div class="tcb" id="k2leasingCb"></div>
-          <div class="toggle-lbl">Leasing → kein Wertverlust</div>
+      <div class="toggle-group" style="margin-bottom:32px">
+        <div class="toggle-item" id="k1leasingToggle" onclick="setFahrzeugArt(1,'leasing')">
+          <div class="tcb" id="k1leasingCb"></div>
+          <span class="toggle-label">Leasing — kein Wertverlust</span>
         </div>
-        <div class="toggle-row" id="k2finanzToggle" onclick="setFahrzeugArt(2,'finanz')" style="border:none;">
-          <div class="tcb" id="k2finanzCb"></div>
-          <div class="toggle-lbl">Finanzierung → Wertverlust bleibt</div>
+        <div class="toggle-item" id="k1finanzToggle" onclick="setFahrzeugArt(1,'finanz')">
+          <div class="tcb" id="k1finanzCb"></div>
+          <span class="toggle-label">Finanzierung — Wertverlust bleibt</span>
         </div>
       </div>
-      <div class="grid g4">
-        <div class="cell no-bb" id="k2p-cell">
-          <div class="flbl">Kaufpreis (€)</div>
-          <input class="inp" type="number" id="k2p" placeholder="12000" min="0" oninput="liveKfz(2)">
+
+      <div class="three-col" id="k1p-cell" style="margin-bottom:0">
+        <div class="field-group">
+          <label class="flbl">Kaufpreis (€)</label>
+          <input class="inp" type="number" id="k1p" placeholder="25000" min="0" oninput="liveKfz(1)">
         </div>
-        <div class="cell no-bb" id="k2s-cell">
-          <div class="flbl">Status</div>
-          <select class="inp" id="k2s" onchange="liveKfz(2)">
+        <div class="field-group" id="k1s-cell">
+          <label class="flbl">Status</label>
+          <select class="inp" id="k1s" onchange="liveKfz(1)">
             <option value="used">Gebrauchtwagen — 8% p.a.</option>
             <option value="new">Neuwagen — 15% p.a.</option>
           </select>
         </div>
-        <div class="cell no-bb">
-          <div class="flbl">Fahrleistung (km/Jahr)</div>
-          <input class="inp" type="number" id="k2km" placeholder="10000" min="0" oninput="liveKfz(2)">
-        </div>
-        <div class="cell no-bb">
-          <div class="flbl">Laufende Kosten (€/Mo)</div>
-          <input class="inp" type="number" id="k2lfd" placeholder="120" min="0" oninput="liveKfz(2)">
-          <div class="fhint">Rate/Leasing + Versicherung + Steuer</div>
+        <div class="field-group">
+          <label class="flbl">Fahrleistung (km/Jahr)</label>
+          <input class="inp" type="number" id="k1km" placeholder="15000" min="0" oninput="liveKfz(1)">
         </div>
       </div>
-      <div class="veh-bd" id="k2-bd" style="grid-template-columns:1fr 1fr 1fr 1fr;">
-        <div class="veh-cell" id="k2wv-cell"><div class="veh-lbl">Wertverlust</div><div class="veh-val" id="k2wv">— €</div></div>
-        <div class="veh-cell" id="k2op-cell"><div class="veh-lbl">Opportunität</div><div class="veh-val" id="k2op">— €</div></div>
-        <div class="veh-cell"><div class="veh-lbl">Verschleiß-Puffer</div><div class="veh-val" id="k2ver">— €</div></div>
-        <div class="veh-cell" style="border-right:none">
-          <div class="veh-lbl">Reparaturrücklage</div>
-          <input style="width:100%;background:#fff;border:1px solid #000;font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:600;padding:8px 10px;outline:none;border-radius:0;" type="number" id="k2rep" placeholder="60" min="0" oninput="liveKfz(2)">
+
+      <div class="two-col" style="margin-top:24px">
+        <div class="field-group">
+          <label class="flbl" for="k1lfd" id="k1lfd-hint">Laufende Kosten (€/Monat)</label>
+          <input class="inp" type="number" id="k1lfd" placeholder="180" min="0" oninput="liveKfz(1)">
+          <div class="field-hint">Rate/Leasing + Versicherung + Steuer</div>
+          <div class="psych-group">
+            <div class="psych-item" onclick="togglePsych('pk1h')"><div class="psych-cb" id="pk1h"></div><span class="psych-lbl happiness">✓ Wirklich notwendig</span></div>
+            <div class="psych-item" onclick="togglePsych('pk1s')"><div class="psych-cb" id="pk1s"></div><span class="psych-lbl status">△ Status-Symbol</span></div>
+          </div>
+        </div>
+        <div class="field-group">
+          <label class="flbl"><span class="term"><span class="term-lbl">Reparaturrücklage</span><div class="term-box">Für Werkstatt, HU, Austauschteile. Empfehlung: 50–150 €/Mo je nach Fahrzeugalter.</div></span> (€/Monat)</label>
+          <input class="rep-input" type="number" id="k1rep" placeholder="80" min="0" oninput="liveKfz(1)">
+        </div>
+      </div>
+
+      <div class="breakdown-row" id="k1-bd">
+        <div>
+          <div class="bd-item-label"><span class="term"><span class="term-lbl">Wertverlust</span><div class="term-box">Neuwagen ~15%, Gebrauchtwagen ~8% p.a. — monatlich, ob du fährst oder nicht. Bei Leasing entfällt dieser Posten.</div></span></div>
+          <div class="bd-item-val" id="k1wv" style="opacity:.3">—</div>
+        </div>
+        <div>
+          <div class="bd-item-label"><span class="term"><span class="term-lbl">Opportunität</span><div class="term-box">Entgangene Zinsen: 4% p.a. auf den Kaufpreis — hätte für dich arbeiten können.</div></span></div>
+          <div class="bd-item-val" id="k1op" style="opacity:.3">—</div>
+        </div>
+        <div>
+          <div class="bd-item-label">Verschleiß-Puffer</div>
+          <div class="bd-item-val" id="k1ver">—</div>
         </div>
       </div>
     </div>
+
+    <!-- Fahrzeug 2 (optional) -->
+    <div id="kfz2-wrap" style="display:none">
+      <hr class="module-sep" style="margin:48px 0 40px">
+      <div class="vehicle-block">
+        <div class="vehicle-name">
+          <span>Fahrzeug 2 — Partner</span>
+          <span class="vehicle-costs" id="k2live">—</span>
+        </div>
+
+        <div class="toggle-group" style="margin-bottom:32px">
+          <div class="toggle-item" id="k2leasingToggle" onclick="setFahrzeugArt(2,'leasing')">
+            <div class="tcb" id="k2leasingCb"></div>
+            <span class="toggle-label">Leasing — kein Wertverlust</span>
+          </div>
+          <div class="toggle-item" id="k2finanzToggle" onclick="setFahrzeugArt(2,'finanz')">
+            <div class="tcb" id="k2finanzCb"></div>
+            <span class="toggle-label">Finanzierung — Wertverlust bleibt</span>
+          </div>
+        </div>
+
+        <div class="three-col">
+          <div class="field-group" id="k2p-cell">
+            <label class="flbl">Kaufpreis (€)</label>
+            <input class="inp" type="number" id="k2p" placeholder="12000" min="0" oninput="liveKfz(2)">
+          </div>
+          <div class="field-group" id="k2s-cell">
+            <label class="flbl">Status</label>
+            <select class="inp" id="k2s" onchange="liveKfz(2)">
+              <option value="used">Gebrauchtwagen — 8% p.a.</option>
+              <option value="new">Neuwagen — 15% p.a.</option>
+            </select>
+          </div>
+          <div class="field-group">
+            <label class="flbl">Fahrleistung (km/Jahr)</label>
+            <input class="inp" type="number" id="k2km" placeholder="10000" min="0" oninput="liveKfz(2)">
+          </div>
+        </div>
+
+        <div class="two-col" style="margin-top:24px">
+          <div class="field-group">
+            <label class="flbl" id="k2lfd-hint">Laufende Kosten (€/Monat)</label>
+            <input class="inp" type="number" id="k2lfd" placeholder="120" min="0" oninput="liveKfz(2)">
+          </div>
+          <div class="field-group">
+            <label class="flbl">Reparaturrücklage (€/Monat)</label>
+            <input class="rep-input" type="number" id="k2rep" placeholder="60" min="0" oninput="liveKfz(2)">
+          </div>
+        </div>
+
+        <div class="breakdown-row" id="k2-bd">
+          <div><div class="bd-item-label">Wertverlust</div><div class="bd-item-val" id="k2wv" style="opacity:.3">—</div></div>
+          <div><div class="bd-item-label">Opportunität</div><div class="bd-item-val" id="k2op" style="opacity:.3">—</div></div>
+          <div><div class="bd-item-label">Verschleiß-Puffer</div><div class="bd-item-val" id="k2ver">—</div></div>
+        </div>
+      </div>
+    </div>
+
   </div>
-</section>
+</div>
+</div>
+
+<hr class="divider">
 
 <!-- MODUL D -->
-<section style="padding:40px 0 0;border-top:none" class="section">
-  <div class="wrap">
-    <div class="mod-hdr">
-      <div class="mod-badge">Modul D</div>
-      <div class="mod-title">Immobilien-Schatten — Monatliche Instandhaltungskosten</div>
-      <div class="mod-rule"></div>
-    </div>
-    <div class="grid g2">
-      <div class="cell no-bb">
-        <div class="flbl">
+<div style="background:var(--bg2);">
+<div class="page">
+  <div class="audit-section">
+    <div class="module-label">Modul D</div>
+    <div class="module-title">Immobilien-Schatten</div>
+
+    <div class="two-col">
+      <div class="field-group">
+        <label class="flbl" for="hausW">
           Marktwert Immobilie (€)
           <div class="tip-wrap" id="hausTip" onclick="toggleTip('hausTip')">
             <div class="tip-icon">i</div>
             <div class="tip-box">
-              <b>MONATLICHE INSTANDHALTUNGSKOSTEN</b><br><br>
-              Ein Haus altert — und das kostet. Die 1,5%-Regel ist ein Branchenstandard für die kalkulatorische Rücklage, die du monatlich zurücklegen solltest, um den Werterhalt zu sichern.<br><br>
-              <b>Was darin steckt:</b><br>
-              · Dach (Erneuerung alle 30–50 Jahre)<br>
-              · Heizungsanlage (alle 15–25 Jahre)<br>
-              · Fenster &amp; Türen (alle 20–30 Jahre)<br>
-              · Fassade &amp; Außenputz<br>
-              · Elektro- &amp; Sanitärinstallationen<br>
-              · Böden, Fliesen, Inneneinrichtung<br>
-              · Garten, Wege, Zäune, Terrasse<br>
-              · Keller- &amp; Feuchtigkeitsschutz<br>
-              · Ungeplante Reparaturen &amp; Handwerker<br><br>
-              <b>Formel:</b> Marktwert × 1,5% ÷ 12<br>
-              Diese Kosten erscheinen nicht auf dem Kontoauszug — bis die Rechnung kommt.
+              Monatliche Instandhaltungskosten<br><br>
+              Ein Haus altert — das kostet. Die 1,5%-Regel ist der Branchenstandard.<br><br>
+              · Dach (alle 30–50 Jahre)<br>· Heizungsanlage (alle 15–25 Jahre)<br>
+              · Fenster &amp; Türen (alle 20–30 Jahre)<br>· Fassade &amp; Außenputz<br>
+              · Elektro- &amp; Sanitärinstallationen<br>· Böden, Fliesen, Inneneinrichtung<br>
+              · Garten, Wege, Zäune, Terrasse<br>· Ungeplante Reparaturen<br><br>
+              Formel: Marktwert × 1,5% ÷ 12
             </div>
           </div>
-        </div>
+        </label>
         <input class="inp" type="number" id="hausW" placeholder="350000" min="0" oninput="liveD()">
-        <div class="fform">Marktwert × 1,5% ÷ 12 = monatliche Instandhaltungsrücklage</div>
+        <div class="field-formula">Marktwert × 1,5% ÷ 12 = monatliche Instandhaltungsrücklage</div>
       </div>
-      <div class="cell no-bb result">
-        <div class="flbl" style="color:var(--red)">⟶ Monatliche Instandhaltungskosten</div>
-        <div class="lval" id="hausLive" style="color:var(--red)">—</div>
-        <div class="llbl">Kalkulatorische Rücklage / Monat</div>
-        <div style="margin-top:12px;font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--g3);line-height:1.9;" id="hausBreakdown">
+      <div>
+        <div class="live-result-label" style="font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink4);margin-bottom:10px;">Monatliche Instandhaltungskosten</div>
+        <div class="live-result-val" id="hausLive" style="color:var(--warn)">—</div>
+        <div class="field-hint" style="margin-top:12px;line-height:1.8;">
           Dach · Heizung · Fenster · Fassade<br>
-          Elektrik · Sanitär · Böden · Garten<br>
-          Reparaturen · Handwerkerkosten
+          Elektrik · Sanitär · Böden · Garten
         </div>
       </div>
     </div>
-
-    <!-- Analyse button -->
-    <div class="analyse-sec">
-      <div class="analyse-inner">
-        <button class="abtn" id="aBtn" onclick="runAnalysis()">
-          <span>⟶</span> Statik analysieren
-        </button>
-        <div class="ahint">Alle Felder optional — leere Werte = 0.<br>Alarm-Schwellenwerte werden automatisch geprüft.</div>
-      </div>
-    </div>
   </div>
-</section>
 
-</div><!-- /system-check -->
+  <!-- Analyse Button -->
+  <div class="audit-section analyse-wrap">
+    <button class="analyse-btn" id="aBtn" onclick="runAnalysis()">Statik analysieren →</button>
+    <div class="analyse-hint">Alle Felder optional. Leere Werte werden als 0 behandelt.</div>
+  </div>
+</div>
 
-<!-- LOADING -->
+</div>
+</div><!-- /rechner -->
+
+<hr class="divider">
+
+<!-- ═══ LOADING ═══ -->
 <div id="loading">
-  <div class="wrap">
-    <div class="load-box">
-      <div class="load-lbl">Analyse-Fortschritt</div>
-      <div class="load-track"><div class="load-fill" id="loadFill"></div></div>
-      <div id="loadLines"></div>
-    </div>
+  <div class="page">
+    <div class="load-label">Analyse läuft</div>
+    <div class="load-bar-wrap"><div class="load-fill" id="loadFill"></div></div>
+    <div class="load-lines" id="loadLines"></div>
   </div>
 </div>
 
-<!-- REALITY CHECK — immer sichtbar vor den Ergebnissen -->
-<div id="rcBlock" class="rc-block">
-  <div class="wrap">
-    <div class="rc-header">
-      <span class="rc-icon">—</span>
-      <span>Ein kurzes Wort, bevor wir uns dein Ergebnis ansehen</span>
-    </div>
-    <div class="rc-body">
-      <div class="rc-eyebrow">Ich-Perspektive · Dominic</div>
-      <blockquote class="rc-quote">
-        Dein erster Impuls wird jetzt vermutlich sein, zurückzugehen und die Zahlen zu korrigieren – sie etwas ‚freundlicher' zu gestalten, damit die Diagnose besser aussieht. Ich kenne diesen Reflex nur zu gut. Ich habe auf meinem Weg 200.000 Euro verloren, weil ich genau das getan habe: Ich habe mir die Realität passend geredet, anstatt die unerbittliche Mathematik zu akzeptieren.<br><br>
-        Doch am Ende verändert diese Art der Manipulation zwar das Dokument, aber niemals deine tatsächliche Lebenslage. <strong>Sei ehrlich zu dir selbst, auch wenn es im ersten Moment wehtut. Nur auf einem ehrlichen Fundament kannst du echte Freiheit aufbauen.</strong>
-      </blockquote>
-      <div class="rc-sig">— Dominic, CL Global · Freiheit durch Klarheit</div>
+<!-- ═══ INTERVENTION ═══ -->
+<div id="rcBlock">
+  <div class="page">
+    <div class="rc-eyebrow">Ein kurzes Wort, bevor wir uns dein Ergebnis ansehen</div>
+    <blockquote class="rc-blockquote">
+      Dein erster Impuls wird jetzt vermutlich sein, zurückzugehen und die Zahlen zu korrigieren — sie etwas freundlicher zu gestalten, damit die Diagnose besser aussieht. Ich kenne diesen Reflex nur zu gut. Ich habe auf meinem Weg 200.000 Euro verloren, weil ich genau das getan habe: Ich habe mir die Realität passend geredet, anstatt die unerbittliche Mathematik zu akzeptieren.<br><br>
+      Doch am Ende verändert diese Art der Manipulation zwar das Dokument, aber niemals deine tatsächliche Lebenslage. <strong>Sei ehrlich zu dir selbst, auch wenn es im ersten Moment wehtut. Nur auf einem ehrlichen Fundament kannst du echte Freiheit aufbauen.</strong>
+    </blockquote>
+    <div class="rc-sig">— Dominic, CL Global · Freiheit durch Klarheit</div>
 
-      <!-- Bestätigungs-Button -->
-      <div style="margin-top:32px;padding-top:24px;border-top:1px solid var(--g2);">
-        <div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--g3);margin-bottom:14px;letter-spacing:.04em;">
-          Ich habe das gelesen und bin bereit, mein Ergebnis ungeschönt zu sehen:
-        </div>
-        <button onclick="showResults()" style="background:var(--bk);color:#fff;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;padding:14px 36px;border:var(--bw) solid var(--bk);cursor:pointer;transition:background .12s,color .12s;display:inline-flex;align-items:center;gap:10px;" onmouseover="this.style.background='#fff';this.style.color='#000'" onmouseout="this.style.background='#000';this.style.color='#fff'">
-          <span>⟶</span> Mein Ergebnis ansehen
-        </button>
-      </div>
-      <!-- Plausibilitäts-Warnung (nur wenn Eingaben verdächtig) -->
-      <div id="rcWarning" style="display:none;margin-top:24px;padding:14px 18px;background:var(--warn-s,rgba(220,38,38,.06));border-left:3px solid var(--red);">
-        <div style="font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--red);margin-bottom:6px;" id="rcWarnTitle">PLAUSIBILITÄTS-ALARM</div>
-        <div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--red2,#b91c1c);line-height:1.7;" id="rcWarnText"></div>
-      </div>
+    <div class="rc-warning" id="rcWarning">
+      <div class="rc-warning-title" id="rcWarnTitle">Plausibilitäts-Alarm</div>
+      <div class="rc-warning-text" id="rcWarnText"></div>
     </div>
+
+    <div class="confirm-label">Ich habe das gelesen und bin bereit, mein Ergebnis ungeschönt zu sehen:</div>
+    <button class="confirm-btn" onclick="showResults()">Mein Ergebnis ansehen →</button>
   </div>
 </div>
 
-<!-- RESULTS — hidden until user confirms intervention -->
-<div id="results" style="display:none">
-
-  <!-- Status Banner (unrealistisch schöngerechnet) -->
-  <div id="statusBanner" class="status-banner">
-    <div class="wrap" style="padding-top:0;padding-bottom:0;width:100%">
-      <div class="status-banner-txt" id="statusBannerTxt">DIAGNOSE-STATUS: UNREALISTISCH SCHÖNGERECHNET</div>
-      <div class="status-banner-sub">Mathematik lässt sich nicht manipulieren, nur deine Wahrnehmung.</div>
-    </div>
+<!-- ═══ STATUS BANNER ═══ -->
+<div id="statusBanner">
+  <div class="page">
+    <div class="status-txt" id="statusBannerTxt">Diagnose-Status: Unrealistisch schöngerechnet</div>
+    <div class="status-sub">Mathematik lässt sich nicht manipulieren, nur deine Wahrnehmung.</div>
   </div>
+</div>
 
-  <section class="res-sec">
-    <div class="wrap">
-      <div class="res-hdr">
-        <div class="res-badge">Audit-Ergebnis</div>
-        <div class="res-title">Freiheit durch Klarheit</div>
-      </div>
-      <div class="abp-grid">
-        <div class="abp-card">
-          <div class="abp-tag">// Arbeitstage für deine Matrix</div>
-          <div><span class="abp-num" id="sDayNum">—</span><span class="abp-sfx" id="sDaySfx"></span></div>
-          <div class="abp-desc" id="sDesc">—</div>
-          <div class="abp-free-l" style="margin-top:14px">Freie Tage / Monat</div>
-          <div class="abp-free" id="sFreeDays">—</div>
+<!-- ═══ RESULTS ═══ -->
+<div id="results">
+
+  <section class="result-section">
+    <div class="page">
+      <div class="section-label">Audit-Ergebnis</div>
+
+      <!-- Arbeitstage -->
+      <div class="arbeitstage-display">
+        <div class="at-label">// Arbeitstage für deine Matrix</div>
+        <div>
+          <span class="at-number" id="sDayNum">—</span><span class="at-unit" id="sDaySfx"></span>
         </div>
-        <div class="kpi-grid">
-          <div class="kpi-cell">
-            <div class="kpi-tag">Gesamteinkommen Haushalt</div>
-            <div class="kpi-num b" id="kNetto">—<span class="kpi-eur"> €</span></div>
-            <div class="kpi-sub">Eigenes Netto + Steuer + Partner-DB</div>
-          </div>
-          <div class="kpi-cell">
-            <div class="kpi-tag">Gesamtabfluss / Monat</div>
-            <div class="kpi-num r" id="kTotal">—<span class="kpi-eur"> €</span></div>
-            <div class="kpi-sub">Nebenk. + Lebensm. + Energie + Urlaub + Zerfall</div>
-          </div>
-          <div class="kpi-cell">
-            <div class="kpi-tag">Unsichtbarer Zerfall / Monat</div>
-            <div class="kpi-num r" id="kDecay">—<span class="kpi-eur"> €</span></div>
-            <div class="kpi-sub">Kfz gesamt + Haus-Instandhaltung</div>
-          </div>
-          <div class="kpi-cell">
-            <div class="kpi-tag">Echte Lebens-Energie</div>
-            <div class="kpi-num g" id="kLife">—<span class="kpi-eur"> €</span></div>
-            <div class="kpi-sub">Was wirklich übrig bleibt</div>
-          </div>
-        </div>
+        <div class="at-desc" id="sDesc">—</div>
+        <div class="at-free-label" style="margin-top:32px">Freie Tage / Monat</div>
+        <div class="at-free" id="sFreeDays">—</div>
       </div>
 
-      <!-- Autonomie-Breakpoint + Status-Overhead -->
-      <div class="res-hdr" style="margin-top:20px;border-bottom:none">
-        <div class="res-badge" style="background:var(--amb)">Status-Overhead</div>
-        <div class="res-title">Wie viele Tage arbeitest du nur für andere?</div>
+      <!-- KPIs -->
+      <div class="kpi-row">
+        <div class="kpi-item">
+          <div class="kpi-label">Gesamteinkommen Haushalt</div>
+          <div class="kpi-value" id="kNetto">—<span class="kpi-eur"> €</span></div>
+          <div class="kpi-note">Eigenes Netto + Steuer + Partner-Deckungsbeitrag</div>
+        </div>
+        <div class="kpi-item">
+          <div class="kpi-label">Gesamtabfluss / Monat</div>
+          <div class="kpi-value warn" id="kTotal">—<span class="kpi-eur"> €</span></div>
+          <div class="kpi-note">Nebenk. + Lebensm. + Energie + Urlaub + Zerfall</div>
+        </div>
+        <div class="kpi-item">
+          <div class="kpi-label">Unsichtbarer Zerfall</div>
+          <div class="kpi-value warn" id="kDecay">—<span class="kpi-eur"> €</span></div>
+          <div class="kpi-note">Kfz-Wertverlust + Haus-Instandhaltung</div>
+        </div>
+        <div class="kpi-item">
+          <div class="kpi-label">Echte Lebens-Energie</div>
+          <div class="kpi-value ok" id="kLife">—<span class="kpi-eur"> €</span></div>
+          <div class="kpi-note">Was wirklich übrig bleibt</div>
+        </div>
       </div>
-      <div class="overhead-card" id="overheadCard">
-        <div class="oh-cell">
-          <div class="oh-tag">Tage für Status</div>
-          <div class="oh-val" id="ohDays">—</div>
-          <div class="oh-sub">Tage/Monat für reine Status-Ausgaben</div>
-        </div>
-        <div class="oh-cell">
-          <div class="oh-tag">Status-Overhead</div>
-          <div class="oh-val" id="ohEuro">— €</div>
-          <div class="oh-sub">Monatliche Kosten reiner Status-Positionen</div>
-        </div>
-        <div class="oh-cell">
-          <div class="oh-tag">Autonomie-Breakpoint</div>
-          <div class="oh-val" id="ohBreak" style="color:var(--grn)">—</div>
-          <div class="oh-sub">Ab hier arbeitest du für dich</div>
+
+      <!-- Status-Overhead -->
+      <div class="overhead-section">
+        <div class="overhead-title">Status-Overhead</div>
+        <div class="overhead-row">
+          <div class="kpi-item">
+            <div class="kpi-label">Tage für Status</div>
+            <div class="kpi-value amb" id="ohDays">—</div>
+            <div class="kpi-note">Tage/Monat nur für Status-Ausgaben</div>
+          </div>
+          <div class="kpi-item">
+            <div class="kpi-label">Status-Kosten</div>
+            <div class="kpi-value amb" id="ohEuro">— €</div>
+            <div class="kpi-note">Monatliche reine Status-Positionen</div>
+          </div>
+          <div class="kpi-item">
+            <div class="kpi-label">Autonomie-Breakpoint</div>
+            <div class="kpi-value ok" id="ohBreak">—</div>
+            <div class="kpi-note">Ab hier arbeitest du für dich</div>
+          </div>
         </div>
       </div>
 
       <!-- Alerts -->
-      <div class="alerts" id="alertsBox"></div>
+      <div class="alerts-section" id="alertsBox"></div>
     </div>
   </section>
 
   <!-- Chart -->
-  <section class="chart-sec">
-    <div class="wrap">
-      <div class="res-hdr">
-        <div class="res-badge" style="background:var(--blu)">Visualisierung</div>
-        <div class="res-title">System-Monster — Einkommensstruktur</div>
+  <section class="chart-section">
+    <div class="page">
+      <div class="chart-title">Einkommensstruktur — 100% aufgeteilt</div>
+
+      <div class="stacked-section">
+        <div class="stacked-label">Gesamt-Übersicht</div>
+        <div class="stacked-track">
+          <div class="sseg" id="ss-sys"  style="background:#6b6b64;width:0%"></div>
+          <div class="sseg" id="ss-fix"  style="background:#1c1c1a;width:0%"></div>
+          <div class="sseg" id="ss-dec"  style="background:#b84040;width:0%"></div>
+          <div class="sseg" id="ss-life" style="background:#3a7a4a;flex:1"></div>
+        </div>
+        <div class="chart-legend">
+          <div class="leg-item"><div class="leg-dot" style="background:#6b6b64"></div>Partner-Kosten</div>
+          <div class="leg-item"><div class="leg-dot" style="background:#1c1c1a"></div>Lebenshaltung</div>
+          <div class="leg-item"><div class="leg-dot" style="background:#b84040"></div>Zerfall</div>
+          <div class="leg-item"><div class="leg-dot" style="background:#3a7a4a"></div>Freie Energie</div>
+        </div>
       </div>
-      <div class="chart-box">
-        <div class="chart-ttl">// Gehalt Netto 100% aufgeteilt</div>
-        <div class="stacked-wrap">
-          <div class="stacked-l">Gesamt-Übersicht</div>
-          <div class="stacked-track">
-            <div class="sseg" id="ss-sys" style="background:#1d4ed8;width:0%"><span class="sseg-lbl" id="sl-sys"></span></div>
-            <div class="sseg" id="ss-fix" style="background:#374151;width:0%"><span class="sseg-lbl" id="sl-fix"></span></div>
-            <div class="sseg" id="ss-dec" style="background:#dc2626;width:0%"><span class="sseg-lbl" id="sl-dec"></span></div>
-            <div class="sseg" id="ss-life" style="background:#15803d;flex:1"><span class="sseg-lbl" id="sl-life"></span></div>
-          </div>
+
+      <div class="bar-group">
+        <div class="bar-meta">
+          <span class="bar-name">Partner-Kosten (Kita + Pendeln)</span>
+          <span class="bar-pct" id="bv-sys">—</span>
         </div>
-        <div class="brow">
-          <div class="bmeta"><div class="bname"><div class="bswatch" style="background:#1d4ed8"></div>Partner-Kosten (Kita + Pendeln)</div><div class="bval" id="bv-sys">—</div></div>
-          <div class="btrack"><div class="bfill" id="bf-sys" style="background:#1d4ed8;width:0%"></div></div>
+        <div class="bar-track"><div class="bar-fill" id="bf-sys" style="background:#6b6b64;width:0%"></div></div>
+      </div>
+      <div class="bar-group">
+        <div class="bar-meta">
+          <span class="bar-name">Lebenshaltung (Nebenk. + LM + Energie + Urlaub)</span>
+          <span class="bar-pct" id="bv-fix">—</span>
         </div>
-        <div class="brow">
-          <div class="bmeta"><div class="bname"><div class="bswatch" style="background:#374151"></div>Statische Last (Fixkosten)</div><div class="bval" id="bv-fix">—</div></div>
-          <div class="btrack"><div class="bfill" id="bf-fix" style="background:#374151;width:0%"></div></div>
+        <div class="bar-track"><div class="bar-fill" id="bf-fix" style="background:#1c1c1a;width:0%"></div></div>
+      </div>
+      <div class="bar-group">
+        <div class="bar-meta">
+          <span class="bar-name">Unsichtbarer Zerfall (Kfz + Haus)</span>
+          <span class="bar-pct" id="bv-dec">—</span>
         </div>
-        <div class="brow">
-          <div class="bmeta"><div class="bname"><div class="bswatch" style="background:#dc2626"></div>Unsichtbarer Zerfall (Kfz + Haus)</div><div class="bval" id="bv-dec">—</div></div>
-          <div class="btrack"><div class="bfill" id="bf-dec" style="background:#dc2626;width:0%"></div></div>
+        <div class="bar-track"><div class="bar-fill" id="bf-dec" style="background:#b84040;width:0%"></div></div>
+      </div>
+      <div class="bar-group">
+        <div class="bar-meta">
+          <span class="bar-name">Freie Energie</span>
+          <span class="bar-pct" id="bv-life">—</span>
         </div>
-        <div class="brow">
-          <div class="bmeta"><div class="bname"><div class="bswatch" style="background:#15803d"></div>Freie Energie</div><div class="bval" id="bv-life">—</div></div>
-          <div class="btrack"><div class="bfill" id="bf-life" style="background:#15803d;width:0%"></div></div>
-        </div>
-        <div class="legend">
-          <div class="leg"><div class="leg-d" style="background:#1d4ed8"></div>Partner-Kosten</div>
-          <div class="leg"><div class="leg-d" style="background:#374151"></div>Fixkosten</div>
-          <div class="leg"><div class="leg-d" style="background:#dc2626"></div>Zerfall</div>
-          <div class="leg"><div class="leg-d" style="background:#15803d"></div>Freie Energie</div>
-        </div>
+        <div class="bar-track"><div class="bar-fill" id="bf-life" style="background:#3a7a4a;width:0%"></div></div>
       </div>
     </div>
   </section>
 
-  <!-- Terminal -->
-  <section class="term-sec">
-    <div class="wrap">
-      <div class="res-hdr">
-        <div class="res-badge" style="background:var(--grn)">Diagnose-Log</div>
-        <div class="res-title">Terminal — Befunde &amp; Warnmeldungen</div>
-      </div>
-      <div class="terminal">
-        <div class="term-bar">
-          <div class="tdots">
-            <div class="tdot" style="background:#dc2626"></div>
-            <div class="tdot" style="background:#d97706"></div>
-            <div class="tdot" style="background:#16a34a"></div>
-          </div>
-          <div class="term-ttl">cl-global // freiheit-durch-klarheit // audit.log</div>
-        </div>
-        <div class="term-body" id="termBody"></div>
-      </div>
+  <!-- Diagnose-Log -->
+  <section class="log-section">
+    <div class="page">
+      <div class="log-header">Diagnose-Log</div>
+      <div class="log-body" id="termBody"></div>
     </div>
   </section>
 
-  <!-- Detail table -->
-  <section class="det-sec">
-    <div class="wrap">
-      <div class="res-hdr">
-        <div class="res-badge" style="background:#374151">Detail</div>
-        <div class="res-title">Vollständige Kostenaufstellung</div>
-      </div>
+  <!-- Detail-Tabelle -->
+  <section class="detail-section">
+    <div class="page">
+      <div class="detail-title">Vollständige Kostenaufstellung</div>
       <table class="det-table">
         <thead><tr><th>Position</th><th>Berechnung</th><th>€ / Monat</th></tr></thead>
         <tbody id="detBody"></tbody>
@@ -1120,147 +1435,130 @@ footer{border-top:var(--bw) solid var(--bk);padding:22px 0}
     </div>
   </section>
 
-  <!-- ── FINANZIELLE KLARHEIT DASHBOARD ── -->
-  <section class="klarheit-sec">
-    <div class="wrap">
-      <div class="res-hdr">
-        <div class="res-badge" style="background:var(--bk);">Finanzielle Klarheit</div>
-        <div class="res-title">Was dein Geld wirklich tut</div>
-      </div>
-      <div class="klarheit-grid" id="klarheitGrid">
-        <div class="kl-cell">
-          <div class="kl-tag">Status-Ausgaben</div>
-          <div class="kl-val amb" id="klStatus">— €</div>
-          <div class="kl-desc">Summe aller Fixkosten &amp; Kfz-Positionen, die du als <em>„Status / gehört dazu"</em> markiert hast.</div>
+  <!-- Finanzielle Klarheit -->
+  <section class="klarheit-section">
+    <div class="page">
+      <div class="section-label">Finanzielle Klarheit</div>
+      <h2 class="klarheit-title">Was dein Geld wirklich tut</h2>
+      <div class="klarheit-row" id="klarheitGrid">
+        <div class="kl-item">
+          <div class="kl-label">Status-Ausgaben</div>
+          <div class="kl-value amb" id="klStatus">— €</div>
+          <div class="kl-desc">Alle als „Status / gehört dazu" markierten Positionen.</div>
         </div>
-        <div class="kl-cell">
-          <div class="kl-tag">Substanz-Verzehr</div>
-          <div class="kl-val warn" id="klSubstanz">— €</div>
-          <div class="kl-desc">Haus-Instandhaltung + Kfz-Wertverlust — unsichtbar auf dem Kontoauszug, real in deiner Bilanz.</div>
+        <div class="kl-item">
+          <div class="kl-label">Substanz-Verzehr</div>
+          <div class="kl-value warn" id="klSubstanz">— €</div>
+          <div class="kl-desc">Haus-Instandhaltung + Kfz-Wertverlust. Unsichtbar auf dem Kontoauszug.</div>
         </div>
-        <div class="kl-cell" id="klFreiheitCell">
-          <div class="kl-tag">Dein Anteil für Freiheit</div>
-          <div class="kl-val ok" id="klFreiheit">— €</div>
-          <div class="kl-desc" id="klFreiheitDesc">Was vom Netto übrig bleibt, wenn Status und Substanzverzehr abgezogen sind.</div>
+        <div class="kl-item" id="klFreiheitCell">
+          <div class="kl-label">Dein Anteil für Freiheit</div>
+          <div class="kl-value ok" id="klFreiheit">— €</div>
+          <div class="kl-desc" id="klFreiheitDesc">Was übrig bleibt, wenn Status und Substanzverzehr abgezogen sind.</div>
+          <div class="kl-warn-text" id="klWarnText" style="display:none"></div>
         </div>
       </div>
 
-      <!-- Abschluss-Statement -->
-      <div class="statement-box" id="statementBox" style="display:none">
-        <p class="statement-txt" id="statementTxt">—</p>
-        <div class="statement-sig">— Dominic, CL Global · Leben in einem 15 Jahre alten Van · Freiheit durch Klarheit</div>
+      <div class="statement-section" id="statementBox" style="display:none">
+        <blockquote class="statement-text" id="statementTxt">—</blockquote>
+        <div class="statement-sig">— Dominic · Leben in einem 15 Jahre alten Van · Freiheit durch Klarheit</div>
       </div>
     </div>
   </section>
 
 </div><!-- /results -->
 
-<!-- ══ ANGEBOTE ══ -->
-<section class="products-sec" id="angebote">
-  <div class="wrap">
-    <div class="sec-eyebrow">Exit-Angebote</div>
-    <h2 class="sec-title">Dein Weg<br>aus der <em>Matrix.</em></h2>
+<hr class="divider">
 
-    <!-- Consulting Cards -->
-    <div class="products-grid">
-      <div class="product-card">
-        <div class="prod-eyebrow">Consulting · 60 Minuten</div>
-        <div class="prod-name">Der System-Check</div>
-        <div class="prod-sub">Erstkontakt &amp; Akut-Analyse</div>
-        <div class="prod-price">250 €<span> / Session</span></div>
-        <div class="prod-desc">Du bekommst innerhalb einer Stunde einen klaren Blick auf deine finanzielle Statik — ohne Schönreden, ohne Verkaufsdruck. Wir analysieren deinen Ist-Zustand und identifizieren die größten Hebel.</div>
-        <ul class="prod-features">
-          <li>Vollständige Statik-Analyse deiner Zahlen</li>
-          <li>Identifikation der 3 größten Kosten-Hebel</li>
-          <li>Erster konkreter Fahrplan</li>
-          <li>Remote via Video-Call, weltweit</li>
-        </ul>
-        <a href="mailto:info@cl-global-consulting.com?subject=System-Check buchen" class="prod-btn">⟶ Jetzt buchen</a>
-      </div>
-      <div class="product-card" style="border-right:none">
-        <div class="prod-eyebrow">Consulting · 90 Minuten</div>
-        <div class="prod-name">Die Matrix-Strategie</div>
-        <div class="prod-sub">Tiefenstrategie &amp; Begleitung</div>
-        <div class="prod-price" style="color:var(--red)">350 €<span style="color:var(--g3)"> / Session</span></div>
-        <div class="prod-desc">Für alle, die nicht nur wissen wollen was ist, sondern konkret heraus wollen. Tiefgreifende Strategie-Session mit individuellem Umsetzungsplan — für den echten Schnitt.</div>
-        <ul class="prod-features">
-          <li>Alles aus dem System-Check</li>
-          <li>Tiefenanalyse Glaubenssätze &amp; Muster</li>
-          <li>Konkreter Exit-Plan mit Zeitachse</li>
-          <li>PT-Struktur, US-LLC, Mobilitäts-Setup</li>
-          <li>Schriftliche Zusammenfassung im Anschluss</li>
-        </ul>
-        <a href="mailto:info@cl-global-consulting.com?subject=Matrix-Strategie buchen" class="prod-btn red">⟶ Jetzt buchen</a>
-      </div>
+<!-- ═══ ANGEBOTE ═══ -->
+<section class="offers-section" id="angebote">
+  <div class="page">
+    <div class="section-label">Exit-Angebote</div>
+    <h2 class="sec-heading">Dein Weg<br><em>heraus.</em></h2>
+
+    <div class="offer-item" style="margin-top:56px">
+      <div class="offer-meta">Consulting · 60 Minuten</div>
+      <div class="offer-name">Der System-Check</div>
+      <div class="offer-price">250 €</div>
+      <div class="offer-desc">Du bekommst innerhalb einer Stunde einen klaren Blick auf deine finanzielle Statik — ohne Schönreden, ohne Verkaufsdruck. Wir analysieren deinen Ist-Zustand und identifizieren die größten Hebel.</div>
+      <ul class="offer-features">
+        <li>Vollständige Statik-Analyse deiner Zahlen</li>
+        <li>Identifikation der 3 größten Kosten-Hebel</li>
+        <li>Erster konkreter Fahrplan</li>
+        <li>Remote via Video-Call, weltweit</li>
+      </ul>
+      <a href="mailto:info@cl-global-consulting.com?subject=System-Check buchen" class="offer-link">Jetzt buchen →</a>
     </div>
 
-    <!-- Toolkit -->
-    <div style="margin-top:40px">
-      <div class="res-hdr" style="border-bottom:var(--bw) solid var(--bk)">
-        <div class="res-badge" style="background:var(--g3)">Digitale Werkzeuge</div>
-        <div class="res-title">Toolkit — Demnächst verfügbar</div>
-      </div>
-      <div class="toolkit-grid">
-        <div class="tk-card">
-          <div class="tk-tag">PDF · Digital</div>
-          <div class="tk-name">Exit-Planer</div>
-          <div class="tk-desc">Strukturierter Schritt-für-Schritt-Plan für den radikalen Schnitt. Von der Bestandsaufnahme bis zur Umsetzung.</div>
-          <div class="tk-status">Demnächst</div>
-        </div>
-        <div class="tk-card">
-          <div class="tk-tag">PDF · Digital</div>
-          <div class="tk-name">Inventar der Freiheit</div>
-          <div class="tk-desc">Systematische Bestandsaufnahme aller Bindungen — materiell, finanziell, mental. Mit Bewertungsmatrix.</div>
-          <div class="tk-status">Demnächst</div>
-        </div>
-        <div class="tk-card">
-          <div class="tk-tag">Google Sheet · Digital</div>
-          <div class="tk-name">Master-Inventur V5</div>
-          <div class="tk-desc">Das vollständige Finanz-Analyse-Tool inkl. allen Formeln, Modulen und Auswertungen aus diesem Audit.</div>
-          <div class="tk-status">Demnächst</div>
-        </div>
-      </div>
+    <hr class="divider" style="margin:56px 0">
+
+    <div class="offer-item">
+      <div class="offer-meta">Consulting · 90 Minuten</div>
+      <div class="offer-name">Die Matrix-Strategie</div>
+      <div class="offer-price">350 €</div>
+      <div class="offer-desc">Für alle, die nicht nur wissen wollen was ist, sondern konkret heraus wollen. Tiefgreifende Strategie-Session mit individuellem Umsetzungsplan — für den echten Schnitt.</div>
+      <ul class="offer-features">
+        <li>Alles aus dem System-Check</li>
+        <li>Tiefenanalyse Glaubenssätze &amp; Muster</li>
+        <li>Konkreter Exit-Plan mit Zeitachse</li>
+        <li>PT-Struktur, US-LLC, Mobilitäts-Setup</li>
+        <li>Schriftliche Zusammenfassung im Anschluss</li>
+      </ul>
+      <a href="mailto:info@cl-global-consulting.com?subject=Matrix-Strategie buchen" class="offer-link">Jetzt buchen →</a>
     </div>
 
+    <div class="toolkit-grid">
+      <div>
+        <div class="tk-meta">PDF · Digital</div>
+        <div class="tk-name">Exit-Planer</div>
+        <div class="tk-desc">Strukturierter Schritt-für-Schritt-Plan für den radikalen Schnitt. Von der Bestandsaufnahme bis zur Umsetzung.</div>
+        <div class="tk-status">Demnächst verfügbar</div>
+      </div>
+      <div>
+        <div class="tk-meta">PDF · Digital</div>
+        <div class="tk-name">Inventar der Freiheit</div>
+        <div class="tk-desc">Systematische Bestandsaufnahme aller Bindungen — materiell, finanziell, mental. Mit Bewertungsmatrix.</div>
+        <div class="tk-status">Demnächst verfügbar</div>
+      </div>
+      <div>
+        <div class="tk-meta">Google Sheet · Digital</div>
+        <div class="tk-name">Master-Inventur V5</div>
+        <div class="tk-desc">Das vollständige Finanz-Analyse-Tool mit allen Formeln, Modulen und Auswertungen aus diesem Audit.</div>
+        <div class="tk-status">Demnächst verfügbar</div>
+      </div>
+    </div>
   </div>
 </section>
 
-<!-- ══ CTA ══ -->
-<section class="cta-sec">
-  <div class="wrap">
-    <div class="cta-box">
-      <div class="cta-left">
-        <div class="cta-ey">// Nächster Schritt</div>
-        <h2 class="cta-h">Deine Statik ist instabil.<br><em>Lass uns das korrigieren.</em></h2>
-        <p class="cta-p">Ich kenne beide Welten — den goldenen Käfig und das freie Leben. In einem 60- oder 90-Minuten-Call bekommst du klare Zahlen, eine ehrliche Analyse und einen konkreten Fahrplan heraus.</p>
-        <div class="trust">
-          <div class="trust-i"><span class="ck">✓</span> Kein Upsell</div>
-          <div class="trust-i"><span class="ck">✓</span> Keine Verpflichtung</div>
-          <div class="trust-i"><span class="ck">✓</span> Remote · Weltweit</div>
-          <div class="trust-i"><span class="ck">✓</span> PT-Struktur · US-LLC</div>
-        </div>
-      </div>
-      <div class="cta-right">
-        <a href="mailto:info@cl-global-consulting.com" class="btn-primary">⟶ Jetzt buchen</a>
-        <div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--g3);text-align:center">System-Check 250 € // Matrix-Strategie 350 €</div>
-      </div>
+<hr class="divider">
+
+<!-- ═══ CTA ═══ -->
+<section class="cta-section">
+  <div class="page">
+    <div class="section-label">Nächster Schritt</div>
+    <h2 class="cta-heading">Deine Statik ist instabil.<br><em>Lass uns das korrigieren.</em></h2>
+    <p class="cta-body">Ich kenne beide Welten — den goldenen Käfig und das freie Leben. In einem 60- oder 90-Minuten-Call bekommst du klare Zahlen, eine ehrliche Analyse und einen konkreten Fahrplan heraus.</p>
+    <div class="cta-trust">
+      <span class="cta-trust-item">Kein Upsell</span>
+      <span class="cta-trust-item">Keine Verpflichtung</span>
+      <span class="cta-trust-item">Remote · Weltweit</span>
+      <span class="cta-trust-item">PT-Struktur · US-LLC</span>
     </div>
+    <a href="mailto:info@cl-global-consulting.com" class="cta-link">Jetzt buchen →</a>
+    <div class="cta-pricing">System-Check 250 € · Matrix-Strategie 350 €</div>
   </div>
 </section>
 
 <footer>
-  <div class="wrap">
-    <div class="ftr">
-      <div class="ftr-l"><b>CL</b> GLOBAL — Freiheit durch Klarheit</div>
-      <div class="ftr-r">IMPRESSUM · DATENSCHUTZ · CL-GLOBAL-CONSULTING.COM</div>
-    </div>
+  <div class="ftr-inner">
+    <div class="ftr-left">CL Global — Freiheit durch Klarheit</div>
+    <div class="ftr-right">Impressum · Datenschutz · cl-global-consulting.com</div>
   </div>
 </footer>
 
-<!-- ══════════════════════════════════════════════
-     JAVASCRIPT
-══════════════════════════════════════════════ -->
 <script>
+
+
 /* ── HEADLINES ── */
 const TRUTHS = [
   "Bist du der Architekt deines Lebens oder nur ein Mieter in der Vision anderer?",
@@ -1292,7 +1590,7 @@ TRUTHS.forEach((t, i) => {
   h.textContent = t;
   hlWrap.appendChild(h);
   const dot = document.createElement('div');
-  dot.className = 'hero-dot' + (i === todayIdx ? ' active' : '');
+  dot.className = 'dot' + (i === todayIdx ? ' active' : '');
   dot.onclick = () => goHl(i);
   dotsCont.appendChild(dot);
 });
@@ -1318,7 +1616,7 @@ function setWrapHeight(idx) {
 
 function goHl(next) {
   const hls = hlWrap.querySelectorAll('.hl');
-  const dots = dotsCont.querySelectorAll('.hero-dot');
+  const dots = dotsCont.querySelectorAll('.dot');
   hls[hlActive].classList.remove('on'); hls[hlActive].classList.add('out');
   dots[hlActive].classList.remove('active');
   const prev = hlActive;
@@ -1388,7 +1686,7 @@ function liveB() {
   if (!pb) { s('pDB').textContent = '—'; s('pDB').style.color = 'var(--grn)'; s('pFormula').textContent = 'Formel: Netto − Kita − Pendelkosten'; return; }
   const db = pb - ki - pe;
   s('pDB').textContent = fm(db) + ' €';
-  s('pDB').style.color = db >= 0 ? 'var(--grn)' : 'var(--red)';
+  s('pDB').style.color = db >= 0 ? 'var(--ok)' : 'var(--warn)';
   s('pDBLbl').textContent = db >= 0 ? 'Wahrer Deckungsbeitrag nach Partnerkosten' : '⚠ Negativer Deckungsbeitrag';
   s('pFormula').textContent = `${fm(pb)} − ${fm(ki)} (Kita) − ${fm(pe)} (Pendeln) = ${fm(db)} €`;
   // Live: update nettoAdj display mit partner-beitrag
@@ -1448,8 +1746,8 @@ function liveKfz(n) {
   const art = fahrzeugArt[n];
   const c   = kfzCalc(p, km, st, lfd, rep, art);
   const noWV = art === 'leasing';
-  s(`k${n}wv`).textContent  = (!noWV && p) ? fm(c.wv)  + ' €' : '— €';
-  s(`k${n}op`).textContent  = (!noWV && p) ? fm(c.op)  + ' €' : '— €';
+  const wvEl = s(`k${n}wv`); wvEl.textContent = (!noWV && p) ? fm(c.wv) + ' €' : '— €'; wvEl.style.opacity = (!noWV && p) ? '1' : '0.3';
+  const opEl = s(`k${n}op`); opEl.textContent = (!noWV && p) ? fm(c.op) + ' €' : '— €'; opEl.style.opacity = (!noWV && p) ? '1' : '0.3';
   s(`k${n}ver`).textContent = (p || km) ? fm(c.ver) + ' €' : '— €';
   s(`k${n}live`).innerHTML  = `Kosten: <b>${p || lfd || km || rep ? fm(c.total) + ' €/Mo' : '— €/Mo'}</b>`;
 }
@@ -1560,7 +1858,8 @@ function computeAll() {
     ? `${slaveDay} von 30 Tagen arbeitest du für die Matrix. ${D.freeDays} Tage gehören dir.`
     : 'Gesamteinkommen eingeben für Berechnung.';
 
-  const kset = (id, v, cls) => { s(id).innerHTML = fm(v) + '<span class="kpi-eur"> €</span>'; s(id).className = 'kpi-num ' + cls; };
+  const clsRemap = {'r':'warn','g':'ok','a':'amb','b':''};
+  const kset = (id, v, cls) => { s(id).innerHTML = fm(v) + '<span class="kpi-eur"> €</span>'; const nc = clsRemap[cls]||''; s(id).className = 'kpi-value' + (nc?' '+nc:''); };
   kset('kNetto', totalIncome, 'b');
   kset('kTotal', allCosts,    'r');
   kset('kDecay', decay,       'r');
@@ -1613,11 +1912,11 @@ function buildPlausibilityCheck() {
 
   const warnEl = s('rcWarning');
   if (warnTitle) {
-    warnEl.style.display = 'block';
+    warnEl.classList.add('show'); warnEl.style.display = 'block';
     s('rcWarnTitle').textContent = warnTitle;
     s('rcWarnText').textContent  = warnText;
   } else {
-    warnEl.style.display = 'none';
+    warnEl.classList.remove('show'); warnEl.style.display = 'none';
   }
 
   const banner = s('statusBanner');
@@ -1658,7 +1957,7 @@ function buildKlarheit() {
   s('klStatus').textContent   = fm(statusTotal)  + ' €';
   s('klSubstanz').textContent = fm(substanz)      + ' €';
   s('klFreiheit').textContent = fm(Math.abs(freiheit)) + ' €';
-  s('klFreiheit').className   = 'kl-val ' + (freiheit < 0 ? 'warn' : freiheit < netto * 0.2 ? 'amb' : 'ok');
+  s('klFreiheit').className   = 'kl-value ' + (freiheit < 0 ? 'warn' : freiheit < netto * 0.2 ? 'amb' : 'ok');
 
   const cell = s('klFreiheitCell');
   if (isCritical) {
@@ -1687,7 +1986,7 @@ function buildKlarheit() {
   if (netto > 0) {
     stmtBox.style.display = 'block';
     const costRef = topCost ? `<strong>${topCost.name} (${fm(topCost.val)} €/Mo)</strong>` : '<strong>deinen größten Kostenfaktor</strong>';
-    s('statementTxt').innerHTML = `„Ich lebe heute in einem 15 Jahre alten Van. Mein gesamtes Leben kostet monatlich weniger als allein ${costRef}. Ich habe einen hohen Preis bezahlt, um das zu begreifen. <strong>Du kannst dir dieses Lehrgeld sparen, wenn du heute die Realität als dein neues Fundament akzeptierst.</strong>"`;
+    const stEl = s('statementTxt'); stEl.innerHTML = `„Ich lebe heute in einem 15 Jahre alten Van. Mein gesamtes Leben kostet monatlich weniger als allein ${costRef}. Ich habe einen hohen Preis bezahlt, um das zu begreifen. <strong>Du kannst dir dieses Lehrgeld sparen, wenn du heute die Realität als dein neues Fundament akzeptierst.</strong>"`;
   } else {
     stmtBox.style.display = 'none';
   }
@@ -1696,10 +1995,12 @@ function buildKlarheit() {
 function buildAlerts() {
   const d = D, box = s('alertsBox');
   box.innerHTML = '';
+  const clsMap = {critical:'c', warn:'w', alarm:'a', ok:'o'};
   const add = (cls, pre, txt) => {
+    const c = clsMap[cls] || 'o';
     const div = document.createElement('div');
-    div.className = `alert ${cls}`;
-    div.innerHTML = `<div class="alert-pre">${pre}</div><div class="alert-txt">${txt}</div>`;
+    div.className = 'alert-item';
+    div.innerHTML = `<div class="alert-tag ${c}">${pre}</div><div class="alert-text ${c}">${txt}</div>`;
     box.appendChild(div);
   };
   let any = false;
@@ -1908,7 +2209,7 @@ function doLog() {
     setTimeout(() => {
       div.classList.add('vis');
       let pos = 0;
-      const prompt = `<span class="log-prompt">${icons[e.t]}</span> `;
+      const prompt = `<span style="color:var(--ink4);margin-right:8px">${icons[e.t]}</span> `;
       const tw = setInterval(() => {
         div.innerHTML = prompt + e.s.slice(0,pos);
         pos++;
@@ -1917,6 +2218,7 @@ function doLog() {
     }, i*100);
   });
 }
+
 </script>
 </body>
 </html>
