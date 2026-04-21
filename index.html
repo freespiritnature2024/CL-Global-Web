@@ -24,8 +24,8 @@ input[type=number] { -moz-appearance:textfield; }
 /* Input field */
 .ifield {
   width:100%; height:44px;
-  background:#f9fafb;
-  border:1px solid #e5e7eb;
+  background:#ffffff;
+  border:1px solid #d1d5db;
   border-radius:6px;
   padding:0 12px;
   font-family:'JetBrains Mono',monospace;
@@ -35,7 +35,7 @@ input[type=number] { -moz-appearance:textfield; }
   transition:border-color 0.15s, box-shadow 0.15s;
 }
 .ifield:focus { border-color:#111827; box-shadow:0 0 0 3px rgba(17,24,39,0.06); }
-.ifield::placeholder { color:#d1d5db; font-weight:400; }
+.ifield::placeholder { color:#9ca3af; font-weight:400; }
 select.ifield { cursor:pointer; }
 
 /* Custom checkbox toggle */
@@ -104,9 +104,9 @@ select.ifield { cursor:pointer; }
 
 /* Table */
 .det-table td { padding:10px 12px; }
-.det-table tr.sec-row td { background:#f9fafb; padding:8px 12px; }
+.det-table tr.sec-row td { background:#ffffff; padding:8px 12px; }
 .det-table tr.tot-row td { background:#111827; color:white!important; font-weight:600; }
-.det-table tbody tr:hover td { background:#f9fafb; }
+.det-table tbody tr:hover td { background:#ffffff; }
 </style>
 </head>
 <body>
@@ -224,12 +224,12 @@ select.ifield { cursor:pointer; }
       <div>
         <label class="block text-xs font-semibold text-gray-700 uppercase tracking-wide mb-2">Gehalt Netto<span class="text-gray-400 ml-1">€/Mo</span></label>
         <input class="ifield" type="number" id="netto" placeholder="3500" oninput="liveA()">
-        <p class="text-xs italic text-gray-400 mt-1.5">Persönliches Netto nach Steuern</p>
+        <p class="text-xs italic text-gray-600 mt-1.5">Persönliches Netto nach Steuern</p>
       </div>
       <div>
         <label class="block text-xs font-semibold text-gray-700 uppercase tracking-wide mb-2">Steuerrückerstattung<span class="text-gray-400 ml-1">€/Jahr</span></label>
         <input class="ifield" type="number" id="steuerR" placeholder="600" oninput="liveA()">
-        <p class="text-xs italic text-gray-400 mt-1.5">→ wird ÷ 12 auf Monatsbasis verteilt</p>
+        <p class="text-xs italic text-gray-600 mt-1.5">→ wird ÷ 12 auf Monatsbasis verteilt</p>
       </div>
       <div>
         <label class="block text-xs font-semibold text-gray-700 uppercase tracking-wide mb-2 flex items-center gap-1">
@@ -242,17 +242,7 @@ select.ifield { cursor:pointer; }
           </div>
         </label>
         <input class="ifield" type="number" id="fixk" placeholder="1400">
-        <p class="text-xs italic text-gray-400 mt-1.5">Miete/Kredit + Abos + Versicherungen</p>
-        <div class="mt-3 space-y-2 pt-3 border-t border-gray-100">
-          <div class="cb-wrap" onclick="togglePsych('pf1')">
-            <div class="cb-box" id="pf1"></div>
-            <span class="text-xs font-medium text-green-700">✓ Macht mich wirklich glücklich</span>
-          </div>
-          <div class="cb-wrap" onclick="togglePsych('pf2')">
-            <div class="cb-box" id="pf2"></div>
-            <span class="text-xs font-medium text-amber-700">△ Status / gehört dazu</span>
-          </div>
-        </div>
+        <p class="text-xs italic text-gray-600 mt-1.5">Miete/Kredit + Abos + Versicherungen</p>
       </div>
     </div>
     <!-- Row 2 -->
@@ -280,7 +270,7 @@ select.ifield { cursor:pointer; }
           </div>
         </label>
         <input class="ifield" type="number" id="engk" placeholder="280" oninput="liveA()">
-        <p class="text-xs italic text-gray-400 mt-1.5">Strom, Gas, Wasser, Grundabgaben</p>
+        <p class="text-xs italic text-gray-600 mt-1.5">Strom, Gas, Wasser, Grundabgaben</p>
       </div>
       <div>
         <label class="block text-xs font-semibold text-gray-700 uppercase tracking-wide mb-2 flex items-center gap-1">
@@ -293,7 +283,7 @@ select.ifield { cursor:pointer; }
           </div>
         </label>
         <input class="ifield" type="number" id="urlaubk" placeholder="2400" oninput="liveA()">
-        <p class="text-xs italic text-gray-400 mt-1.5">→ monatlich: Jahresbetrag ÷ 12</p>
+        <p class="text-xs italic text-gray-600 mt-1.5">→ monatlich: Jahresbetrag ÷ 12</p>
       </div>
     </div>
     <!-- Live A -->
@@ -323,17 +313,17 @@ select.ifield { cursor:pointer; }
       <div>
         <label class="block text-xs font-semibold text-gray-700 uppercase tracking-wide mb-2">Partner Netto<span class="text-gray-400 ml-1">€/Mo</span></label>
         <input class="ifield" type="number" id="pBrutto" placeholder="2000" oninput="liveB()">
-        <p class="text-xs italic text-gray-400 mt-1.5">→ DB = Netto − Kita − Pendeln</p>
+        <p class="text-xs italic text-gray-600 mt-1.5">→ DB = Netto − Kita − Pendeln</p>
       </div>
       <div>
         <label class="block text-xs font-semibold text-gray-700 uppercase tracking-wide mb-2">Kita-Kosten<span class="text-gray-400 ml-1">€/Mo</span></label>
         <input class="ifield" type="number" id="kita" placeholder="800" oninput="liveB()">
-        <p class="text-xs italic text-gray-400 mt-1.5">Alle Kinderbetreuungskosten</p>
+        <p class="text-xs italic text-gray-600 mt-1.5">Alle Kinderbetreuungskosten</p>
       </div>
       <div>
         <label class="block text-xs font-semibold text-gray-700 uppercase tracking-wide mb-2">Pendelkosten<span class="text-gray-400 ml-1">€/Mo</span></label>
         <input class="ifield" type="number" id="pendel" placeholder="150" oninput="liveB()">
-        <p class="text-xs italic text-gray-400 mt-1.5">ÖPNV / Fahrtkosten / Parking</p>
+        <p class="text-xs italic text-gray-600 mt-1.5">ÖPNV / Fahrtkosten / Parking</p>
       </div>
     </div>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-6 border-t border-gray-100">
@@ -395,14 +385,14 @@ select.ifield { cursor:pointer; }
         <div>
           <label class="block text-xs font-semibold text-gray-700 uppercase tracking-wide mb-2">Fahrleistung<span class="text-gray-400 ml-1">km/Jahr</span></label>
           <input class="ifield" type="number" id="k1km" placeholder="15000" oninput="liveKfz(1)">
-          <p class="text-xs italic text-gray-400 mt-1.5">→ Verschleiß: 0,05 €/km</p>
+          <p class="text-xs italic text-gray-600 mt-1.5">→ Verschleiß: 0,05 €/km</p>
         </div>
       </div>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
           <label class="block text-xs font-semibold text-gray-700 uppercase tracking-wide mb-2" id="k1lfd-hint">Laufende Kosten<span class="text-gray-400 ml-1">€/Mo</span></label>
           <input class="ifield" type="number" id="k1lfd" placeholder="180" oninput="liveKfz(1)">
-          <p class="text-xs italic text-gray-400 mt-1.5">Rate/Leasing + Versicherung + Steuer</p>
+          <p class="text-xs italic text-gray-600 mt-1.5">Rate/Leasing + Versicherung + Steuer</p>
           <div class="mt-3 space-y-2 pt-3 border-t border-gray-100">
             <div class="cb-wrap" onclick="togglePsych('pk1h')"><div class="cb-box" id="pk1h"></div><span class="text-xs font-medium text-green-700">✓ Wirklich notwendig</span></div>
             <div class="cb-wrap" onclick="togglePsych('pk1s')"><div class="cb-box" id="pk1s"></div><span class="text-xs font-medium text-amber-700">△ Status-Symbol</span></div>
@@ -411,7 +401,7 @@ select.ifield { cursor:pointer; }
         <div>
           <label class="block text-xs font-semibold text-gray-700 uppercase tracking-wide mb-2">Reparaturrücklage<span class="text-gray-400 ml-1">€/Mo</span></label>
           <input class="ifield" type="number" id="k1rep" placeholder="80" oninput="liveKfz(1)">
-          <p class="text-xs italic text-gray-400 mt-1.5">Werkstatt, HU, Austauschteile</p>
+          <p class="text-xs italic text-gray-600 mt-1.5">Werkstatt, HU, Austauschteile</p>
         </div>
       </div>
       <!-- Breakdown -->
@@ -481,12 +471,12 @@ select.ifield { cursor:pointer; }
           </div>
         </label>
         <input class="ifield" type="number" id="hausW" placeholder="350000" oninput="liveD()">
-        <p class="text-xs italic text-gray-400 mt-1.5">Marktwert × 1,5% ÷ 12 = monatl. Rücklage</p>
+        <p class="text-xs italic text-gray-600 mt-1.5">Marktwert × 1,5% ÷ 12 = monatl. Rücklage</p>
       </div>
       <div class="bg-red-50 rounded-md p-5 flex flex-col justify-center">
         <p class="mono text-[10px] uppercase tracking-wide text-gray-400 mb-2">Monatliche Instandhaltung</p>
         <p class="mono text-3xl font-medium text-red-600" id="hausLive">—</p>
-        <p class="mono text-xs text-gray-500 mt-2">Dach · Heizung · Fenster · Elektrik · Garten</p>
+        <p class="mono text-xs text-gray-600 mt-2">Dach · Heizung · Fenster · Elektrik · Garten</p>
       </div>
     </div>
   </div>
@@ -573,22 +563,22 @@ select.ifield { cursor:pointer; }
     <div class="bg-white rounded-lg border border-gray-200 shadow-sm p-5">
       <p class="mono text-[10px] uppercase tracking-wide text-gray-400 mb-2">Gesamteinkommen</p>
       <p class="mono text-2xl font-bold text-gray-900" id="kNetto">—</p>
-      <p class="mono text-xs text-gray-500 mt-1">Netto + Partner-DB</p>
+      <p class="mono text-xs text-gray-600 mt-1">Netto + Partner-DB</p>
     </div>
     <div class="bg-white rounded-lg border border-red-100 shadow-sm p-5">
       <p class="mono text-[10px] uppercase tracking-wide text-gray-400 mb-2">Gesamtabfluss</p>
       <p class="mono text-2xl font-bold text-red-600" id="kTotal">—</p>
-      <p class="mono text-xs text-gray-500 mt-1">Alle Kosten + Zerfall</p>
+      <p class="mono text-xs text-gray-600 mt-1">Alle Kosten + Zerfall</p>
     </div>
     <div class="bg-white rounded-lg border border-red-100 shadow-sm p-5">
       <p class="mono text-[10px] uppercase tracking-wide text-gray-400 mb-2">Unsichtbarer Zerfall</p>
       <p class="mono text-2xl font-bold text-red-600" id="kDecay">—</p>
-      <p class="mono text-xs text-gray-500 mt-1">Kfz-WV + Haus</p>
+      <p class="mono text-xs text-gray-600 mt-1">Kfz-WV + Haus</p>
     </div>
     <div class="bg-white rounded-lg border border-green-100 shadow-sm p-5">
       <p class="mono text-[10px] uppercase tracking-wide text-gray-400 mb-2">Lebens-Energie</p>
       <p class="mono text-2xl font-bold text-green-700" id="kLife">—</p>
-      <p class="mono text-xs text-gray-500 mt-1">Was wirklich bleibt</p>
+      <p class="mono text-xs text-gray-600 mt-1">Was wirklich bleibt</p>
     </div>
   </div>
 
@@ -654,12 +644,12 @@ select.ifield { cursor:pointer; }
       <div class="bg-amber-50 rounded-md p-5 border border-amber-100">
         <p class="mono text-[10px] uppercase tracking-wide text-gray-400 mb-2">Status-Ausgaben</p>
         <p class="mono text-2xl font-bold text-amber-700" id="klStatus">— €</p>
-        <p class="mono text-xs text-gray-500 mt-2">Als „Status" markierte Positionen</p>
+        <p class="mono text-xs text-gray-600 mt-2">Als „Status" markierte Positionen</p>
       </div>
       <div class="bg-red-50 rounded-md p-5 border border-red-100">
         <p class="mono text-[10px] uppercase tracking-wide text-gray-400 mb-2">Substanz-Verzehr</p>
         <p class="mono text-2xl font-bold text-red-600" id="klSubstanz">— €</p>
-        <p class="mono text-xs text-gray-500 mt-2">Haus-Instandhaltung + Kfz-WV</p>
+        <p class="mono text-xs text-gray-600 mt-2">Haus-Instandhaltung + Kfz-WV</p>
       </div>
       <div class="rounded-md p-5 border" id="klFreiheitCell">
         <p class="mono text-[10px] uppercase tracking-wide text-gray-400 mb-2">Dein Anteil für Freiheit</p>
