@@ -126,7 +126,9 @@ select.ifield { cursor:pointer; }
 <section class="bg-white border-b border-gray-200 min-h-[85vh] flex items-center">
   <div class="max-w-5xl mx-auto px-6 py-24 w-full">
     <p class="mono text-xs tracking-[0.2em] uppercase text-gray-400 mb-8">— Freiheit durch Klarheit</p>
-    <div id="hlWrap" class="relative mb-10" style="min-height:280px;overflow:visible;padding-bottom:24px;position:relative"></div>
+    <div id="hlWrap" style="margin-bottom:32px">
+      <div id="hlTxt" style="font-size:clamp(1.6rem,4vw,2.8rem);font-weight:700;color:#111827;line-height:1.2;letter-spacing:-0.02em;transition:opacity 0.3s"></div>
+    </div>
     <div class="flex gap-5 flex-wrap">
       <a href="#rechner" class="bg-gray-900 text-white text-sm font-medium px-6 py-3 hover:bg-gray-700 transition-colors">→ Zum System-Check</a>
       <a href="#angebote" class="border border-gray-300 text-gray-700 text-sm font-medium px-6 py-3 hover:border-gray-900 transition-colors">Angebote ansehen</a>
@@ -848,50 +850,32 @@ const TRUTHS = [
 const todayIdx = new Date().getDate() % TRUTHS.length;
 let hlActive = todayIdx;
 const hlWrap = document.getElementById('hlWrap');
-const dotsCont = document.getElementById('heroDots');
 
+const hlTxt = document.getElementById('hlTxt');
+const dotsCont = document.getElementById('heroDots');
+let hlActive = todayIdx;
+
+// Build dots
 TRUTHS.forEach((t, i) => {
-  const h = document.createElement('div');
-  h.className = 'hl' + (i === todayIdx ? ' on' : '');
-  h.textContent = t;
-  hlWrap.appendChild(h);
   const dot = document.createElement('div');
-  dot.className = 'dot' + (i === todayIdx ? ' active' : '');
+  dot.style.cssText = 'width:6px;height:6px;border-radius:50%;cursor:pointer;background:' + (i===todayIdx?'#111827':'#e5e7eb');
   dot.onclick = () => goHl(i);
   dotsCont.appendChild(dot);
 });
-// Set initial height after fonts load
-if (document.fonts) {
-  document.fonts.ready.then(() => setWrapHeight(todayIdx));
-} else {
-  setTimeout(() => setWrapHeight(todayIdx), 300);
-}
 
-function setWrapHeight(idx) {
-  const hls = hlWrap.querySelectorAll('.hl');
-  // measure the active headline's scroll height
-  const target = hls[idx];
-  // temporarily make visible to measure
-  target.style.visibility = 'visible';
-  target.style.opacity = '0';
-  const h = target.scrollHeight;
-  target.style.visibility = '';
-  target.style.opacity = '';
-  hlWrap.style.minHeight = (h + 24) + 'px';
-}
+// Show first
+hlTxt.textContent = TRUTHS[todayIdx];
 
 function goHl(next) {
-  const hls = hlWrap.querySelectorAll('.hl');
-  const dots = dotsCont.querySelectorAll('.dot');
-  hls[hlActive].classList.remove('on'); hls[hlActive].classList.add('out');
-  dots[hlActive].classList.remove('active');
-  const prev = hlActive;
-  setTimeout(() => hls[prev].classList.remove('out'), 500);
   hlActive = next;
-  hls[hlActive].classList.add('on');
-  dots[hlActive].classList.add('active');
-  setWrapHeight(next);
+  hlTxt.style.opacity = '0';
+  setTimeout(() => {
+    hlTxt.textContent = TRUTHS[next];
+    hlTxt.style.opacity = '1';
+  }, 280);
+  dotsCont.querySelectorAll('div').forEach((d,i) => d.style.background = i===next ? '#111827' : '#e5e7eb');
 }
+
 setInterval(() => goHl((hlActive + 1) % TRUTHS.length), 5000);
 
 /* ── Helpers ── */
