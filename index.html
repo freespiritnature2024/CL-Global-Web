@@ -142,11 +142,32 @@ select.ifield { cursor:pointer; }
   <div class="max-w-5xl mx-auto px-6">
     <p class="mono text-xs tracking-[0.2em] uppercase text-gray-400 mb-4">Vorwort</p>
     <h2 class="text-4xl font-bold text-gray-900 tracking-tight mb-12">Mehr als nur Zahlen.</h2>
-    <div class="max-w-2xl mb-16">
-      <p class="text-gray-600 leading-relaxed text-lg mb-5">Hast du dich jemals gefragt, was der eigentliche Sinn hinter all dem ist? Du stehst morgens auf, funktionierst, zahlst Rechnungen. Soll das wirklich alles gewesen sein?</p>
-      <blockquote class="border-l-2 border-gray-900 pl-5 text-xl font-light italic text-gray-800 leading-snug my-8">Freiheit beginnt im Kopf, nicht auf dem Konto.</blockquote>
-      <p class="text-gray-600 leading-relaxed text-lg mb-5">Die meisten Menschen stecken in einer Matrix fest — Gewohnheiten und Denkmuster seit der Kindheit, unsichtbare Bindungen, die uns kontrollieren. Dinge besitzen uns. Der Kredit, das Haus, das Auto, der Status.</p>
-      <p class="text-gray-600 leading-relaxed text-lg">Ich bin Dominic. Ich helfe dir dabei, beides in Einklang zu bringen — deine Glaubenssätze, deine Ziele und die harten Fakten der Zahlen.</p>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-12 mb-16 items-start">
+      <!-- Text: 2/3 -->
+      <div class="md:col-span-2">
+        <p class="text-gray-600 leading-relaxed text-lg mb-5">Hast du dich jemals gefragt, was der eigentliche Sinn hinter all dem ist? Du stehst morgens auf, funktionierst, zahlst Rechnungen. Soll das wirklich alles gewesen sein?</p>
+        <blockquote class="border-l-2 border-gray-900 pl-5 text-xl font-light italic text-gray-800 leading-snug my-8">Freiheit beginnt im Kopf, nicht auf dem Konto.</blockquote>
+        <p class="text-gray-600 leading-relaxed text-lg mb-5">Die meisten Menschen stecken in einer Matrix fest — Gewohnheiten und Denkmuster seit der Kindheit, unsichtbare Bindungen, die uns kontrollieren. Dinge besitzen uns. Der Kredit, das Haus, das Auto, der Status.</p>
+        <p class="text-gray-600 leading-relaxed text-lg">Ich bin Dominic. Ich helfe dir dabei, beides in Einklang zu bringen — deine Glaubenssätze, deine Ziele und die harten Fakten der Zahlen.</p>
+      </div>
+      <!-- Foto: 1/3 -->
+      <div class="md:col-span-1 flex flex-col items-center gap-4">
+        <!-- FOTO PLATZHALTER: src="dein-foto.jpg" ersetzen -->
+        <div class="w-full aspect-[3/4] bg-gray-100 border-2 border-gray-900 overflow-hidden" style="max-width:280px">
+          <img id="dominicPhoto" src="foto.jpg"
+            onerror="this.style.display='none';document.getElementById('photoPlaceholder').style.display='flex'"
+            class="w-full h-full object-cover object-top"
+            alt="Dominic — CL Global Consulting">
+          <div id="photoPlaceholder" style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:12px">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+            <span class="mono text-xs text-gray-400 text-center px-4">Foto hier einfügen<br>src="dein-foto.jpg"</span>
+          </div>
+        </div>
+        <div class="text-center">
+          <p class="font-bold text-gray-900 text-sm">Dominic</p>
+          <p class="mono text-xs text-gray-400">CL Global Consulting</p>
+        </div>
+      </div>
     </div>
     <div class="border-t border-gray-100 pt-12">
       <p class="mono text-xs tracking-[0.2em] uppercase text-gray-400 mb-8">Meine Story</p>
