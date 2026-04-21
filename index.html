@@ -1,28 +1,1447 @@
-VISUELLES UPDATE: PREMIUM-MINIMALISMUS (KEINE INHALTSÄNDERUNG)
+<!DOCTYPE html>
+<html lang="de" class="scroll-smooth">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Leben in Freiheit — CL Global</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      fontFamily: {
+        sans: ['Inter', 'sans-serif'],
+        mono: ['JetBrains Mono', 'monospace'],
+      },
+      colors: {
+        crimson: '#DC2626',
+      }
+    }
+  }
+}
+</script>
+<style>
+  body { font-family: 'Inter', sans-serif; }
+  .mono { font-family: 'JetBrains Mono', monospace; }
 
-Claude, behalte den gesamten Text und die gesamte Logik (Berechnungen, Checkboxen, Intervention) exakt bei. Wir ändern AUSSCHLIESSLICH das optische Grundgerüst. Das aktuelle Design wirkt veraltet; wir transformieren es jetzt in einen modernen, hochwertigen Look.
+  /* Input underline style */
+  .inp-line {
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid #e5e7eb;
+    border-radius: 0;
+    outline: none;
+    width: 100%;
+    padding: 10px 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.25rem;
+    color: #111;
+    transition: border-color 0.2s;
+    -webkit-appearance: none;
+  }
+  .inp-line:focus { border-bottom-color: #111; }
+  .inp-line::placeholder { color: #d1d5db; font-weight: 300; }
+  select.inp-line { cursor: pointer; }
 
-1. TECHNISCHE BASIS:
-- Nutze Tailwind CSS (via CDN) für das gesamte Styling.
-- Nutze KEINE Standard-Browser-Styles oder harten 3D-Rahmen.
+  /* Custom checkbox */
+  .cb-wrap { display: flex; align-items: center; gap: 10px; cursor: pointer; user-select: none; }
+  .cb-box {
+    width: 16px; height: 16px; flex-shrink: 0;
+    border: 1.5px solid #d1d5db; border-radius: 3px;
+    background: white; position: relative;
+    transition: all 0.15s;
+  }
+  .cb-box.on { background: #111; border-color: #111; }
+  .cb-box.on::after {
+    content: '';
+    position: absolute;
+    top: 1px; left: 4px;
+    width: 5px; height: 9px;
+    border: 1.5px solid white;
+    border-top: none; border-left: none;
+    transform: rotate(45deg);
+  }
+  .cb-box.red.on { background: #DC2626; border-color: #DC2626; }
 
-2. LAYOUT & SPACING:
-- Max-Width: Zentriere den Content in einem sauberen Container (max-w-3xl).
-- Whitespace: Nutze extremes Spacing (py-24 für Sektionsabstände), damit das Design "teuer" und luftig wirkt.
-- Trennung: Nutze keine dicken Linien, sondern extrem feine, hellgraue Trenner (border-gray-100) oder reinem Whitespace zur Strukturierung.
+  /* Hero headline rotation */
+  .hl { position: absolute; top: 0; left: 0; right: 0;
+    opacity: 0; visibility: hidden; transform: translateY(8px);
+    transition: opacity 0.5s, transform 0.5s; }
+  .hl.on { opacity: 1; visibility: visible; transform: translateY(0); }
+  .hl.out { opacity: 0; transform: translateY(-8px); }
 
-3. TYPOGRAFIE:
-- Font-Family: Nutze 'Inter' (Sans-Serif) für alle Texte.
-- Zahlen: Nutze 'JetBrains Mono' für alle berechneten Werte und Eingabefelder (wirkt präzise und technisch).
-- Skalierung: Große, selbstbewusste Headlines, aber dezenter Fließtext mit hohem Zeilenabstand (leading-relaxed).
+  /* Dot nav */
+  .hero-dot { width: 5px; height: 5px; border-radius: 50%; background: #e5e7eb; cursor: pointer; transition: background 0.15s; }
+  .hero-dot.active { background: #374151; }
 
-4. MODERNES RECHNER-DESIGN:
-- Inputs: Keine Kästen. Nutze minimalistische Input-Felder (nur Border-Bottom oder sehr dezente abgerundete Ecken mit shadow-sm).
-- Focus-State: Wenn ein Feld ausgewählt wird, soll die Linie dezent schwarz werden (transition-all).
-- Checkboxen: Nutze moderne, cleane Custom-Checkmarks, keine Standard-Browser-Boxen.
+  /* Loading animation */
+  .load-line { opacity: 0; }
+  .load-line.done { opacity: 1; color: #9ca3af; }
+  .load-line.act { opacity: 1; color: #111; }
+  .load-line.act::after { content: '▌'; animation: blink 0.9s step-end infinite; color: #DC2626; }
+  @keyframes blink { 0%,100%{opacity:1}50%{opacity:0} }
 
-5. FARBEN & AKZENTE:
-- Basis: Absolutes Weiß (#FFFFFF) und tiefes Schwarz (#000000).
-- Signalfarbe: Nutze ein edles Crimson-Rot (#DC2626) AUSSCHLIESSLICH für Warnungen im Dashboard und den primären Button.
+  /* Log lines */
+  .log-line { opacity: 0; }
+  .log-line.vis { opacity: 1; }
+  .log-line.lw { color: #DC2626; }
+  .log-line.lo { color: #16a34a; }
+  .log-line.li { color: #9ca3af; }
+  .log-line.lh { color: #111; font-weight: 500; }
+  .log-line.la { color: #7c3aed; }
+  .log-line.lm { color: #d97706; }
 
-Gib mir jetzt den vollständigen Code der index.html aus. Die Logik bleibt unberührt, nur die Ästhetik wird auf High-End-Niveau gehoben.
+  /* Bar fill */
+  .bar-fill { height: 100%; transition: width 1s cubic-bezier(.4,0,.2,1); }
+
+  /* Smooth section */
+  section { border-bottom: 1px solid #f3f4f6; }
+</style>
+</head>
+<body class="bg-white text-gray-900 antialiased">
+
+<!-- ═══ HEADER ═══ -->
+<header class="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-gray-100">
+  <div class="max-w-3xl mx-auto px-6 h-14 flex items-center justify-between">
+    <a href="/" class="font-semibold text-sm tracking-wide text-gray-900">CL Global</a>
+    <nav class="flex gap-8">
+      <a href="#rechner" class="text-sm text-gray-400 hover:text-gray-900 transition-colors">Rechner</a>
+      <a href="#angebote" class="text-sm text-gray-400 hover:text-gray-900 transition-colors">Angebote</a>
+    </nav>
+  </div>
+</header>
+
+<!-- ═══ HERO ═══ -->
+<section class="min-h-[90vh] flex items-center border-b border-gray-100">
+  <div class="max-w-3xl mx-auto px-6 py-32 w-full">
+    <div class="mono text-xs tracking-[0.2em] uppercase text-gray-400 mb-10">Freiheit durch Klarheit</div>
+
+    <!-- Rotating headline -->
+    <div id="hlWrap" class="relative mb-10" style="min-height:160px; overflow:visible; padding-bottom:16px"></div>
+
+    <div class="mono text-xs tracking-[0.18em] uppercase text-crimson mb-14">
+      — Analyse deiner finanziellen Statik
+    </div>
+
+    <div class="flex gap-6 items-center flex-wrap">
+      <a href="#rechner" class="text-sm font-medium text-gray-900 border-b border-gray-900 pb-0.5 hover:text-gray-500 hover:border-gray-500 transition-all">Zum System-Check</a>
+      <a href="#angebote" class="text-sm text-gray-400 border-b border-gray-200 pb-0.5 hover:text-gray-700 hover:border-gray-400 transition-all">Angebote ansehen</a>
+    </div>
+
+    <div class="flex gap-2 mt-14" id="heroDots"></div>
+  </div>
+</section>
+
+<!-- ═══ VORWORT ═══ -->
+<section class="py-28">
+  <div class="max-w-3xl mx-auto px-6">
+    <div class="mono text-xs tracking-[0.2em] uppercase text-gray-400 mb-6">Die Architektur deines Lebens</div>
+    <h2 class="text-4xl font-semibold tracking-tight leading-tight mb-16">Mehr als<br><em class="not-italic text-gray-500">nur Zahlen.</em></h2>
+    <div class="max-w-xl">
+      <p class="text-gray-600 leading-relaxed text-lg">Hast du dich jemals gefragt, was der eigentliche Sinn hinter all dem ist? Du stehst morgens auf, funktionierst, zahlst Rechnungen. Soll das wirklich alles gewesen sein?</p>
+      <blockquote class="my-12 pl-5 border-l-2 border-gray-200 text-2xl font-light italic text-gray-700 leading-snug">
+        Freiheit beginnt im Kopf, nicht auf dem Konto.
+      </blockquote>
+      <p class="text-gray-600 leading-relaxed">Die meisten Menschen stecken in einer Matrix fest — Gewohnheiten und Denkmuster seit der Kindheit, unsichtbare Bindungen, die uns kontrollieren. Dinge besitzen uns. Der Kredit, das Haus, das Auto, der Status.</p>
+      <p class="text-gray-600 leading-relaxed mt-4">Ich bin Dominic. Ich helfe dir dabei, beides in Einklang zu bringen — deine Glaubenssätze, deine Ziele und die harten Fakten.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ ÜBER MICH ═══ -->
+<section class="py-28 bg-gray-50/50">
+  <div class="max-w-3xl mx-auto px-6">
+    <div class="mono text-xs tracking-[0.2em] uppercase text-gray-400 mb-6">Die Radikal-Story</div>
+    <h2 class="text-4xl font-semibold tracking-tight leading-tight mb-16">Ich kenne<br><em class="not-italic text-gray-500">beide Welten.</em></h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-16">
+      <div class="md:col-span-1">
+        <p class="text-gray-600 leading-relaxed text-sm">Mein Weg führte vom Hausbesitzer und Unternehmer mit 6 Angestellten, Immobilien in Kolumbien, Expeditionsmobil und SUV-Pickup — über einen Verlust von 200.000 Euro — zum radikalen Schnitt.</p>
+      </div>
+      <div class="md:col-span-2 space-y-10">
+        <div class="flex gap-5">
+          <div class="flex-shrink-0 w-1.5 h-1.5 rounded-full bg-gray-300 mt-2"></div>
+          <div>
+            <div class="mono text-xs tracking-[0.12em] uppercase text-gray-400 mb-2">Phase 1 — Das System</div>
+            <p class="text-gray-700 leading-relaxed text-sm">Hausbesitzer, Unternehmer mit <strong class="font-medium text-gray-900">6 Angestellten</strong>, Immobilien in Kolumbien, Expeditionsmobil und SUV-Pickup. Von außen: Erfolg. Von innen: maximale Abhängigkeit.</p>
+          </div>
+        </div>
+        <div class="flex gap-5">
+          <div class="flex-shrink-0 w-1.5 h-1.5 rounded-full bg-crimson mt-2"></div>
+          <div>
+            <div class="mono text-xs tracking-[0.12em] uppercase text-gray-400 mb-2">Der Wendepunkt</div>
+            <p class="text-gray-700 leading-relaxed text-sm">Ein Verlust von <strong class="font-medium text-gray-900">200.000 Euro</strong>. Nicht durch Pech — sondern weil ich in der falschen Matrix operiert habe.</p>
+          </div>
+        </div>
+        <div class="flex gap-5">
+          <div class="flex-shrink-0 w-1.5 h-1.5 rounded-full bg-gray-300 mt-2"></div>
+          <div>
+            <div class="mono text-xs tracking-[0.12em] uppercase text-gray-400 mb-2">Der radikale Schnitt</div>
+            <p class="text-gray-700 leading-relaxed text-sm"><strong class="font-medium text-gray-900">Alles verkauft. Alles verschenkt.</strong> Kein Haus, kein Fuhrpark, keine Angestellten. Vollständige Entschuldung des Lebens.</p>
+          </div>
+        </div>
+        <div class="flex gap-5">
+          <div class="flex-shrink-0 w-1.5 h-1.5 rounded-full bg-gray-800 mt-2"></div>
+          <div>
+            <div class="mono text-xs tracking-[0.12em] uppercase text-gray-400 mb-2">Heute</div>
+            <p class="text-gray-700 leading-relaxed text-sm">Ich lebe und arbeite in einem <strong class="font-medium text-gray-900">15 Jahre alten Van</strong>. Starlink, Dual-Laptop, Europa-Tour. Freiheit statt Ballast. Ich kenne beide Welten — und habe die Matrix selbst verlassen.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ RECHNER ═══ -->
+<div id="rechner">
+
+<!-- MODUL A -->
+<section class="py-24">
+  <div class="max-w-3xl mx-auto px-6">
+    <div class="mono text-xs tracking-[0.2em] uppercase text-gray-400 mb-2">Modul A</div>
+    <h3 class="text-2xl font-semibold tracking-tight mb-12 pb-6 border-b border-gray-100">Reales Einkommen &amp; Ausgaben</h3>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-10 mb-10">
+      <div>
+        <label class="mono text-[10px] tracking-[0.14em] uppercase text-gray-400 block mb-2">Gehalt Netto (€/Mo)</label>
+        <input class="inp-line" type="number" id="netto" placeholder="3500" min="0" oninput="liveA()">
+        <div class="mono text-xs text-gray-400 mt-2">Persönliches Netto nach Steuern</div>
+      </div>
+      <div>
+        <label class="mono text-[10px] tracking-[0.14em] uppercase text-gray-400 block mb-2">Steuerrückerstattung (€/Jahr)</label>
+        <input class="inp-line" type="number" id="steuerR" placeholder="600" min="0" oninput="liveA()">
+        <div class="mono text-xs italic text-gray-400 mt-2">→ wird auf Monatsbasis verteilt (÷ 12)</div>
+      </div>
+      <div>
+        <label class="mono text-[10px] tracking-[0.14em] uppercase text-gray-400 block mb-2 flex items-center gap-1">
+          Nebenkosten (€/Mo)
+          <div class="relative inline-flex" id="fixTip" onclick="toggleTip('fixTip')">
+            <span class="w-3.5 h-3.5 rounded-full border border-gray-300 text-[9px] flex items-center justify-center cursor-pointer hover:border-gray-600 transition-colors">i</span>
+            <div class="tip-box absolute top-full left-1/2 -translate-x-1/2 mt-2 bg-gray-900 text-white font-mono text-[10px] leading-relaxed p-4 w-64 z-50 opacity-0 pointer-events-none transition-opacity">
+              <strong class="text-gray-300">Prüfliste</strong><br><br>
+              · Miete / Kreditrate<br>· KFZ-Versicherung<br>· Haftpflicht / Rechtsschutz<br>
+              · Streaming, Gym, Cloud-Abos<br>· Rundfunkbeitrag (18,36 €)<br>
+              · Haustiere<br>· Taschengeld Kinder<br>· Kontoführung / Telefon
+            </div>
+          </div>
+        </label>
+        <input class="inp-line" type="number" id="fixk" placeholder="1400" min="0">
+        <div class="mono text-xs text-gray-400 mt-2">Miete/Kredit + Abos + Versicherungen</div>
+        <div class="mt-4 space-y-2.5">
+          <div class="cb-wrap" onclick="togglePsych('pf1')">
+            <div class="cb-box" id="pf1"></div>
+            <span class="text-xs text-green-700">✓ Macht mich wirklich glücklich</span>
+          </div>
+          <div class="cb-wrap" onclick="togglePsych('pf2')">
+            <div class="cb-box" id="pf2"></div>
+            <span class="text-xs text-amber-700">△ Status / gehört dazu</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-10 mb-12">
+      <div>
+        <label class="mono text-[10px] tracking-[0.14em] uppercase text-gray-400 block mb-2 flex items-center gap-1">
+          Lebensmittel &amp; Haushalt (€/Mo)
+          <div class="relative inline-flex" id="lmTip" onclick="toggleTip('lmTip')">
+            <span class="w-3.5 h-3.5 rounded-full border border-gray-300 text-[9px] flex items-center justify-center cursor-pointer hover:border-gray-600 transition-colors">i</span>
+            <div class="tip-box absolute top-full left-1/2 -translate-x-1/2 mt-2 bg-gray-900 text-white font-mono text-[10px] leading-relaxed p-4 w-56 z-50 opacity-0 pointer-events-none transition-opacity">
+              · Supermarkt / Drogerie<br>· Lieferdienste / Restaurants<br>· Haushaltsartikel<br>· Kleidung (Durchschnitt)<br>· Apotheke
+            </div>
+          </div>
+        </label>
+        <input class="inp-line" type="number" id="lmk" placeholder="600" min="0" oninput="liveA()">
+      </div>
+      <div>
+        <label class="mono text-[10px] tracking-[0.14em] uppercase text-gray-400 block mb-2 flex items-center gap-1">
+          Energie &amp; Grundkosten (€/Mo)
+          <div class="relative inline-flex" id="engTip" onclick="toggleTip('engTip')">
+            <span class="w-3.5 h-3.5 rounded-full border border-gray-300 text-[9px] flex items-center justify-center cursor-pointer hover:border-gray-600 transition-colors">i</span>
+            <div class="tip-box absolute top-full left-1/2 -translate-x-1/2 mt-2 bg-gray-900 text-white font-mono text-[10px] leading-relaxed p-4 w-56 z-50 opacity-0 pointer-events-none transition-opacity">
+              · Strom · Gas / Heizung<br>· Wasser &amp; Abwasser<br>· Grundbesitzabgaben<br>· Müllgebühren<br>· WEG-Gebühren
+            </div>
+          </div>
+        </label>
+        <input class="inp-line" type="number" id="engk" placeholder="280" min="0" oninput="liveA()">
+        <div class="mono text-xs text-gray-400 mt-2">Strom, Gas, Wasser, Abgaben</div>
+      </div>
+      <div>
+        <label class="mono text-[10px] tracking-[0.14em] uppercase text-gray-400 block mb-2 flex items-center gap-1">
+          Urlaub &amp; Freizeit (€/Jahr)
+          <div class="relative inline-flex" id="urlaubTip" onclick="toggleTip('urlaubTip')">
+            <span class="w-3.5 h-3.5 rounded-full border border-gray-300 text-[9px] flex items-center justify-center cursor-pointer hover:border-gray-600 transition-colors">i</span>
+            <div class="tip-box absolute top-full left-1/2 -translate-x-1/2 mt-2 bg-gray-900 text-white font-mono text-[10px] leading-relaxed p-4 w-56 z-50 opacity-0 pointer-events-none transition-opacity">
+              · Flugreisen / Hotel / Camping<br>· Mietwagen &amp; Transfers<br>· Freizeitaktivitäten<br>· Hobbys &amp; Ausrüstung<br><br>Jahreswert → ÷ 12
+            </div>
+          </div>
+        </label>
+        <input class="inp-line" type="number" id="urlaubk" placeholder="2400" min="0" oninput="liveA()">
+        <div class="mono text-xs italic text-gray-400 mt-2">→ monatlich: Jahresbetrag ÷ 12</div>
+      </div>
+    </div>
+
+    <!-- Live results A -->
+    <div class="pt-8 border-t border-gray-100 grid grid-cols-1 md:grid-cols-2 gap-8">
+      <div>
+        <div class="mono text-[10px] tracking-[0.14em] uppercase text-gray-400 mb-2">Angepasstes Gehalt Netto</div>
+        <div class="mono text-3xl font-medium text-gray-900" id="nettoAdj">—</div>
+        <div class="mono text-xs text-gray-400 mt-1" id="nettoFormula">Netto + (Steuerrückerstattung ÷ 12)</div>
+      </div>
+      <div>
+        <div class="mono text-[10px] tracking-[0.14em] uppercase text-gray-400 mb-2">Gesamtausgaben Lebenshaltung</div>
+        <div class="mono text-3xl font-medium text-crimson" id="ausgabenLive">—</div>
+        <div class="mono text-xs text-gray-400 mt-1" id="ausgabenFormula">Nebenkosten + Lebensmittel + Energie + Urlaub</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MODUL B -->
+<section class="py-24 bg-gray-50/40">
+  <div class="max-w-3xl mx-auto px-6">
+    <div class="mono text-xs tracking-[0.2em] uppercase text-gray-400 mb-2">Modul B</div>
+    <h3 class="text-2xl font-semibold tracking-tight mb-12 pb-6 border-b border-gray-100">Partner-Check</h3>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-10 mb-10">
+      <div>
+        <label class="mono text-[10px] tracking-[0.14em] uppercase text-gray-400 block mb-2">Partner Netto (€/Mo)</label>
+        <input class="inp-line" type="number" id="pBrutto" placeholder="2000" min="0" oninput="liveB()">
+        <div class="mono text-xs italic text-gray-400 mt-2">→ Deckungsbeitrag = Netto − Kita − Pendeln</div>
+      </div>
+      <div>
+        <label class="mono text-[10px] tracking-[0.14em] uppercase text-gray-400 block mb-2">Kita-Kosten (€/Mo)</label>
+        <input class="inp-line" type="number" id="kita" placeholder="800" min="0" oninput="liveB()">
+        <div class="mono text-xs text-gray-400 mt-2">Alle Betreuungskosten</div>
+      </div>
+      <div>
+        <label class="mono text-[10px] tracking-[0.14em] uppercase text-gray-400 block mb-2">Pendelkosten (€/Mo)</label>
+        <input class="inp-line" type="number" id="pendel" placeholder="150" min="0" oninput="liveB()">
+        <div class="mono text-xs text-gray-400 mt-2">ÖPNV / Fahrtkosten / Parking</div>
+      </div>
+    </div>
+
+    <div class="pt-8 border-t border-gray-100">
+      <div class="mono text-[10px] tracking-[0.14em] uppercase text-gray-400 mb-2" id="pDBLbl">Wahrer Deckungsbeitrag nach Partnerkosten</div>
+      <div class="mono text-3xl font-medium text-green-700" id="pDB">—</div>
+      <div class="mono text-xs text-gray-400 mt-1" id="pFormula">Netto − Kita − Pendelkosten</div>
+    </div>
+
+    <div class="mt-8 pt-6 border-t border-gray-100">
+      <div class="cb-wrap" onclick="toggleKfz2()">
+        <div class="cb-box" id="kfz2Cb"></div>
+        <span class="text-sm text-gray-600">Zweitwagen für Partner vorhanden — öffnet Fahrzeug 2 in Modul C</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MODUL C -->
+<section class="py-24">
+  <div class="max-w-3xl mx-auto px-6">
+    <div class="mono text-xs tracking-[0.2em] uppercase text-gray-400 mb-2">Modul C</div>
+    <h3 class="text-2xl font-semibold tracking-tight mb-12 pb-6 border-b border-gray-100">Mobilitäts-Matrix</h3>
+
+    <!-- Fahrzeug 1 -->
+    <div class="mb-2 mono text-[10px] tracking-[0.16em] uppercase text-gray-400">Fahrzeug 1</div>
+    <div class="flex gap-6 mb-8 pb-6 border-b border-gray-100">
+      <div class="cb-wrap" id="k1leasingToggle" onclick="setFahrzeugArt(1,'leasing')">
+        <div class="cb-box" id="k1leasingCb"></div>
+        <span class="text-sm text-gray-600">Leasing — kein Wertverlust</span>
+      </div>
+      <div class="cb-wrap" id="k1finanzToggle" onclick="setFahrzeugArt(1,'finanz')">
+        <div class="cb-box" id="k1finanzCb"></div>
+        <span class="text-sm text-gray-600">Finanzierung — Wertverlust bleibt</span>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-10 mb-8" id="k1p-cell">
+      <div>
+        <label class="mono text-[10px] tracking-[0.14em] uppercase text-gray-400 block mb-2">Kaufpreis (€)</label>
+        <input class="inp-line" type="number" id="k1p" placeholder="25000" min="0" oninput="liveKfz(1)">
+      </div>
+      <div id="k1s-cell">
+        <label class="mono text-[10px] tracking-[0.14em] uppercase text-gray-400 block mb-2">Status</label>
+        <select class="inp-line" id="k1s" onchange="liveKfz(1)">
+          <option value="used">Gebrauchtwagen — 8% p.a.</option>
+          <option value="new">Neuwagen — 15% p.a.</option>
+        </select>
+      </div>
+      <div>
+        <label class="mono text-[10px] tracking-[0.14em] uppercase text-gray-400 block mb-2">Fahrleistung (km/Jahr)</label>
+        <input class="inp-line" type="number" id="k1km" placeholder="15000" min="0" oninput="liveKfz(1)">
+        <div class="mono text-xs italic text-gray-400 mt-2">→ Verschleiß: 0,05 €/km</div>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-10 mb-8">
+      <div>
+        <label class="mono text-[10px] tracking-[0.14em] uppercase text-gray-400 block mb-2" id="k1lfd-hint">Laufende Kosten (€/Mo)</label>
+        <input class="inp-line" type="number" id="k1lfd" placeholder="180" min="0" oninput="liveKfz(1)">
+        <div class="mono text-xs text-gray-400 mt-2">Rate/Leasing + Versicherung + Steuer</div>
+        <div class="mt-4 space-y-2.5">
+          <div class="cb-wrap" onclick="togglePsych('pk1h')"><div class="cb-box" id="pk1h"></div><span class="text-xs text-green-700">✓ Wirklich notwendig</span></div>
+          <div class="cb-wrap" onclick="togglePsych('pk1s')"><div class="cb-box" id="pk1s"></div><span class="text-xs text-amber-700">△ Status-Symbol</span></div>
+        </div>
+      </div>
+      <div>
+        <label class="mono text-[10px] tracking-[0.14em] uppercase text-gray-400 block mb-2">
+          <span class="border-b border-dashed border-gray-300 cursor-help" title="Für Werkstatt, HU, Austauschteile. Empfehlung: 50–150 €/Mo.">Reparaturrücklage</span> (€/Mo)
+        </label>
+        <input class="inp-line" type="number" id="k1rep" placeholder="80" min="0" oninput="liveKfz(1)">
+        <div class="mono text-xs text-gray-400 mt-2">Werkstatt, HU, Austauschteile</div>
+      </div>
+    </div>
+
+    <!-- Breakdown Kfz1 -->
+    <div class="grid grid-cols-3 gap-6 pt-6 border-t border-gray-100 mb-4" id="k1-bd">
+      <div>
+        <div class="mono text-[10px] tracking-[0.1em] uppercase text-gray-400 mb-1">
+          <span class="border-b border-dashed border-gray-300 cursor-help" title="Jährl. Wertverfall: Neuwagen ~15%, Gebraucht ~8% — monatlich, ob du fährst oder nicht.">Wertverlust</span>
+        </div>
+        <div class="mono text-lg font-medium text-crimson" id="k1wv">—</div>
+      </div>
+      <div>
+        <div class="mono text-[10px] tracking-[0.1em] uppercase text-gray-400 mb-1">
+          <span class="border-b border-dashed border-gray-300 cursor-help" title="Entgangene Zinsen: 4% p.a. auf Kaufpreis. Das Kapital hätte für dich arbeiten können.">Opportunität</span>
+        </div>
+        <div class="mono text-lg font-medium text-crimson" id="k1op">—</div>
+      </div>
+      <div>
+        <div class="mono text-[10px] tracking-[0.1em] uppercase text-gray-400 mb-1">Verschleiß-Puffer</div>
+        <div class="mono text-lg font-medium text-crimson" id="k1ver">—</div>
+      </div>
+    </div>
+
+    <div class="pt-5 border-t border-gray-100 mb-4">
+      <div class="mono text-[10px] tracking-[0.14em] uppercase text-gray-400 mb-1">Kfz 1 Gesamtkosten / Monat</div>
+      <div class="mono text-2xl font-medium text-crimson" id="k1live">—</div>
+    </div>
+
+    <!-- Fahrzeug 2 -->
+    <div id="kfz2-wrap" class="hidden mt-12">
+      <div class="mb-2 mono text-[10px] tracking-[0.16em] uppercase text-gray-400">Fahrzeug 2 — Partner</div>
+      <div class="flex gap-6 mb-8 pb-6 border-b border-gray-100">
+        <div class="cb-wrap" id="k2leasingToggle" onclick="setFahrzeugArt(2,'leasing')">
+          <div class="cb-box" id="k2leasingCb"></div>
+          <span class="text-sm text-gray-600">Leasing — kein Wertverlust</span>
+        </div>
+        <div class="cb-wrap" id="k2finanzToggle" onclick="setFahrzeugArt(2,'finanz')">
+          <div class="cb-box" id="k2finanzCb"></div>
+          <span class="text-sm text-gray-600">Finanzierung — Wertverlust bleibt</span>
+        </div>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-10 mb-8">
+        <div id="k2p-cell"><label class="mono text-[10px] tracking-[0.14em] uppercase text-gray-400 block mb-2">Kaufpreis (€)</label><input class="inp-line" type="number" id="k2p" placeholder="12000" min="0" oninput="liveKfz(2)"></div>
+        <div id="k2s-cell"><label class="mono text-[10px] tracking-[0.14em] uppercase text-gray-400 block mb-2">Status</label><select class="inp-line" id="k2s" onchange="liveKfz(2)"><option value="used">Gebrauchtwagen — 8% p.a.</option><option value="new">Neuwagen — 15% p.a.</option></select></div>
+        <div><label class="mono text-[10px] tracking-[0.14em] uppercase text-gray-400 block mb-2">Fahrleistung (km/Jahr)</label><input class="inp-line" type="number" id="k2km" placeholder="10000" min="0" oninput="liveKfz(2)"></div>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-10 mb-6">
+        <div><label class="mono text-[10px] tracking-[0.14em] uppercase text-gray-400 block mb-2" id="k2lfd-hint">Laufende Kosten (€/Mo)</label><input class="inp-line" type="number" id="k2lfd" placeholder="120" min="0" oninput="liveKfz(2)"></div>
+        <div><label class="mono text-[10px] tracking-[0.14em] uppercase text-gray-400 block mb-2">Reparaturrücklage (€/Mo)</label><input class="inp-line" type="number" id="k2rep" placeholder="60" min="0" oninput="liveKfz(2)"></div>
+      </div>
+      <div class="grid grid-cols-3 gap-6 pt-6 border-t border-gray-100">
+        <div><div class="mono text-[10px] tracking-[0.1em] uppercase text-gray-400 mb-1">Wertverlust</div><div class="mono text-lg font-medium text-crimson" id="k2wv">—</div></div>
+        <div><div class="mono text-[10px] tracking-[0.1em] uppercase text-gray-400 mb-1">Opportunität</div><div class="mono text-lg font-medium text-crimson" id="k2op">—</div></div>
+        <div><div class="mono text-[10px] tracking-[0.1em] uppercase text-gray-400 mb-1">Verschleiß-Puffer</div><div class="mono text-lg font-medium text-crimson" id="k2ver">—</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MODUL D -->
+<section class="py-24 bg-gray-50/40">
+  <div class="max-w-3xl mx-auto px-6">
+    <div class="mono text-xs tracking-[0.2em] uppercase text-gray-400 mb-2">Modul D</div>
+    <h3 class="text-2xl font-semibold tracking-tight mb-12 pb-6 border-b border-gray-100">Immobilien-Schatten</h3>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+      <div>
+        <label class="mono text-[10px] tracking-[0.14em] uppercase text-gray-400 block mb-2 flex items-center gap-1">
+          Marktwert Immobilie (€)
+          <div class="relative inline-flex" id="hausTip" onclick="toggleTip('hausTip')">
+            <span class="w-3.5 h-3.5 rounded-full border border-gray-300 text-[9px] flex items-center justify-center cursor-pointer hover:border-gray-600 transition-colors">i</span>
+            <div class="tip-box absolute top-full left-1/2 -translate-x-1/2 mt-2 bg-gray-900 text-white font-mono text-[10px] leading-relaxed p-4 w-64 z-50 opacity-0 pointer-events-none transition-opacity">
+              <strong class="text-gray-300">Monatliche Instandhaltungskosten</strong><br><br>
+              Dach · Heizung · Fenster · Fassade<br>Elektrik · Sanitär · Böden · Garten<br>Ungeplante Reparaturen<br><br>
+              Formel: Marktwert × 1,5% ÷ 12
+            </div>
+          </div>
+        </label>
+        <input class="inp-line" type="number" id="hausW" placeholder="350000" min="0" oninput="liveD()">
+        <div class="mono text-xs italic text-gray-400 mt-2">Marktwert × 1,5% ÷ 12 = monatliche Rücklage</div>
+      </div>
+      <div>
+        <div class="mono text-[10px] tracking-[0.14em] uppercase text-gray-400 mb-2">Monatliche Instandhaltungskosten</div>
+        <div class="mono text-3xl font-medium text-crimson" id="hausLive">—</div>
+        <div class="mono text-xs text-gray-400 mt-3 leading-relaxed">Dach · Heizung · Fenster · Fassade<br>Elektrik · Sanitär · Böden · Garten</div>
+      </div>
+    </div>
+
+    <!-- Analyse Button -->
+    <div class="mt-16 pt-12 border-t border-gray-100">
+      <button id="aBtn" onclick="runAnalysis()" class="mono text-sm font-medium tracking-wide text-white bg-crimson px-8 py-3.5 hover:bg-red-700 transition-colors">
+        Statik analysieren →
+      </button>
+      <p class="mono text-xs text-gray-400 mt-3">Alle Felder optional. Leere Werte werden als 0 behandelt.</p>
+    </div>
+  </div>
+</section>
+
+</div><!-- /rechner -->
+
+<!-- ═══ LOADING ═══ -->
+<div id="loading" class="hidden py-24">
+  <div class="max-w-3xl mx-auto px-6">
+    <div class="mono text-[10px] tracking-[0.16em] uppercase text-gray-400 mb-4">Analyse läuft</div>
+    <div class="h-px bg-gray-100 mb-8 relative">
+      <div id="loadFill" class="h-px bg-gray-900 absolute top-0 left-0 transition-all duration-100" style="width:0%"></div>
+    </div>
+    <div id="loadLines" class="mono text-sm leading-loose text-gray-400 space-y-0.5"></div>
+  </div>
+</div>
+
+<!-- ═══ INTERVENTION ═══ -->
+<div id="rcBlock" class="hidden py-24 border-t border-gray-100">
+  <div class="max-w-3xl mx-auto px-6">
+    <div class="mono text-xs tracking-[0.16em] uppercase text-gray-400 mb-10">Ein kurzes Wort, bevor wir uns dein Ergebnis ansehen</div>
+    <blockquote class="max-w-xl text-xl font-light italic text-gray-800 leading-relaxed pl-5 border-l-2 border-gray-200 mb-8">
+      Dein erster Impuls wird jetzt vermutlich sein, zurückzugehen und die Zahlen zu korrigieren — sie etwas freundlicher zu gestalten, damit die Diagnose besser aussieht. Ich kenne diesen Reflex nur zu gut. Ich habe auf meinem Weg 200.000 Euro verloren, weil ich genau das getan habe: Ich habe mir die Realität passend geredet, anstatt die unerbittliche Mathematik zu akzeptieren.<br><br>
+      Doch am Ende verändert diese Art der Manipulation zwar das Dokument, aber niemals deine tatsächliche Lebenslage. <strong class="font-medium not-italic">Sei ehrlich zu dir selbst, auch wenn es im ersten Moment wehtut. Nur auf einem ehrlichen Fundament kannst du echte Freiheit aufbauen.</strong>
+    </blockquote>
+    <div class="mono text-xs text-gray-400 mb-10">— Dominic, CL Global · Freiheit durch Klarheit</div>
+
+    <!-- Plausibility warning -->
+    <div id="rcWarning" class="hidden mb-10 p-5 bg-red-50 border-l-2 border-crimson">
+      <div class="mono text-[10px] tracking-[0.14em] uppercase text-crimson mb-2" id="rcWarnTitle">Plausibilitäts-Alarm</div>
+      <div class="mono text-sm text-red-700 leading-relaxed" id="rcWarnText"></div>
+    </div>
+
+    <div class="mono text-xs text-gray-400 mb-4">Ich habe das gelesen und bin bereit, mein Ergebnis ungeschönt zu sehen:</div>
+    <button onclick="showResults()" class="mono text-sm font-medium tracking-wide text-gray-900 border-b border-gray-900 pb-0.5 hover:text-gray-500 hover:border-gray-500 transition-all">
+      Mein Ergebnis ansehen →
+    </button>
+  </div>
+</div>
+
+<!-- Status Banner -->
+<div id="statusBanner" class="hidden py-4 border-t border-crimson/20">
+  <div class="max-w-3xl mx-auto px-6">
+    <div class="mono text-xs font-medium tracking-[0.1em] uppercase text-crimson" id="statusBannerTxt">Diagnose-Status: Unrealistisch schöngerechnet</div>
+    <div class="mono text-xs text-gray-400 mt-1">Mathematik lässt sich nicht manipulieren, nur deine Wahrnehmung.</div>
+  </div>
+</div>
+
+<!-- ═══ RESULTS ═══ -->
+<div id="results" class="hidden">
+
+  <!-- Arbeitstage -->
+  <section class="py-24">
+    <div class="max-w-3xl mx-auto px-6">
+      <div class="mono text-[10px] tracking-[0.16em] uppercase text-gray-400 mb-4">Audit-Ergebnis</div>
+
+      <div class="mb-16">
+        <div class="mono text-xs tracking-[0.14em] uppercase text-gray-400 mb-4">// Arbeitstage für deine Matrix</div>
+        <div class="flex items-baseline gap-3">
+          <span class="mono font-semibold text-crimson" style="font-size:clamp(72px,14vw,120px);line-height:1;letter-spacing:-.04em" id="sDayNum">—</span>
+          <span class="mono text-lg text-gray-400 font-light" id="sDaySfx"></span>
+        </div>
+        <div class="mono text-sm text-gray-500 mt-4 max-w-sm leading-relaxed" id="sDesc">—</div>
+        <div class="mt-6">
+          <div class="mono text-[10px] tracking-[0.12em] uppercase text-gray-400 mb-2">Freie Tage / Monat</div>
+          <div class="mono text-4xl font-medium text-green-700" id="sFreeDays">—</div>
+        </div>
+      </div>
+
+      <!-- KPIs -->
+      <div class="grid grid-cols-2 gap-x-12 gap-y-10 pt-12 border-t border-gray-100">
+        <div>
+          <div class="mono text-[10px] tracking-[0.12em] uppercase text-gray-400 mb-2">Gesamteinkommen Haushalt</div>
+          <div class="mono text-3xl font-medium text-gray-900" id="kNetto">—<span class="text-base font-light text-gray-400"> €</span></div>
+          <div class="mono text-xs text-gray-400 mt-1">Eigenes Netto + Partner-DB</div>
+        </div>
+        <div>
+          <div class="mono text-[10px] tracking-[0.12em] uppercase text-gray-400 mb-2">Gesamtabfluss / Monat</div>
+          <div class="mono text-3xl font-medium text-crimson" id="kTotal">—<span class="text-base font-light"> €</span></div>
+          <div class="mono text-xs text-gray-400 mt-1">Alle Kosten inkl. Zerfall</div>
+        </div>
+        <div>
+          <div class="mono text-[10px] tracking-[0.12em] uppercase text-gray-400 mb-2">Unsichtbarer Zerfall</div>
+          <div class="mono text-3xl font-medium text-crimson" id="kDecay">—<span class="text-base font-light"> €</span></div>
+          <div class="mono text-xs text-gray-400 mt-1">Kfz-Wertverlust + Haus-Rücklage</div>
+        </div>
+        <div>
+          <div class="mono text-[10px] tracking-[0.12em] uppercase text-gray-400 mb-2">Echte Lebens-Energie</div>
+          <div class="mono text-3xl font-medium text-green-700" id="kLife">—<span class="text-base font-light"> €</span></div>
+          <div class="mono text-xs text-gray-400 mt-1">Was wirklich übrig bleibt</div>
+        </div>
+      </div>
+
+      <!-- Overhead -->
+      <div class="mt-14 pt-12 border-t border-gray-100">
+        <div class="mono text-xs tracking-[0.14em] uppercase text-gray-400 mb-8">Status-Overhead</div>
+        <div class="grid grid-cols-3 gap-10">
+          <div>
+            <div class="mono text-[10px] tracking-[0.1em] uppercase text-gray-400 mb-2">Tage für Status</div>
+            <div class="mono text-2xl font-medium text-amber-600" id="ohDays">—</div>
+            <div class="mono text-xs text-gray-400 mt-1">Tage/Mo für Status</div>
+          </div>
+          <div>
+            <div class="mono text-[10px] tracking-[0.1em] uppercase text-gray-400 mb-2">Status-Kosten</div>
+            <div class="mono text-2xl font-medium text-amber-600" id="ohEuro">— €</div>
+            <div class="mono text-xs text-gray-400 mt-1">Monatlich</div>
+          </div>
+          <div>
+            <div class="mono text-[10px] tracking-[0.1em] uppercase text-gray-400 mb-2">Autonomie-Breakpoint</div>
+            <div class="mono text-2xl font-medium text-green-700" id="ohBreak">—</div>
+            <div class="mono text-xs text-gray-400 mt-1">Ab hier für dich</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Alerts -->
+      <div class="mt-12 pt-10 border-t border-gray-100" id="alertsBox"></div>
+    </div>
+  </section>
+
+  <!-- Chart -->
+  <section class="py-24 bg-gray-50/40">
+    <div class="max-w-3xl mx-auto px-6">
+      <div class="mono text-[10px] tracking-[0.16em] uppercase text-gray-400 mb-10">Einkommensstruktur — 100% aufgeteilt</div>
+
+      <div class="mb-10">
+        <div class="mono text-[10px] tracking-[0.1em] uppercase text-gray-400 mb-3">Gesamt-Übersicht</div>
+        <div class="flex h-2 bg-gray-100 overflow-hidden">
+          <div class="bar-fill" id="ss-sys" style="background:#6b6355;width:0%"></div>
+          <div class="bar-fill" id="ss-fix" style="background:#1a1a18;width:0%"></div>
+          <div class="bar-fill" id="ss-dec" style="background:#DC2626;width:0%"></div>
+          <div class="bar-fill" id="ss-life" style="background:#16a34a;flex:1"></div>
+        </div>
+        <div class="flex gap-6 mt-3 flex-wrap">
+          <div class="flex items-center gap-2"><div class="w-2 h-2 rounded-full bg-[#6b6355]"></div><span class="mono text-xs text-gray-400">Partner-Kosten</span></div>
+          <div class="flex items-center gap-2"><div class="w-2 h-2 rounded-full bg-[#1a1a18]"></div><span class="mono text-xs text-gray-400">Lebenshaltung</span></div>
+          <div class="flex items-center gap-2"><div class="w-2 h-2 rounded-full bg-crimson"></div><span class="mono text-xs text-gray-400">Zerfall</span></div>
+          <div class="flex items-center gap-2"><div class="w-2 h-2 rounded-full bg-green-600"></div><span class="mono text-xs text-gray-400">Freie Energie</span></div>
+        </div>
+      </div>
+
+      <div class="space-y-6">
+        <div>
+          <div class="flex justify-between mb-2"><span class="mono text-xs text-gray-500">Partner-Kosten (Kita + Pendeln)</span><span class="mono text-xs font-medium text-gray-900" id="bv-sys">—</span></div>
+          <div class="h-0.5 bg-gray-100"><div class="bar-fill h-full" id="bf-sys" style="background:#6b6355;width:0%"></div></div>
+        </div>
+        <div>
+          <div class="flex justify-between mb-2"><span class="mono text-xs text-gray-500">Lebenshaltung (Nebenk. + LM + Energie + Urlaub)</span><span class="mono text-xs font-medium text-gray-900" id="bv-fix">—</span></div>
+          <div class="h-0.5 bg-gray-100"><div class="bar-fill h-full" id="bf-fix" style="background:#1a1a18;width:0%"></div></div>
+        </div>
+        <div>
+          <div class="flex justify-between mb-2"><span class="mono text-xs text-gray-500">Unsichtbarer Zerfall (Kfz + Haus)</span><span class="mono text-xs font-medium text-gray-900" id="bv-dec">—</span></div>
+          <div class="h-0.5 bg-gray-100"><div class="bar-fill h-full" id="bf-dec" style="background:#DC2626;width:0%"></div></div>
+        </div>
+        <div>
+          <div class="flex justify-between mb-2"><span class="mono text-xs text-gray-500">Freie Energie</span><span class="mono text-xs font-medium text-gray-900" id="bv-life">—</span></div>
+          <div class="h-0.5 bg-gray-100"><div class="bar-fill h-full" id="bf-life" style="background:#16a34a;width:0%"></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Terminal Log -->
+  <section class="py-24">
+    <div class="max-w-3xl mx-auto px-6">
+      <div class="mono text-[10px] tracking-[0.16em] uppercase text-gray-400 mb-8">Diagnose-Log</div>
+      <div id="termBody" class="mono text-sm leading-loose space-y-0.5"></div>
+    </div>
+  </section>
+
+  <!-- Detail Table -->
+  <section class="py-24 bg-gray-50/40">
+    <div class="max-w-3xl mx-auto px-6">
+      <div class="mono text-[10px] tracking-[0.16em] uppercase text-gray-400 mb-8">Vollständige Kostenaufstellung</div>
+      <table class="w-full border-collapse">
+        <thead>
+          <tr class="border-b border-gray-200">
+            <th class="text-left mono text-[10px] tracking-[0.12em] uppercase text-gray-400 pb-3">Position</th>
+            <th class="text-left mono text-[10px] tracking-[0.12em] uppercase text-gray-400 pb-3">Berechnung</th>
+            <th class="text-right mono text-[10px] tracking-[0.12em] uppercase text-gray-400 pb-3">€ / Monat</th>
+          </tr>
+        </thead>
+        <tbody id="detBody"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- Finanzielle Klarheit -->
+  <section class="py-24">
+    <div class="max-w-3xl mx-auto px-6">
+      <div class="mono text-[10px] tracking-[0.16em] uppercase text-gray-400 mb-4">Finanzielle Klarheit</div>
+      <h2 class="text-3xl font-semibold tracking-tight mb-12">Was dein Geld wirklich tut</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+        <div>
+          <div class="mono text-[10px] tracking-[0.12em] uppercase text-gray-400 mb-3">Status-Ausgaben</div>
+          <div class="mono text-3xl font-medium text-amber-600" id="klStatus">— €</div>
+          <div class="mono text-xs text-gray-400 mt-2 leading-relaxed">Alle als „Status" markierten Positionen.</div>
+        </div>
+        <div>
+          <div class="mono text-[10px] tracking-[0.12em] uppercase text-gray-400 mb-3">Substanz-Verzehr</div>
+          <div class="mono text-3xl font-medium text-crimson" id="klSubstanz">— €</div>
+          <div class="mono text-xs text-gray-400 mt-2 leading-relaxed">Haus-Instandhaltung + Kfz-Wertverlust. Unsichtbar auf dem Kontoauszug.</div>
+        </div>
+        <div id="klFreiheitCell">
+          <div class="mono text-[10px] tracking-[0.12em] uppercase text-gray-400 mb-3">Dein Anteil für Freiheit</div>
+          <div class="mono text-3xl font-medium text-green-700" id="klFreiheit">— €</div>
+          <div class="mono text-xs text-gray-400 mt-2 leading-relaxed" id="klFreiheitDesc">Was übrig bleibt, wenn Status und Substanzverzehr abgezogen sind.</div>
+          <div class="mono text-xs text-crimson mt-2 leading-relaxed hidden" id="klWarnText"></div>
+        </div>
+      </div>
+
+      <div id="statementBox" class="hidden mt-16 pt-12 border-t border-gray-100">
+        <blockquote class="max-w-xl text-lg font-light italic text-gray-700 leading-relaxed pl-5 border-l-2 border-gray-200 mb-5" id="statementTxt">—</blockquote>
+        <div class="mono text-xs text-gray-400">— Dominic · Leben in einem 15 Jahre alten Van · Freiheit durch Klarheit</div>
+      </div>
+    </div>
+  </section>
+
+</div><!-- /results -->
+
+<!-- ═══ ANGEBOTE ═══ -->
+<section class="py-28 border-t border-gray-100" id="angebote">
+  <div class="max-w-3xl mx-auto px-6">
+    <div class="mono text-xs tracking-[0.2em] uppercase text-gray-400 mb-6">Exit-Angebote</div>
+    <h2 class="text-4xl font-semibold tracking-tight leading-tight mb-20">Dein Weg<br><em class="not-italic text-gray-500">heraus.</em></h2>
+
+    <div class="space-y-20">
+      <div>
+        <div class="mono text-xs tracking-[0.14em] uppercase text-gray-400 mb-3">Consulting · 60 Minuten</div>
+        <h3 class="text-2xl font-semibold tracking-tight mb-2">Der System-Check</h3>
+        <div class="mono text-xl text-gray-400 mb-6">250 €</div>
+        <p class="text-gray-600 leading-relaxed max-w-lg mb-5">Du bekommst innerhalb einer Stunde einen klaren Blick auf deine finanzielle Statik — ohne Schönreden, ohne Verkaufsdruck. Wir analysieren deinen Ist-Zustand und identifizieren die größten Hebel.</p>
+        <ul class="space-y-2 mb-7">
+          <li class="mono text-sm text-gray-500">— Vollständige Statik-Analyse deiner Zahlen</li>
+          <li class="mono text-sm text-gray-500">— Identifikation der 3 größten Kosten-Hebel</li>
+          <li class="mono text-sm text-gray-500">— Erster konkreter Fahrplan</li>
+          <li class="mono text-sm text-gray-500">— Remote via Video-Call, weltweit</li>
+        </ul>
+        <a href="mailto:info@cl-global-consulting.com?subject=System-Check buchen" class="mono text-sm font-medium text-gray-900 border-b border-gray-900 pb-0.5 hover:text-gray-500 hover:border-gray-500 transition-all">Jetzt buchen →</a>
+      </div>
+
+      <div class="pt-16 border-t border-gray-100">
+        <div class="mono text-xs tracking-[0.14em] uppercase text-gray-400 mb-3">Consulting · 90 Minuten</div>
+        <h3 class="text-2xl font-semibold tracking-tight mb-2">Die Matrix-Strategie</h3>
+        <div class="mono text-xl text-gray-400 mb-6">350 €</div>
+        <p class="text-gray-600 leading-relaxed max-w-lg mb-5">Für alle, die nicht nur wissen wollen was ist, sondern konkret heraus wollen. Tiefgreifende Strategie-Session mit individuellem Umsetzungsplan — für den echten Schnitt.</p>
+        <ul class="space-y-2 mb-7">
+          <li class="mono text-sm text-gray-500">— Alles aus dem System-Check</li>
+          <li class="mono text-sm text-gray-500">— Tiefenanalyse Glaubenssätze &amp; Muster</li>
+          <li class="mono text-sm text-gray-500">— Konkreter Exit-Plan mit Zeitachse</li>
+          <li class="mono text-sm text-gray-500">— PT-Struktur, US-LLC, Mobilitäts-Setup</li>
+          <li class="mono text-sm text-gray-500">— Schriftliche Zusammenfassung im Anschluss</li>
+        </ul>
+        <a href="mailto:info@cl-global-consulting.com?subject=Matrix-Strategie buchen" class="mono text-sm font-medium text-crimson border-b border-crimson pb-0.5 hover:text-red-700 hover:border-red-700 transition-all">Jetzt buchen →</a>
+      </div>
+    </div>
+
+    <!-- Toolkit -->
+    <div class="mt-20 pt-16 border-t border-gray-100">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+        <div><div class="mono text-[10px] tracking-[0.12em] uppercase text-gray-400 mb-2">PDF · Digital</div><div class="font-semibold mb-2">Exit-Planer</div><div class="text-sm text-gray-500 leading-relaxed mb-3">Strukturierter Plan für den radikalen Schnitt.</div><div class="mono text-xs text-gray-400">Demnächst verfügbar</div></div>
+        <div><div class="mono text-[10px] tracking-[0.12em] uppercase text-gray-400 mb-2">PDF · Digital</div><div class="font-semibold mb-2">Inventar der Freiheit</div><div class="text-sm text-gray-500 leading-relaxed mb-3">Bestandsaufnahme aller Bindungen mit Bewertungsmatrix.</div><div class="mono text-xs text-gray-400">Demnächst verfügbar</div></div>
+        <div><div class="mono text-[10px] tracking-[0.12em] uppercase text-gray-400 mb-2">Google Sheet · Digital</div><div class="font-semibold mb-2">Master-Inventur V5</div><div class="text-sm text-gray-500 leading-relaxed mb-3">Das vollständige Finanz-Analyse-Tool aus diesem Audit.</div><div class="mono text-xs text-gray-400">Demnächst verfügbar</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ CTA ═══ -->
+<section class="py-28 bg-gray-50/40">
+  <div class="max-w-3xl mx-auto px-6">
+    <div class="mono text-xs tracking-[0.2em] uppercase text-gray-400 mb-6">Nächster Schritt</div>
+    <h2 class="text-4xl font-semibold tracking-tight leading-tight mb-6">Deine Statik ist instabil.<br><em class="not-italic text-gray-500">Lass uns das korrigieren.</em></h2>
+    <p class="text-gray-600 leading-relaxed max-w-lg mb-8">Ich kenne beide Welten — den goldenen Käfig und das freie Leben. In einem 60- oder 90-Minuten-Call bekommst du klare Zahlen, eine ehrliche Analyse und einen konkreten Fahrplan heraus.</p>
+    <div class="flex flex-wrap gap-5 mb-8">
+      <span class="mono text-xs text-gray-500">✓ Kein Upsell</span>
+      <span class="mono text-xs text-gray-500">✓ Keine Verpflichtung</span>
+      <span class="mono text-xs text-gray-500">✓ Remote · Weltweit</span>
+      <span class="mono text-xs text-gray-500">✓ PT-Struktur · US-LLC</span>
+    </div>
+    <a href="mailto:info@cl-global-consulting.com" class="mono text-sm font-medium text-white bg-crimson px-8 py-3.5 hover:bg-red-700 transition-colors inline-block">Jetzt buchen →</a>
+    <div class="mono text-xs text-gray-400 mt-4">System-Check 250 € · Matrix-Strategie 350 €</div>
+  </div>
+</section>
+
+<footer class="py-8 border-t border-gray-100">
+  <div class="max-w-3xl mx-auto px-6 flex justify-between items-center flex-wrap gap-3">
+    <div class="mono text-sm text-gray-400">CL Global — Freiheit durch Klarheit</div>
+    <div class="mono text-xs text-gray-300 tracking-wide">Impressum · Datenschutz · cl-global-consulting.com</div>
+  </div>
+</footer>
+
+<script>
+// Tip boxes
+document.querySelectorAll('.tip-box').forEach(b => {
+  b.parentElement.addEventListener('mouseenter', () => b.style.opacity = '1');
+  b.parentElement.addEventListener('mouseleave', () => b.style.opacity = '0');
+});
+function toggleTip(id) {
+  const wrap = document.getElementById(id);
+  const box = wrap.querySelector('.tip-box');
+  if (box) box.style.opacity = box.style.opacity === '1' ? '0' : '1';
+}
+
+// kfz2 toggle
+function toggleKfz2() {
+  kfz2On = !kfz2On;
+  document.getElementById('kfz2Cb').classList.toggle('on', kfz2On);
+  document.getElementById('kfz2-wrap').classList.toggle('hidden', !kfz2On);
+}
+
+// alert helper
+function buildAlerts() {
+  const d = D, box = s('alertsBox');
+  box.innerHTML = '';
+  const add = (cls, pre, txt) => {
+    const colors = {critical:'text-crimson', warn:'text-amber-600', alarm:'text-purple-700', ok:'text-green-700'};
+    const div = document.createElement('div');
+    div.className = 'flex gap-6 py-4 border-b border-gray-100';
+    div.innerHTML = `<div class="mono text-[10px] tracking-[0.1em] uppercase font-medium pt-0.5 w-24 flex-shrink-0 ${colors[cls]||colors.ok}">${pre}</div><div class="mono text-sm leading-relaxed ${colors[cls]||colors.ok}">${txt}</div>`;
+    box.appendChild(div);
+  };
+  let any = false;
+  if (d.totalIncome > 0 && (d.fixk+d.lmk+d.engk+d.urlaubk) / d.totalIncome > 0.6) { add('critical','[CRITICAL]',`Lebenshaltungskosten binden ${Math.round((d.fixk+d.lmk+d.engk+d.urlaubk)/d.totalIncome*100)}% des Einkommens. Grenze (60%) überschritten.`); any = true; }
+  if (d.totalIncome > 0 && d.kfzTotal / d.totalIncome > 0.2) { add('warn','[WARN]',`Kfz-Gesamtkosten (${fm(d.kfzTotal)} €/Mo) = ${Math.round(d.kfzTotal/d.totalIncome*100)}% des Nettos. Mobilitäts-Falle.`); any = true; }
+  if (d.pb > 0 && d.partnerDB < 500) { add('alarm','[ALARM]', d.partnerDB < 0 ? `Partner-Deckungsbeitrag negativ: ${fm(d.partnerDB)} €/Mo.` : `Partner-Deckungsbeitrag: nur ${fm(d.partnerDB)} €/Mo.`); any = true; }
+  if (d.statusTotal > 0) { add('warn','[STATUS]',`${fm(d.statusTotal)} €/Mo (${d.statusDays} Tage/Mo) werden nur für Status gearbeitet.`); any = true; }
+  if (d.totalIncome > 0) { const pct = Math.round((d.life/d.totalIncome)*100); if (pct < 15) { add('critical','[CRITICAL]',`Nur ${pct}% freie Energie (${fm(d.life)} €). Statik kollabiert.`); any = true; } }
+  if (!any && d.totalIncome > 0) add('ok','[OK]','Keine kritischen Schwellenwerte überschritten.');
+}
+
+// Detail table
+function buildTable() {
+  const d = D;
+  const rows = [];
+  const addS = t => rows.push({sec:t});
+  const addR = (l,f,v,c,tot) => rows.push({l,f,v,c,tot});
+  addS('MODUL_A — REALES EINKOMMEN');
+  if (d.netto) addR('Gehalt Netto','Eingabe',d.netto,'',false);
+  if (d.stR) addR('Steuerrückerstattung (Mo)',`${fm(d.stR)} ÷ 12`,d.stR/12,'g',false);
+  if (d.partnerContrib>0) addR('Partner-Deckungsbeitrag',`+${fm(d.partnerContrib)} €`,d.partnerContrib,'g',false);
+  if (d.stR||d.netto||d.partnerContrib) addR('Gesamteinkommen Haushalt','Netto + Partner-DB',d.totalIncome,'b',true);
+  if (d.fixk) addR('Nebenkosten','Eingabe',-d.fixk,'r',false);
+  if (d.lmk) addR('Lebensmittel & Haushalt','Eingabe',-d.lmk,'r',false);
+  if (d.engk) addR('Energie & Grundkosten','Eingabe',-d.engk,'r',false);
+  if (d.urlaubk) addR('Urlaub & Freizeit (Mo)',`${fm(d.urlaubk*12)} ÷ 12`,-d.urlaubk,'r',false);
+  if (d.pb > 0) {
+    addS('MODUL_B — PARTNER-CHECK');
+    addR('Partner Netto','Eingabe',d.pb,'',false);
+    if (d.ki) addR('Kita-Kosten','Eingabe',-d.ki,'r',false);
+    if (d.pe) addR('Pendelkosten','Eingabe',-d.pe,'r',false);
+    addR('Wahrer Deckungsbeitrag','Netto − Kita − Pendeln',d.partnerDB,d.partnerDB>=0?'a':'r',true);
+  }
+  const addKfz = (lbl,c,p,km,st,lfd,art) => {
+    if(!p&&!km&&!lfd&&!c.rep) return;
+    addS(lbl+(art==='leasing'?' [LEASING]':art==='finanz'?' [FINANZIERUNG]':''));
+    const rate=st==='new'?'15%':'8%';
+    if(art!=='leasing'&&p){addR(`Wertverlust (${rate} p.a.)`,`${fm(p)} × ${rate} ÷ 12`,-c.wv,'r',false);addR('Opportunitätskosten (4% p.a.)',`${fm(p)} × 4% ÷ 12`,-c.op,'r',false);}
+    if(km) addR('Verschleiß-Puffer',`${fm(km)} km × 0,05 € ÷ 12`,-c.ver,'r',false);
+    if(lfd) addR('Laufende Kosten','Eingabe',-lfd,'r',false);
+    if(c.rep) addR('Reparaturrücklage','Eingabe',-c.rep,'r',false);
+    addR('Kfz-Gesamt','Summe',-c.total,'r',true);
+  };
+  addKfz('MODUL_C — FAHRZEUG 1',d.c1,g('k1p'),g('k1km'),s('k1s').value,g('k1lfd'),fahrzeugArt[1]);
+  if(kfz2On) addKfz('MODUL_C — FAHRZEUG 2',d.c2,g('k2p'),g('k2km'),s('k2s').value,g('k2lfd'),fahrzeugArt[2]);
+  if(g('hausW')>0){addS('MODUL_D — IMMOBILIEN');addR('Monatl. Instandhaltung',`${fm(g('hausW'))} × 1,5% ÷ 12`,-d.hausS,'r',false);}
+  addS('ERGEBNIS');
+  addR('Gesamtabfluss / Monat','Alle Kosten',-d.allCosts,'r',true);
+  addR('Echte Lebens-Energie','Netto − Abfluss',d.life,'g',true);
+
+  const cc={r:'text-crimson',g:'text-green-700',a:'text-amber-600',b:'text-gray-900','':`text-gray-500`};
+  s('detBody').innerHTML = rows.map(r => {
+    if(r.sec) return `<tr><td colspan="3" class="mono text-[10px] tracking-[0.12em] uppercase text-gray-400 pt-8 pb-2">${r.sec}</td></tr>`;
+    const cls = r.tot ? 'font-medium border-t border-gray-200' : '';
+    const col = cc[r.c]||'text-gray-500';
+    return `<tr class="${cls} border-b border-gray-50 hover:bg-gray-50/60 transition-colors"><td class="py-2.5 mono text-sm text-gray-700 pr-4">${r.l}</td><td class="py-2.5 mono text-xs text-gray-400 pr-4">${r.f}</td><td class="py-2.5 mono text-sm text-right font-medium ${col}">${r.v>=0?'+':''}${fm(r.v)} €</td></tr>`;
+  }).join('');
+}
+
+// KPI helper
+function kset(id, v, cls) {
+  const colors = {'r':'text-crimson','g':'text-green-700','a':'text-amber-600','b':'text-gray-900','':`text-gray-900`};
+  const el = s(id);
+  el.innerHTML = fm(v) + '<span class="text-base font-light text-gray-400"> €</span>';
+  el.className = `mono text-3xl font-medium ${colors[cls]||colors['']}`;
+}
+</script>
+<script>
+
+
+
+
+/* ── HEADLINES ── */
+const TRUTHS = [
+  "Bist du der Architekt deines Lebens oder nur ein Mieter in der Vision anderer?",
+  "Sicherheit ist oft nur die Ratenzahlung für ein Leben, das dir nicht gehört.",
+  "Wahre Freiheit beginnt im Kopf – die Zahlen sind am Ende nur der Beweis.",
+  "Besitzt du deine Dinge wirklich, oder fressen sie deine Lebenszeit auf?",
+  "Das Hamsterrad sieht von innen oft wie eine Karriereleiter aus.",
+  "Wir opfern unsere Zeit für Geld, um uns später die Zeit zurückzukaufen.",
+  "Du kaufst Dinge, die du nicht brauchst, um Menschen zu beeindrucken, denen du egal bist – während du glaubst, es würde sie interessieren.",
+  "Du hast gelernt zu gefallen, statt zu leben – und nennst diese Konditionierung heute deine eigene Persönlichkeit.",
+  "Wer seine eigene Matrix nicht versteht, wird immer Teil einer fremden sein.",
+  "Erfolg im System ist oft nur die Erlaubnis, in einer etwas schöneren Zelle des Hamsterrads zu laufen.",
+  "Frag dich ehrlich: Lebst du deinen Traum oder erfüllst du nur die Erwartungen, die man dir seit der Kindheit eingeimpft hat?",
+  "Die Wahrheit ist nicht schwer zu finden, sie ist nur schwer zu ertragen – deshalb bleibst du lieber in deiner gewohnten Matrix.",
+  "Du verbringst mindestens die Hälfte deines Arbeitslebens damit, den Wohlstand deiner Bank zu finanzieren – und nennst es stolz dein „Eigentum\".",
+  "Ein hoher Lebensstandard ist oft nur ein goldener Käfig, den du mit deiner Zeit bezahlst, weil du verlernt hast, zwischen Notwendigkeit und Gewohnheit zu unterscheiden.",
+  "Das teuerste Gut ist nicht das bezahlte Haus – es ist der Zwang, einen Status aufrechtzuerhalten, der dich innerlich ausbrennt.",
+  "Was du heute als 'normal' bezeichnest, ist oft nur die Summe teurer Gewohnheiten, die dir deine Freiheit rauben, ohne dass eine Bank involviert ist."
+];
+
+const todayIdx = new Date().getDate() % TRUTHS.length;
+let hlActive = todayIdx;
+const hlWrap = document.getElementById('hlWrap');
+const dotsCont = document.getElementById('heroDots');
+
+TRUTHS.forEach((t, i) => {
+  const h = document.createElement('h1');
+  h.className = 'hl' + (i === todayIdx ? ' on' : '');
+  h.textContent = t;
+  hlWrap.appendChild(h);
+  const dot = document.createElement('div');
+  dot.className = 'dot' + (i === todayIdx ? ' active' : '');
+  dot.onclick = () => goHl(i);
+  dotsCont.appendChild(dot);
+});
+// Set initial height after fonts load
+if (document.fonts) {
+  document.fonts.ready.then(() => setWrapHeight(todayIdx));
+} else {
+  setTimeout(() => setWrapHeight(todayIdx), 300);
+}
+
+function setWrapHeight(idx) {
+  const hls = hlWrap.querySelectorAll('.hl');
+  // measure the active headline's scroll height
+  const target = hls[idx];
+  // temporarily make visible to measure
+  target.style.visibility = 'visible';
+  target.style.opacity = '0';
+  const h = target.scrollHeight;
+  target.style.visibility = '';
+  target.style.opacity = '';
+  hlWrap.style.minHeight = (h + 24) + 'px';
+}
+
+function goHl(next) {
+  const hls = hlWrap.querySelectorAll('.hl');
+  const dots = dotsCont.querySelectorAll('.dot');
+  hls[hlActive].classList.remove('on'); hls[hlActive].classList.add('out');
+  dots[hlActive].classList.remove('active');
+  const prev = hlActive;
+  setTimeout(() => hls[prev].classList.remove('out'), 500);
+  hlActive = next;
+  hls[hlActive].classList.add('on');
+  dots[hlActive].classList.add('active');
+  setWrapHeight(next);
+}
+setInterval(() => goHl((hlActive + 1) % TRUTHS.length), 5000);
+
+/* ── Helpers ── */
+const g  = id => parseFloat(document.getElementById(id)?.value) || 0;
+const fm = n  => n.toLocaleString('de-DE', {minimumFractionDigits:0, maximumFractionDigits:0});
+const s  = id => document.getElementById(id);
+
+/* ── Tooltip ── */
+function toggleTip(id) { s(id).classList.toggle('open'); }
+document.addEventListener('click', e => {
+  if (!e.target.closest('.tip-wrap')) document.querySelectorAll('.tip-wrap.open').forEach(t => t.classList.remove('open'));
+});
+
+/* ── Psychologie checkboxen ── */
+const psychStatus = {};
+function togglePsych(id) {
+  psychStatus[id] = !psychStatus[id];
+  s(id).classList.toggle('on', psychStatus[id]);
+}
+
+/* ── Kfz2 toggle ── */
+let kfz2On = false;
+function toggleKfz2() {
+  kfz2On = !kfz2On;
+  s('kfz2Cb').classList.toggle('on', kfz2On);
+  s('kfz2-wrap').classList.toggle('hidden', !kfz2On);
+}
+
+/* ── Live A ── */
+function liveA() {
+  const n = g('netto'), st = g('steuerR');
+  const adj = n + (st / 12);
+  const pb = g('pBrutto'), ki = g('kita'), pe = g('pendel');
+  const db = pb - ki - pe;
+  const contrib = Math.max(0, db);
+  const total = adj + contrib;
+  if (n || st) {
+    s('nettoAdj').textContent = fm(total) + ' €';
+    s('nettoFormula').textContent = contrib > 0
+      ? `${fm(adj)} + Partner-DB ${fm(contrib)} = ${fm(total)} €/Mo`
+      : `${fm(n)} + (${fm(st)} ÷ 12) = ${fm(adj)} €/Mo`;
+  } else {
+    s('nettoAdj').textContent = '—';
+    s('nettoFormula').textContent = 'Netto + (Steuerrückerstattung ÷ 12) + Partner-Deckungsbeitrag';
+  }
+  // Live Gesamtausgaben
+  const lm = g('lmk'), eng = g('engk'), fk = g('fixk'), url = g('urlaubk') / 12;
+  const aus = fk + lm + eng + url;
+  s('ausgabenLive').textContent = (lm || eng || fk || url) ? fm(aus) + ' €' : '—';
+  s('ausgabenFormula').textContent = (lm || eng || fk || url)
+    ? `${fm(fk)} + ${fm(lm)} + ${fm(eng)} + ${fm(url)} (Urlaub) = ${fm(aus)} €/Mo`
+    : 'Nebenkosten + Lebensmittel + Energie + Urlaub';
+}
+
+/* ── Live B ── */
+function liveB() {
+  const pb = g('pBrutto'), ki = g('kita'), pe = g('pendel');
+  if (!pb) { s('pDB').textContent = '—'; s('pDB').style.color = 'var(--grn)'; s('pFormula').textContent = 'Formel: Netto − Kita − Pendelkosten'; return; }
+  const db = pb - ki - pe;
+  s('pDB').textContent = fm(db) + ' €';
+  s('pDB').style.color = db >= 0 ? '#15803d' : '#DC2626';
+  s('pDBLbl').textContent = db >= 0 ? 'Wahrer Deckungsbeitrag nach Partnerkosten' : '⚠ Negativer Deckungsbeitrag';
+  s('pFormula').textContent = `${fm(pb)} − ${fm(ki)} (Kita) − ${fm(pe)} (Pendeln) = ${fm(db)} €`;
+  // Live: update nettoAdj display mit partner-beitrag
+  liveA();
+}
+
+/* ── Fahrzeug-Art: Kauf / Finanzierung / Leasing ── */
+// art: 'kauf' | 'finanz' | 'leasing'
+const fahrzeugArt = {1: 'kauf', 2: 'kauf'};
+
+function setFahrzeugArt(n, art) {
+  // Toggle: klick auf aktive Option → zurück zu Kauf
+  if (fahrzeugArt[n] === art) art = 'kauf';
+  fahrzeugArt[n] = art;
+
+  const isLeasing = art === 'leasing';
+  const isFinanz  = art === 'finanz';
+
+  // Checkboxen
+  s(`k${n}leasingCb`).classList.toggle('on', isLeasing);
+  s(`k${n}finanzCb`).classList.toggle('on', isFinanz);
+
+  // Bei Leasing: Kaufpreis-Felder ausblenden (kein Eigentum)
+  s(`k${n}p-cell`).style.opacity       = isLeasing ? '0.35' : '1';
+  s(`k${n}s-cell`).style.opacity       = isLeasing ? '0.35' : '1';
+  s(`k${n}p-cell`).style.pointerEvents = isLeasing ? 'none' : '';
+  s(`k${n}s-cell`).style.pointerEvents = isLeasing ? 'none' : '';
+
+  // Wertverlust/Opportunität: grau bei Leasing, normal bei Kauf/Finanzierung
+  const dimWV = isLeasing;
+  s(`k${n}wv-cell`).style.opacity = dimWV ? '0.35' : '1';
+  s(`k${n}op-cell`).style.opacity = dimWV ? '0.35' : '1';
+
+  // Hint-Text
+  if (s(`k${n}lfd-hint`)) {
+    s(`k${n}lfd-hint`).textContent = isLeasing
+      ? 'Leasingrate + Versicherung + Steuer'
+      : isFinanz ? 'Finanzierungsrate + Versicherung + Steuer'
+      : 'Rate/Leasing + Versicherung + Steuer';
+  }
+  liveKfz(n);
+}
+
+/* ── Kfz calc ── */
+function kfzCalc(p, km, st, lfd, rep, art) {
+  const rate   = st === 'new' ? 0.15 : 0.08;
+  const noWV   = art === 'leasing'; // Leasing → kein Wertverlust; Finanzierung/Kauf → ja
+  const wv     = noWV ? 0 : (p * rate) / 12;
+  const op     = noWV ? 0 : (p * 0.04) / 12;
+  const ver    = (km * 0.05) / 12;
+  return { wv, op, ver, lfd, rep, total: wv + op + ver + lfd + rep };
+}
+
+function liveKfz(n) {
+  const p   = g(`k${n}p`), km = g(`k${n}km`), lfd = g(`k${n}lfd`), rep = g(`k${n}rep`);
+  const st  = s(`k${n}s`).value;
+  const art = fahrzeugArt[n];
+  const c   = kfzCalc(p, km, st, lfd, rep, art);
+  const noWV = art === 'leasing';
+  const wvEl = s(`k${n}wv`); wvEl.textContent = (!noWV && p) ? fm(c.wv) + ' €' : '—'; wvEl.style.opacity = (!noWV && p) ? '1' : '0.35';
+  const opEl = s(`k${n}op`); opEl.textContent = (!noWV && p) ? fm(c.op) + ' €' : '—'; opEl.style.opacity = (!noWV && p) ? '1' : '0.35';
+  s(`k${n}ver`).textContent = (p || km) ? fm(c.ver) + ' €' : '— €';
+  s(`k${n}live`).textContent = p || lfd || km || rep ? fm(c.total) + ' €/Mo' : '—';
+}
+
+/* ── Live D ── */
+function liveD() {
+  const hw = g('hausW');
+  s('hausLive').textContent = hw ? fm((hw * 0.015) / 12) + ' €' : '—';
+}
+
+/* ── Loading ── */
+const STEPS = [
+  '// Initialisiere Freiheit-durch-Klarheit Analyse-Engine...',
+  '// Modul_A: Reales Einkommen verarbeiten...',
+  '// Modul_B: Partner-Check berechnen...',
+  '// Modul_C: Mobilitäts-Matrix kalkulieren...',
+  '// Modul_D: Immobilien-Schatten ermitteln...',
+  '// Psychologie-Faktor: Status-Overhead berechnen...',
+  '// Alarm-Schwellenwerte prüfen...',
+  '// Arbeitstage für die Matrix berechnen...',
+  '// Diagnose-Log generieren...',
+  '// Analyse abgeschlossen.',
+];
+
+function runAnalysis() {
+  const btn = s('aBtn');
+  btn.disabled = true; btn.textContent = 'Analysiere ...';
+  s('loading').classList.remove('hidden');
+  s('results').classList.add('hidden');
+
+  const ll = s('loadLines'); ll.innerHTML = '';
+  STEPS.forEach((t, i) => {
+    const d = document.createElement('div');
+    d.className = 'load-line'; d.id = `ls${i}`;
+    d.innerHTML = `<span style="color:#ccc">$ </span>${t}`;
+    ll.appendChild(d);
+  });
+
+  const fill = s('loadFill'); fill.style.width = '0%';
+  STEPS.forEach((_, i) => {
+    setTimeout(() => {
+      if (i > 0) { const p = s(`ls${i-1}`); p.classList.remove('act'); p.classList.add('done'); }
+      s(`ls${i}`).classList.add('act');
+      fill.style.width = ((i + 1) / STEPS.length * 100) + '%';
+    }, i * 260);
+  });
+
+  setTimeout(() => {
+    const last = s(`ls${STEPS.length-1}`);
+    last.classList.remove('act'); last.classList.add('done'); last.style.color = 'var(--grn)';
+    computeAll();
+    setTimeout(() => {
+      s('loading').classList.add('hidden');
+      // Show intervention first — results revealed by user confirmation
+      s('results').classList.add('hidden');
+      btn.disabled = false; btn.textContent = 'Neu analysieren →';
+      // RC block is shown by buildPlausibilityCheck() — scroll there
+      setTimeout(() => s('rcBlock').scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
+    }, 400);
+  }, STEPS.length * 260 + 200);
+}
+
+/* ── Core math ── */
+let D = {};
+function computeAll() {
+  const netto    = g('netto'), stR = g('steuerR');
+  const nettoAdj = netto + (stR / 12);
+  const fixk     = g('fixk');
+  const pb = g('pBrutto'), ki = g('kita'), pe = g('pendel');
+  const realNetto = pb;  // Netto-Eingabe direkt, kein Abzug
+  const sysLoss   = 0;   // kein System-Abzug auf Netto
+  const partnerDB = pb - ki - pe;
+  const partnerCosts = ki + pe;
+  // Partner-Deckungsbeitrag wird dem Gesamteinkommen zugeführt (wenn positiv)
+  const partnerContrib = Math.max(0, partnerDB);
+
+  const c1 = kfzCalc(g('k1p'), g('k1km'), s('k1s').value, g('k1lfd'), g('k1rep'), fahrzeugArt[1]);
+  const c2 = kfz2On ? kfzCalc(g('k2p'), g('k2km'), s('k2s').value, g('k2lfd'), g('k2rep'), fahrzeugArt[2]) : {wv:0,op:0,ver:0,lfd:0,rep:0,total:0};
+  const kfzTotal = c1.total + c2.total;
+
+  const lmk      = g('lmk');
+  const engk     = g('engk');
+  const urlaubk  = g('urlaubk') / 12;
+  const hausS    = (g('hausW') * 0.015) / 12;
+  const decay    = kfzTotal + hausS;
+  const allCosts = fixk + lmk + engk + urlaubk + decay + partnerCosts;
+  // Gesamteinkommen = eigenes Netto + positiver Partner-Deckungsbeitrag
+  const totalIncome = nettoAdj + partnerContrib;
+  const life     = Math.max(0, totalIncome - allCosts);
+  const slaveDay = totalIncome > 0 ? Math.min(30, Math.round((allCosts / totalIncome) * 30)) : null;
+
+  // Status-Overhead: sum fixk if status-cb checked + kfz if status-cb checked
+  const fixStatus  = psychStatus['pf2'] ? fixk : 0;
+  const kfzStatus  = psychStatus['pk1s'] ? c1.total : 0;
+  const statusTotal = fixStatus + kfzStatus;
+  const statusDays  = totalIncome > 0 ? Math.round((statusTotal / totalIncome) * 30) : 0;
+  const breakPoint  = slaveDay !== null ? slaveDay + 1 : null;
+
+  D = { netto, stR, nettoAdj, totalIncome, fixk, lmk, engk, urlaubk, pb, realNetto, sysLoss, partnerDB, partnerContrib, partnerCosts, ki, pe,
+        c1, c2, kfzTotal, hausS, decay, allCosts, life, slaveDay,
+        freeDays: slaveDay !== null ? 30 - slaveDay : null,
+        statusTotal, statusDays, breakPoint };
+
+  s('sDayNum').textContent   = slaveDay ?? '—';
+  s('sDaySfx').textContent   = slaveDay !== null ? ' Tage' : '';
+  s('sFreeDays').textContent = D.freeDays !== null ? D.freeDays + ' Tage' : '—';
+  s('sDesc').textContent     = slaveDay !== null
+    ? `${slaveDay} von 30 Tagen arbeitest du für die Matrix. ${D.freeDays} Tage gehören dir.`
+    : 'Gesamteinkommen eingeben für Berechnung.';
+
+  // kset defined globally
+  kset('kNetto', totalIncome, 'b');
+  kset('kTotal', allCosts,    'r');
+  kset('kDecay', decay,       'r');
+  kset('kLife',  life,        'g');
+
+  // Overhead
+  s('ohDays').textContent  = statusDays > 0 ? statusDays + ' Tage' : '0 Tage';
+  s('ohEuro').textContent  = fm(statusTotal) + ' €';
+  s('ohBreak').textContent = breakPoint !== null ? breakPoint + '. des Monats' : '—';
+
+  buildAlerts();
+  buildTable();
+  buildPlausibilityCheck();
+  buildKlarheit();
+}
+
+/* ── Plausibilitäts-Check ── */
+function buildPlausibilityCheck() {
+  const d     = D;
+  const netto = d.totalIncome || 0;
+  const hausW = g('hausW');
+  const kfzWV = d.c1.wv + d.c2.wv;
+  const shadow= d.hausS + kfzWV;
+
+  // RC block is ALWAYS shown when results appear
+  s('rcBlock').classList.remove('hidden');
+  setTimeout(() => s('rcBlock').scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
+
+  // ── Plausibilitäts-Warnungen (optionaler roter Zusatz) ──
+  let warnTitle = '';
+  let warnText  = '';
+  let bannerShow= false;
+
+  const hasAssets = (hausW > 0 || g('k1p') > 0 || g('k2p') > 0);
+  if (netto > 0 && hasAssets && shadow > 0 && (shadow / netto) < 0.05) {
+    warnTitle = 'PLAUSIBILITÄTS-ALARM — Substanzkosten auffällig niedrig';
+    warnText  = 'Deine kalkulierten Substanzkosten (Haus-Instandhaltung + Kfz-Wertverlust) machen weniger als 5% deines Einkommens aus — bei eingetragenen Assets ist das mathematisch unwahrscheinlich. Hast du die Kaufpreise oder den Immobilienwert zu niedrig angesetzt?';
+  }
+
+  if (hausW > 0 && hausW < 100000 && netto > 3000) {
+    bannerShow = true;
+    warnTitle  = 'DIAGNOSE-STATUS: UNREALISTISCH SCHÖNGERECHNET';
+    warnText   = 'Immobilienwert unter 100.000 € bei Haushaltseinkommen über 3.000 €/Mo ist kaum plausibel. Mathematik lässt sich nicht manipulieren, nur deine Wahrnehmung.';
+  }
+
+  const kfzP1 = g('k1p');
+  if (kfzP1 > 0 && kfzP1 < 3000 && netto > 3000 && fahrzeugArt[1] !== 'leasing') {
+    bannerShow = true;
+  }
+
+  const warnEl = s('rcWarning');
+  if (warnTitle) {
+    warnEl.classList.remove('hidden');
+    s('rcWarnTitle').textContent = warnTitle;
+    s('rcWarnText').textContent  = warnText;
+  } else {
+    warnEl.classList.add('hidden');
+  }
+
+  const banner = s('statusBanner');
+  if (bannerShow) { banner.classList.remove('hidden'); }
+  else            { banner.classList.add('hidden'); }
+}
+
+function hideRC() {
+  s('rcBlock').classList.add('hidden');
+  s('statusBanner').classList.remove('show');
+}
+
+function showResults() {
+  s('results').classList.remove('hidden');
+  setTimeout(doAnims, 100);
+  setTimeout(doLog, 300);
+  setTimeout(() => s('results').scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
+}
+
+/* ── Finanzielle Klarheit Dashboard ── */
+function buildKlarheit() {
+  const d      = D;
+  const netto  = d.totalIncome || 0;
+
+  // Status-Ausgaben: alle als Status/Position markierten Felder
+  const statusFixk = psychStatus['pf2']  ? d.fixk   : 0;
+  const statusKfz1 = psychStatus['pk1s'] ? d.c1.total : 0;
+  const statusKfz2 = (kfz2On && psychStatus['pk2s']) ? d.c2.total : 0;
+  const statusTotal= statusFixk + statusKfz1 + statusKfz2;
+
+  // Substanz-Verzehr: Haus-Instandhaltung + Kfz-Wertverlust
+  const substanz = d.hausS + d.c1.wv + d.c2.wv;
+
+  // Freiheitsanteil
+  const freiheit = netto - statusTotal - substanz;
+  const isCritical = freiheit < 0 || (statusTotal + substanz) > netto;
+
+  s('klStatus').textContent   = fm(statusTotal)  + ' €';
+  s('klSubstanz').textContent = fm(substanz)      + ' €';
+  s('klFreiheit').textContent = fm(Math.abs(freiheit)) + ' €';
+  const klfColors = {warn:'text-crimson', amb:'text-amber-600', ok:'text-green-700'};
+  const klfCls = freiheit < 0 ? 'warn' : freiheit < netto * 0.2 ? 'amb' : 'ok';
+  s('klFreiheit').className = `mono text-3xl font-medium ${klfColors[klfCls]}`;
+
+  const cell = s('klFreiheitCell');
+  if (isCritical) {
+    cell.classList.add('critical');
+    s('klFreiheitDesc').innerHTML = freiheit < 0
+      ? '<strong style="color:var(--red)">ACHTUNG: Status-Kosten + Substanzverzehr übersteigen dein freies Kapital.</strong> Du arbeitest rein rechnerisch für Dinge, die du schon besitzt — und für den Schein.'
+      : 'Weniger als 20% deines Einkommens sind wirklich frei. Kritische Grenze unterschritten.';
+    s('klFreiheit').textContent = (freiheit < 0 ? '−' : '') + fm(Math.abs(freiheit)) + ' €';
+  } else {
+    cell.classList.remove('critical');
+    s('klFreiheitDesc').textContent = 'Was vom Netto übrig bleibt, wenn Status und Substanzverzehr abgezogen sind.';
+  }
+
+  // Abschluss-Statement — größten Kostenfaktor ermitteln
+  const costs = [
+    { name: 'deine Nebenkosten',          val: d.fixk },
+    { name: 'deine Lebensmittelkosten',   val: d.lmk  },
+    { name: 'deine Energiekosten',        val: d.engk  },
+    { name: 'dein Erstes Fahrzeug',       val: d.c1.total },
+    { name: 'deine Haus-Instandhaltung',  val: d.hausS },
+    { name: 'deinen Urlaubs-Etat',        val: d.urlaubk },
+  ].filter(x => x.val > 0).sort((a, b) => b.val - a.val);
+
+  const topCost = costs.length > 0 ? costs[0] : null;
+  const stmtBox = s('statementBox');
+  if (netto > 0) {
+    stmtBox.classList.remove('hidden');
+    const costRef = topCost ? `<strong>${topCost.name} (${fm(topCost.val)} €/Mo)</strong>` : '<strong>deinen größten Kostenfaktor</strong>';
+    const stEl = s('statementTxt'); stEl.innerHTML = `„Ich lebe heute in einem 15 Jahre alten Van. Mein gesamtes Leben kostet monatlich weniger als allein ${costRef}. Ich habe einen hohen Preis bezahlt, um das zu begreifen. <strong>Du kannst dir dieses Lehrgeld sparen, wenn du heute die Realität als dein neues Fundament akzeptierst.</strong>"`;
+  } else {
+    stmtBox.classList.add('hidden');
+  }
+}
+
+
+
+
+
+/* ── Bar animations ── */
+function doAnims() {
+  const d = D, t = d.totalIncome || 1;
+  const fixAll = d.fixk + d.lmk + d.engk + d.urlaubk; // all living costs
+  const pSys  = Math.min(100, (d.partnerCosts/t)*100);
+  const pFix  = Math.min(100-pSys, (fixAll/t)*100);
+  const pDec  = Math.min(100-pSys-pFix, (d.decay/t)*100);
+  const pLife = Math.max(0, 100-pSys-pFix-pDec);
+
+  const sw = (id,p) => s(id).style.width = p+'%';
+  sw('ss-sys',pSys); sw('ss-fix',pFix); sw('ss-dec',pDec); sw('ss-life',pLife);
+  sw('bf-sys',pSys); sw('bf-fix',pFix); sw('bf-dec',pDec); sw('bf-life',pLife);
+
+  // no stacked labels in this design
+
+  const vl = (id,v,p) => s(id).textContent = `${fm(v)} € (${Math.round(p)}%)`;
+  vl('bv-sys',d.partnerCosts,pSys); vl('bv-fix',fixAll,pFix); vl('bv-dec',d.decay,pDec); vl('bv-life',d.life,pLife);
+}
+
+/* ── Typewriter log ── */
+function doLog() {
+  const d = D;
+  const lines = [];
+  const dt = new Date().toLocaleDateString('de-DE')+' '+new Date().toLocaleTimeString('de-DE');
+
+  lines.push({t:'lh',s:`// CL GLOBAL // FREIHEIT DURCH KLARHEIT // AUDIT // ${dt}`});
+  lines.push({t:'li',s:`// Einkommen: ${fm(d.totalIncome)} €/Mo | Ausgaben: ${fm(d.fixk+d.lmk+d.engk+d.urlaubk)} €/Mo (NK+LM+Energie+Urlaub)`});
+  lines.push({t:'li',s:'// ────────────────────────────────────────────────────'});
+
+  if (d.stR > 0) lines.push({t:'lo',s:`   INFO: Steuerrückerstattung +${fm(d.stR/12)} €/Mo berücksichtigt.`});
+
+  if ((d.fixk > 0 || d.lmk > 0 || d.engk > 0 || d.urlaubk > 0) && d.totalIncome > 0) {
+    const aus = d.fixk + d.lmk + d.engk + d.urlaubk;
+    const r = Math.round((aus / d.totalIncome) * 100);
+    if (d.lmk > 0 || d.engk > 0 || d.urlaubk > 0)
+      lines.push({t:'li',s:`   Lebenshal.: Nebenk. ${fm(d.fixk)} + LM ${fm(d.lmk)} + Energie ${fm(d.engk)} + Urlaub ${fm(d.urlaubk)} = ${fm(aus)} €/Mo`});
+    lines.push(r > 60
+      ? {t:'lw',s:`   [CRITICAL] GESAMTAUSGABEN-LAST KRITISCH. Quote: ${r}% des Einkommens (Grenze: 60%).`}
+      : {t:'li',s:`   Gesamtausgaben-Quote: ${r}% — noch im grünen Bereich.`});
+  }
+
+  if (d.pb > 0) {
+    lines.push({t:'lh',s:'// MODUL_B: PARTNER-CHECK'});
+    lines.push({t:'li',s:`   Partner Netto: ${fm(d.pb)} € → Deckungsbeitrag nach Kita/Pendeln: ${fm(d.partnerDB)} €`});
+    lines.push(d.partnerDB<500
+      ? {t:'la',s:d.partnerDB<0?`   [ALARM] PARTNER-ERWERBSTÄTIGKEIT UNRENTABEL. DB: ${fm(d.partnerDB)} €/Mo.`:`   [ALARM] PARTNER-DB GRENZWERTIG. Nur ${fm(d.partnerDB)} €/Mo.`}
+      : {t:'lo',s:`   Wahrer Deckungsbeitrag: +${fm(d.partnerDB)} €`});
+  }
+
+  if (d.c1.total > 0 || d.c2.total > 0) {
+    lines.push({t:'lh',s:'// MODUL_C: MOBILITÄTS-MATRIX'});
+    if (d.c1.total>0) {
+      lines.push({t:'lw',s:`   [WARN] Kfz 1 — Wertverlust: ${fm(d.c1.wv)} €/Mo (stille Entwertung).`});
+      lines.push({t:'lw',s:`   [WARN] Kfz 1 — Opportunität: ${fm(d.c1.op)} €/Mo (entgangene Zinsen).`});
+      if (d.c1.lfd>0) lines.push({t:'lw',s:`   [WARN] Kfz 1 — Laufende Kosten (Rate/Vers.): ${fm(d.c1.lfd)} €/Mo.`});
+      if (d.c1.rep>0) lines.push({t:'li',s:`   Kfz 1 — Reparaturrücklage: ${fm(d.c1.rep)} €/Mo berücksichtigt.`});
+      if (fahrzeugArt[1]==='leasing') lines.push({t:'lo',s:`   Kfz 1 — LEASING: kein kalkulatorischer Wertverlust.`});
+      if (fahrzeugArt[1]==='finanz')  lines.push({t:'li',s:`   Kfz 1 — FINANZIERUNG: Wertverlust kalkulatorisch einberechnet.`});
+    }
+    if (kfz2On&&d.c2.total>0) lines.push({t:'lw',s:`   [WARN] Kfz 2 (Partner) — Gesamtlast: ${fm(d.c2.total)} €/Mo.`});
+    const kp = d.totalIncome>0?Math.round((d.kfzTotal/d.totalIncome)*100):0;
+    lines.push(kp>20
+      ? {t:'lm',s:`   [WARN] MOBILITÄTS-FALLE. Kfz-Last = ${kp}% des Nettos (Grenze: 20%).`}
+      : {t:'li',s:`   Kfz-Gesamtlast: ${fm(d.kfzTotal)} €/Mo (${kp}% des Nettos).`});
+  }
+
+  if (d.hausS>0) {
+    lines.push({t:'lh',s:'// MODUL_D: IMMOBILIEN-SCHATTEN'});
+    lines.push({t:'lw',s:`   [WARN] Instandhaltungskosten Haus: ${fm(d.hausS)} €/Mo (Dach, Heizung, Reparaturen — unsichtbar auf dem Konto).`});
+  }
+
+  if (d.statusTotal>0) {
+    lines.push({t:'lh',s:'// PSYCHOLOGIE: STATUS-OVERHEAD'});
+    lines.push({t:'lm',s:`   [STATUS] ${fm(d.statusTotal)} €/Mo (${d.statusDays} Tage) werden nur für Status gearbeitet.`});
+    lines.push({t:'lm',s:`   Frage: Ist dieser Preis es wirklich wert?`});
+  }
+
+  lines.push({t:'li',s:'// ────────────────────────────────────────────────────'});
+  lines.push({t:'lh',s:'// ERGEBNIS — ARBEITSTAGE FÜR DIE MATRIX'});
+
+  if (d.slaveDay!==null) {
+    lines.push({t:'lw',s:`   ARBEITSTAGE FÜR DIE MATRIX: ${d.slaveDay} von 30 Tagen.`});
+    lines.push({t:'lw',s:`   ${d.freeDays} Tage gehören dir. Autonomie-Breakpoint: ${d.breakPoint}. des Monats.`});
+  }
+
+  if (d.totalIncome>0) {
+    const pct = Math.round((d.life/d.totalIncome)*100);
+    lines.push(pct<15
+      ? {t:'lw',s:`   [CRITICAL] NUR ${pct}% FREIE ENERGIE (${fm(d.life)} €). Statik kollabiert.`}
+      : pct<35
+        ? {t:'lm',s:`   [WARN] ${pct}% Freie Energie (${fm(d.life)} €). Statik fragil.`}
+        : {t:'lo',s:`   ${pct}% Freie Energie (${fm(d.life)} €). Ausbaufähig.`});
+  }
+  // Plausibility check in log
+  if (d.totalIncome > 0) {
+    const shadow = d.hausS + d.c1.wv + d.c2.wv;
+    const hasAssets = (g('hausW') > 0 || g('k1p') > 0);
+    if (hasAssets && shadow > 0 && (shadow / d.totalIncome) < 0.05) {
+      lines.push({t:'lw',s:'   [PLAUSIBILITÄT] Substanzkosten < 5% vom Einkommen trotz Assets — Eingaben prüfen.'});
+    }
+    if (g('hausW') > 0 && g('hausW') < 100000 && d.totalIncome > 3000) {
+      lines.push({t:'lw',s:'   [PLAUSIBILITÄT] Immobilienwert < 100.000 € bei Einkommen > 3.000 €/Mo — unrealistisch.'});
+    }
+  }
+  lines.push({t:'lo',s:'// Diagnose abgeschlossen. Empfehlung: System-Check oder Matrix-Strategie buchen.'});
+
+  const body = s('termBody'); body.innerHTML = '';
+  const icons = {lh:'>',lw:'⚠',lo:'✓',li:'>',la:'‼',lm:'△'};
+
+  lines.forEach((e,i) => {
+    const div = document.createElement('div');
+    div.className = `log-line ${e.t}`;
+    body.appendChild(div);
+    setTimeout(() => {
+      div.classList.add('vis');
+      let pos = 0;
+      const prompt = `<span style="color:var(--ink4);margin-right:8px">${icons[e.t]}</span> `;
+      const tw = setInterval(() => {
+        div.innerHTML = prompt + e.s.slice(0,pos);
+        pos++;
+        if (pos>e.s.length) clearInterval(tw);
+      }, 9);
+    }, i*100);
+  });
+}
+
+
+</script>
+</body>
+</html>
