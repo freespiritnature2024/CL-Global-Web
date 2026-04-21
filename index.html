@@ -52,8 +52,9 @@ header{border-bottom:var(--bw) solid var(--bk);background:var(--wh);position:sti
 .hero-slogan::before,.hero-slogan::after{content:'';flex:0 0 28px;height:2px;background:var(--bk)}
 
 /* Rotating headline */
-.hl-wrap{min-height:180px;position:relative;margin-bottom:32px;overflow:hidden}
-@media(max-width:600px){.hl-wrap{min-height:280px}}
+.hl-wrap{min-height:200px;position:relative;margin-bottom:32px;overflow:visible;padding-bottom:20px}
+@media(max-width:760px){.hl-wrap{min-height:320px;padding-bottom:20px}}
+@media(max-width:500px){.hl-wrap{min-height:420px;padding-bottom:20px}}
 .hl{position:absolute;top:0;left:0;right:0;font-size:clamp(20px,3.6vw,42px);font-weight:900;line-height:1.15;letter-spacing:-.025em;color:var(--bk);opacity:0;visibility:hidden;transform:translateY(8px);transition:opacity .5s ease,transform .5s ease;pointer-events:none}
 .hl.on{opacity:1;visibility:visible;transform:translateY(0);pointer-events:auto}
 .hl.out{opacity:0;transform:translateY(-8px)}
@@ -520,7 +521,7 @@ footer{border-top:var(--bw) solid var(--bk);padding:22px 0}
     <div style="height:32px"></div>
     <div class="mod-hdr">
       <div class="mod-badge">Modul A</div>
-      <div class="mod-title">Reales Einkommen &amp; Fixkosten</div>
+      <div class="mod-title">Reales Einkommen, Nebenkosten &amp; Lebenshaltung</div>
       <div class="mod-rule"></div>
     </div>
     <div class="grid g3">
@@ -536,20 +537,27 @@ footer{border-top:var(--bw) solid var(--bk);padding:22px 0}
       </div>
       <div class="cell no-bb">
         <div class="flbl">
-          Fixkosten gesamt (€/Monat)
+          Nebenkosten (€/Monat)
           <div class="tip-wrap" id="fixTip" onclick="toggleTip('fixTip')">
             <div class="tip-icon">i</div>
             <div class="tip-box">
-              <b>PRÜFLISTE — Alles erfasst?</b><br><br>
-              · KFZ-Versicherung<br>· Haftpflicht / Rechtsschutz<br>
-              · Streaming, Gym, Cloud-Abos<br>· Rundfunkbeitrag (18,36 €)<br>
-              · Wartungsverträge<br>· Notfall-Puffer<br>
-              · Taschengeld Kinder<br>· Kontoführungsgebühren
+              <b>NEBENKOSTEN — Alles erfasst?</b><br><br>
+              · Miete / Kreditrate<br>
+              · KFZ-Versicherung<br>
+              · Haftpflicht / Rechtsschutz<br>
+              · Streaming, Gym, Cloud-Abos<br>
+              · Rundfunkbeitrag (18,36 €)<br>
+              · Wartungsverträge<br>
+              · Notfall-Puffer<br>
+              · Taschengeld Kinder<br>
+              · Haustiere (Futter, Tierarzt, Versicherung)<br>
+              · Kontoführungsgebühren<br>
+              · Telefon / Internet
             </div>
           </div>
         </div>
         <input class="inp" type="number" id="fixk" placeholder="1400" min="0">
-        <div class="fhint">Miete/Kredit + alle laufenden Verpflichtungen</div>
+        <div class="fhint">Miete/Kredit + Abos + Versicherungen + Haustiere</div>
         <div class="psych-row" id="psych-fixk">
           <div class="psych-item" onclick="togglePsych('pf1')">
             <div class="psych-cb" id="pf1"></div>
@@ -560,6 +568,75 @@ footer{border-top:var(--bw) solid var(--bk);padding:22px 0}
             <div class="psych-lbl status">△ Gehört in meiner Position einfach dazu (Status)</div>
           </div>
         </div>
+      </div>
+      <div class="cell no-bb">
+        <div class="flbl">
+          Lebensmittel &amp; Haushalt (€/Monat)
+          <div class="tip-wrap" id="lmTip" onclick="toggleTip('lmTip')">
+            <div class="tip-icon">i</div>
+            <div class="tip-box">
+              <b>LEBENSMITTEL &amp; HAUSHALT</b><br><br>
+              · Supermarkt / Wocheneinkauf<br>
+              · Drogerie &amp; Hygieneartikel<br>
+              · Lieferdienste / Takeaway<br>
+              · Restaurants &amp; Café<br>
+              · Haushaltsartikel &amp; Reinigung<br>
+              · Kleidung (monatlicher Durchschnitt)<br>
+              · Apotheke / Rezepte
+            </div>
+          </div>
+        </div>
+        <input class="inp" type="number" id="lmk" placeholder="600" min="0" oninput="liveA()">
+        <div class="fhint">Supermarkt, Drogerie, Restaurants, Kleidung</div>
+      </div>
+      <div class="cell no-bb">
+        <div class="flbl">
+          Energie &amp; Grundkosten (€/Monat)
+          <div class="tip-wrap" id="engTip" onclick="toggleTip('engTip')">
+            <div class="tip-icon">i</div>
+            <div class="tip-box">
+              <b>ENERGIE &amp; GRUNDKOSTEN</b><br><br>
+              · Strom<br>
+              · Gas / Heizung / Fernwärme<br>
+              · Wasser &amp; Abwasser<br>
+              · Grundbesitzabgaben (monatlich anteilig)<br>
+              · Müllgebühren<br>
+              · Schornsteinfeger (anteilig)<br>
+              · Hausverwaltung / WEG-Gebühren<br>
+              · Straßenreinigung
+            </div>
+          </div>
+        </div>
+        <input class="inp" type="number" id="engk" placeholder="280" min="0" oninput="liveA()">
+        <div class="fhint">Strom, Gas, Wasser, Abwasser, Grundabgaben</div>
+      </div>
+      <div class="cell no-bb">
+        <div class="flbl">
+          Urlaub &amp; Freizeit (€/Jahr)
+          <div class="tip-wrap" id="urlaubTip" onclick="toggleTip('urlaubTip')">
+            <div class="tip-icon">i</div>
+            <div class="tip-box">
+              <b>URLAUB &amp; FREIZEIT</b><br><br>
+              · Flugreisen / Bahntickets<br>
+              · Hotel / Unterkunft / Camping<br>
+              · Mietwagen &amp; Transfers<br>
+              · Aktivitäten &amp; Ausflüge vor Ort<br>
+              · Urlaubsverpflegung &amp; Restaurants<br>
+              · Freizeitaktivitäten (Kino, Konzerte, Sport)<br>
+              · Hobbys &amp; Ausrüstung<br><br>
+              <b>Jahreswert eingeben</b> → wird auf<br>
+              Monatsbasis verteilt (÷ 12)
+            </div>
+          </div>
+        </div>
+        <input class="inp" type="number" id="urlaubk" placeholder="2400" min="0" oninput="liveA()">
+        <div class="fform">→ monatlich: Jahresbetrag ÷ 12</div>
+      </div>
+      <div class="cell no-bb result">
+        <div class="flbl" style="color:var(--red)">⟶ Gesamtausgaben / Monat</div>
+        <div class="lval" id="ausgabenLive" style="color:var(--red)">—</div>
+        <div class="llbl">Nebenkosten + Lebensm. + Energie + Urlaub</div>
+        <div class="lform" id="ausgabenFormula" style="margin-top:8px">Nebenkosten + Lebensmittel + Energie + Urlaub</div>
       </div>
     </div>
     <div style="border:var(--bw) solid var(--bk);border-top:1px solid var(--g2);padding:14px 18px;display:flex;align-items:center;gap:28px;flex-wrap:wrap;background:var(--g1);">
@@ -624,10 +701,16 @@ footer{border-top:var(--bw) solid var(--bk);padding:22px 0}
       <div class="veh-badge">Fahrzeug 1</div>
       <div class="veh-live" id="k1live">Kosten: <b>— €/Mo</b></div>
     </div>
-    <!-- Leasing-Toggle Fahrzeug 1 -->
-    <div class="toggle-row" id="k1leasingToggle" onclick="toggleLeasing(1)" style="border-top:var(--bw) solid var(--bk)">
-      <div class="tcb" id="k1leasingCb"></div>
-      <div class="toggle-lbl">Leasing / Finanzierung? → Wertverlust &amp; Opportunität entfallen, nur laufende Kosten relevant</div>
+    <!-- Finanzierungsart Fahrzeug 1 -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;border:var(--bw) solid var(--bk);border-top:var(--bw) solid var(--bk);border-bottom:none;">
+      <div class="toggle-row" id="k1leasingToggle" onclick="setFahrzeugArt(1,'leasing')" style="border:none;border-right:var(--thin) solid var(--bk);">
+        <div class="tcb" id="k1leasingCb"></div>
+        <div class="toggle-lbl">Leasing → kein Wertverlust (Fahrzeug gehört dir nicht)</div>
+      </div>
+      <div class="toggle-row" id="k1finanzToggle" onclick="setFahrzeugArt(1,'finanz')" style="border:none;">
+        <div class="tcb" id="k1finanzCb"></div>
+        <div class="toggle-lbl">Finanzierung → Wertverlust bleibt (du wirst Eigentümer)</div>
+      </div>
     </div>
     <div class="grid g4">
       <div class="cell no-bb" id="k1p-cell">
@@ -663,18 +746,24 @@ footer{border-top:var(--bw) solid var(--bk);padding:22px 0}
         </div>
       </div>
     </div>
-    <div class="veh-bd" id="k1-bd">
+    <div class="veh-bd" id="k1-bd" style="grid-template-columns:1fr 1fr 1fr 1fr;">
       <div class="veh-cell" id="k1wv-cell">
-        <div class="veh-lbl"><span class="term"><span class="term-lbl">Wertverlust</span><div class="term-box">Jährlicher Wertverfall: Neuwagen ~15%, Gebrauchtwagen ~8% — monatlich, ob du fährst oder nicht.</div></span></div>
+        <div class="veh-lbl"><span class="term"><span class="term-lbl">Wertverlust</span><div class="term-box">Jährlicher Wertverfall: Neuwagen ~15%, Gebrauchtwagen ~8% — monatlich, ob du fährst oder nicht. Bei Leasing entfällt dieser Posten.</div></span></div>
         <div class="veh-val" id="k1wv">— €</div>
       </div>
       <div class="veh-cell" id="k1op-cell">
         <div class="veh-lbl"><span class="term"><span class="term-lbl">Opportunität</span><div class="term-box">Entgangene Zinsen: 4% p.a. auf den Kaufpreis. Das Kapital hätte für dich arbeiten können.</div></span></div>
         <div class="veh-val" id="k1op">— €</div>
       </div>
-      <div class="veh-cell" style="border-right:none">
-        <div class="veh-lbl">Verschleiß-Puffer</div>
+      <div class="veh-cell">
+        <div class="veh-lbl"><span class="term"><span class="term-lbl">Verschleiß-Puffer</span><div class="term-box">Kalkulatorischer Rückstellungsbetrag für Reifen, Bremsen und regulären Verschleiß: 0,05 €/km.</div></span></div>
         <div class="veh-val" id="k1ver">— €</div>
+      </div>
+      <div class="veh-cell" style="border-right:none">
+        <div class="veh-lbl">
+          <span class="term"><span class="term-lbl">Reparaturrücklage</span><div class="term-box">Kalkulatorische Rücklage für ungeplante Reparaturen: Werkstattkosten, Hauptuntersuchung, Austauschteile. Empfehlung: 50–150 €/Mo je nach Fahrzeugalter.</div></span>
+        </div>
+        <input style="width:100%;background:#fff;border:1px solid #000;font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600;padding:6px 8px;outline:none;border-radius:0;" type="number" id="k1rep" placeholder="80" min="0" oninput="liveKfz(1)">
       </div>
     </div>
 
@@ -684,10 +773,16 @@ footer{border-top:var(--bw) solid var(--bk);padding:22px 0}
         <div class="veh-badge">Fahrzeug 2 — Partner</div>
         <div class="veh-live" id="k2live">Kosten: <b>— €/Mo</b></div>
       </div>
-      <!-- Leasing-Toggle Fahrzeug 2 -->
-      <div class="toggle-row" id="k2leasingToggle" onclick="toggleLeasing(2)" style="border-top:var(--bw) solid var(--bk)">
-        <div class="tcb" id="k2leasingCb"></div>
-        <div class="toggle-lbl">Leasing / Finanzierung? → Wertverlust &amp; Opportunität entfallen</div>
+      <!-- Finanzierungsart Fahrzeug 2 -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;border:var(--bw) solid var(--bk);border-top:var(--bw) solid var(--bk);border-bottom:none;">
+        <div class="toggle-row" id="k2leasingToggle" onclick="setFahrzeugArt(2,'leasing')" style="border:none;border-right:var(--thin) solid var(--bk);">
+          <div class="tcb" id="k2leasingCb"></div>
+          <div class="toggle-lbl">Leasing → kein Wertverlust</div>
+        </div>
+        <div class="toggle-row" id="k2finanzToggle" onclick="setFahrzeugArt(2,'finanz')" style="border:none;">
+          <div class="tcb" id="k2finanzCb"></div>
+          <div class="toggle-lbl">Finanzierung → Wertverlust bleibt</div>
+        </div>
       </div>
       <div class="grid g4">
         <div class="cell no-bb" id="k2p-cell">
@@ -711,10 +806,14 @@ footer{border-top:var(--bw) solid var(--bk);padding:22px 0}
           <div class="fhint">Rate/Leasing + Versicherung + Steuer</div>
         </div>
       </div>
-      <div class="veh-bd" id="k2-bd">
+      <div class="veh-bd" id="k2-bd" style="grid-template-columns:1fr 1fr 1fr 1fr;">
         <div class="veh-cell" id="k2wv-cell"><div class="veh-lbl">Wertverlust</div><div class="veh-val" id="k2wv">— €</div></div>
         <div class="veh-cell" id="k2op-cell"><div class="veh-lbl">Opportunität</div><div class="veh-val" id="k2op">— €</div></div>
-        <div class="veh-cell" style="border-right:none"><div class="veh-lbl">Verschleiß-Puffer</div><div class="veh-val" id="k2ver">— €</div></div>
+        <div class="veh-cell"><div class="veh-lbl">Verschleiß-Puffer</div><div class="veh-val" id="k2ver">— €</div></div>
+        <div class="veh-cell" style="border-right:none">
+          <div class="veh-lbl">Reparaturrücklage</div>
+          <input style="width:100%;background:#fff;border:1px solid #000;font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600;padding:6px 8px;outline:none;border-radius:0;" type="number" id="k2rep" placeholder="60" min="0" oninput="liveKfz(2)">
+        </div>
       </div>
     </div>
   </div>
@@ -787,12 +886,12 @@ footer{border-top:var(--bw) solid var(--bk);padding:22px 0}
           <div class="kpi-cell">
             <div class="kpi-tag">Gesamteinkommen Haushalt</div>
             <div class="kpi-num b" id="kNetto">—<span class="kpi-eur"> €</span></div>
-            <div class="kpi-sub">Eigenes Netto + Partner-Deckungsbeitrag</div>
+            <div class="kpi-sub">Eigenes Netto + Steuer + Partner-DB</div>
           </div>
           <div class="kpi-cell">
             <div class="kpi-tag">Gesamtabfluss / Monat</div>
             <div class="kpi-num r" id="kTotal">—<span class="kpi-eur"> €</span></div>
-            <div class="kpi-sub">Fixkosten + Zerfall + Partnerkosten</div>
+            <div class="kpi-sub">Nebenk. + Lebensm. + Energie + Urlaub + Zerfall</div>
           </div>
           <div class="kpi-cell">
             <div class="kpi-tag">Unsichtbarer Zerfall / Monat</div>
@@ -1057,6 +1156,25 @@ TRUTHS.forEach((t, i) => {
   dot.onclick = () => goHl(i);
   dotsCont.appendChild(dot);
 });
+// Set initial height after fonts load
+if (document.fonts) {
+  document.fonts.ready.then(() => setWrapHeight(todayIdx));
+} else {
+  setTimeout(() => setWrapHeight(todayIdx), 300);
+}
+
+function setWrapHeight(idx) {
+  const hls = hlWrap.querySelectorAll('.hl');
+  // measure the active headline's scroll height
+  const target = hls[idx];
+  // temporarily make visible to measure
+  target.style.visibility = 'visible';
+  target.style.opacity = '0';
+  const h = target.scrollHeight;
+  target.style.visibility = '';
+  target.style.opacity = '';
+  hlWrap.style.minHeight = (h + 24) + 'px';
+}
 
 function goHl(next) {
   const hls = hlWrap.querySelectorAll('.hl');
@@ -1068,6 +1186,7 @@ function goHl(next) {
   hlActive = next;
   hls[hlActive].classList.add('on');
   dots[hlActive].classList.add('active');
+  setWrapHeight(next);
 }
 setInterval(() => goHl((hlActive + 1) % TRUTHS.length), 5000);
 
@@ -1114,6 +1233,13 @@ function liveA() {
     s('nettoAdj').textContent = '—';
     s('nettoFormula').textContent = 'Netto + (Steuerrückerstattung ÷ 12) + Partner-Deckungsbeitrag';
   }
+  // Live Gesamtausgaben
+  const lm = g('lmk'), eng = g('engk'), fk = g('fixk'), url = g('urlaubk') / 12;
+  const aus = fk + lm + eng + url;
+  s('ausgabenLive').textContent = (lm || eng || fk || url) ? fm(aus) + ' €' : '—';
+  s('ausgabenFormula').textContent = (lm || eng || fk || url)
+    ? `${fm(fk)} + ${fm(lm)} + ${fm(eng)} + ${fm(url)} (Urlaub) = ${fm(aus)} €/Mo`
+    : 'Nebenkosten + Lebensmittel + Energie + Urlaub';
 }
 
 /* ── Live B ── */
@@ -1129,43 +1255,63 @@ function liveB() {
   liveA();
 }
 
-/* ── Leasing toggles ── */
-const leasingOn = {1: false, 2: false};
-function toggleLeasing(n) {
-  leasingOn[n] = !leasingOn[n];
-  s(`k${n}leasingCb`).classList.toggle('on', leasingOn[n]);
-  // Kaufpreis + Status-Felder ausblenden
-  const hide = leasingOn[n];
-  s(`k${n}p-cell`).style.opacity  = hide ? '0.3' : '1';
-  s(`k${n}s-cell`).style.opacity  = hide ? '0.3' : '1';
-  s(`k${n}p-cell`).style.pointerEvents = hide ? 'none' : '';
-  s(`k${n}s-cell`).style.pointerEvents = hide ? 'none' : '';
-  // Breakdown-Zellen ausblenden
-  s(`k${n}wv-cell`).style.opacity = hide ? '0.3' : '1';
-  s(`k${n}op-cell`).style.opacity = hide ? '0.3' : '1';
-  // Hint-Text anpassen
-  if (s(`k${n}lfd-hint`)) s(`k${n}lfd-hint`).textContent = hide ? 'Leasingrate + Versicherung + Steuer' : 'Rate/Leasing + Versicherung + Steuer';
+/* ── Fahrzeug-Art: Kauf / Finanzierung / Leasing ── */
+// art: 'kauf' | 'finanz' | 'leasing'
+const fahrzeugArt = {1: 'kauf', 2: 'kauf'};
+
+function setFahrzeugArt(n, art) {
+  // Toggle: klick auf aktive Option → zurück zu Kauf
+  if (fahrzeugArt[n] === art) art = 'kauf';
+  fahrzeugArt[n] = art;
+
+  const isLeasing = art === 'leasing';
+  const isFinanz  = art === 'finanz';
+
+  // Checkboxen
+  s(`k${n}leasingCb`).classList.toggle('on', isLeasing);
+  s(`k${n}finanzCb`).classList.toggle('on', isFinanz);
+
+  // Bei Leasing: Kaufpreis-Felder ausblenden (kein Eigentum)
+  s(`k${n}p-cell`).style.opacity       = isLeasing ? '0.35' : '1';
+  s(`k${n}s-cell`).style.opacity       = isLeasing ? '0.35' : '1';
+  s(`k${n}p-cell`).style.pointerEvents = isLeasing ? 'none' : '';
+  s(`k${n}s-cell`).style.pointerEvents = isLeasing ? 'none' : '';
+
+  // Wertverlust/Opportunität: grau bei Leasing, normal bei Kauf/Finanzierung
+  const dimWV = isLeasing;
+  s(`k${n}wv-cell`).style.opacity = dimWV ? '0.35' : '1';
+  s(`k${n}op-cell`).style.opacity = dimWV ? '0.35' : '1';
+
+  // Hint-Text
+  if (s(`k${n}lfd-hint`)) {
+    s(`k${n}lfd-hint`).textContent = isLeasing
+      ? 'Leasingrate + Versicherung + Steuer'
+      : isFinanz ? 'Finanzierungsrate + Versicherung + Steuer'
+      : 'Rate/Leasing + Versicherung + Steuer';
+  }
   liveKfz(n);
 }
 
 /* ── Kfz calc ── */
-function kfzCalc(p, km, st, lfd, leasing) {
-  const rate = st === 'new' ? 0.15 : 0.08;
-  const wv   = leasing ? 0 : (p * rate) / 12;
-  const op   = leasing ? 0 : (p * 0.04) / 12;
-  const ver  = (km * 0.05) / 12;
-  return { wv, op, ver, lfd, total: wv + op + ver + lfd };
+function kfzCalc(p, km, st, lfd, rep, art) {
+  const rate   = st === 'new' ? 0.15 : 0.08;
+  const noWV   = art === 'leasing'; // Leasing → kein Wertverlust; Finanzierung/Kauf → ja
+  const wv     = noWV ? 0 : (p * rate) / 12;
+  const op     = noWV ? 0 : (p * 0.04) / 12;
+  const ver    = (km * 0.05) / 12;
+  return { wv, op, ver, lfd, rep, total: wv + op + ver + lfd + rep };
 }
 
 function liveKfz(n) {
-  const p = g(`k${n}p`), km = g(`k${n}km`), lfd = g(`k${n}lfd`);
-  const st = s(`k${n}s`).value;
-  const leasing = leasingOn[n];
-  const c = kfzCalc(p, km, st, lfd, leasing);
-  s(`k${n}wv`).textContent  = (!leasing && p) ? fm(c.wv)  + ' €' : '— €';
-  s(`k${n}op`).textContent  = (!leasing && p) ? fm(c.op)  + ' €' : '— €';
+  const p   = g(`k${n}p`), km = g(`k${n}km`), lfd = g(`k${n}lfd`), rep = g(`k${n}rep`);
+  const st  = s(`k${n}s`).value;
+  const art = fahrzeugArt[n];
+  const c   = kfzCalc(p, km, st, lfd, rep, art);
+  const noWV = art === 'leasing';
+  s(`k${n}wv`).textContent  = (!noWV && p) ? fm(c.wv)  + ' €' : '— €';
+  s(`k${n}op`).textContent  = (!noWV && p) ? fm(c.op)  + ' €' : '— €';
   s(`k${n}ver`).textContent = (p || km) ? fm(c.ver) + ' €' : '— €';
-  s(`k${n}live`).innerHTML  = `Kosten: <b>${p || lfd || km ? fm(c.total) + ' €/Mo' : '— €/Mo'}</b>`;
+  s(`k${n}live`).innerHTML  = `Kosten: <b>${p || lfd || km || rep ? fm(c.total) + ' €/Mo' : '— €/Mo'}</b>`;
 }
 
 /* ── Live D ── */
@@ -1240,13 +1386,16 @@ function computeAll() {
   // Partner-Deckungsbeitrag wird dem Gesamteinkommen zugeführt (wenn positiv)
   const partnerContrib = Math.max(0, partnerDB);
 
-  const c1 = kfzCalc(g('k1p'), g('k1km'), s('k1s').value, g('k1lfd'), leasingOn[1]);
-  const c2 = kfz2On ? kfzCalc(g('k2p'), g('k2km'), s('k2s').value, g('k2lfd'), leasingOn[2]) : {wv:0,op:0,ver:0,lfd:0,total:0};
+  const c1 = kfzCalc(g('k1p'), g('k1km'), s('k1s').value, g('k1lfd'), g('k1rep'), fahrzeugArt[1]);
+  const c2 = kfz2On ? kfzCalc(g('k2p'), g('k2km'), s('k2s').value, g('k2lfd'), g('k2rep'), fahrzeugArt[2]) : {wv:0,op:0,ver:0,lfd:0,rep:0,total:0};
   const kfzTotal = c1.total + c2.total;
 
+  const lmk      = g('lmk');
+  const engk     = g('engk');
+  const urlaubk  = g('urlaubk') / 12;
   const hausS    = (g('hausW') * 0.015) / 12;
   const decay    = kfzTotal + hausS;
-  const allCosts = fixk + decay + partnerCosts;
+  const allCosts = fixk + lmk + engk + urlaubk + decay + partnerCosts;
   // Gesamteinkommen = eigenes Netto + positiver Partner-Deckungsbeitrag
   const totalIncome = nettoAdj + partnerContrib;
   const life     = Math.max(0, totalIncome - allCosts);
@@ -1259,7 +1408,7 @@ function computeAll() {
   const statusDays  = totalIncome > 0 ? Math.round((statusTotal / totalIncome) * 30) : 0;
   const breakPoint  = slaveDay !== null ? slaveDay + 1 : null;
 
-  D = { netto, stR, nettoAdj, totalIncome, fixk, pb, realNetto, sysLoss, partnerDB, partnerContrib, partnerCosts, ki, pe,
+  D = { netto, stR, nettoAdj, totalIncome, fixk, lmk, engk, urlaubk, pb, realNetto, sysLoss, partnerDB, partnerContrib, partnerCosts, ki, pe,
         c1, c2, kfzTotal, hausS, decay, allCosts, life, slaveDay,
         freeDays: slaveDay !== null ? 30 - slaveDay : null,
         statusTotal, statusDays, breakPoint };
@@ -1296,8 +1445,8 @@ function buildAlerts() {
     box.appendChild(div);
   };
   let any = false;
-  if (d.totalIncome > 0 && d.fixk / d.totalIncome > 0.5) {
-    add('critical','[CRITICAL]',`FIXKOSTEN-LAST ÜBERSTEIGT SICHERHEITSGRENZE. ${Math.round(d.fixk/d.totalIncome*100)}% des Nettos gebunden (Grenze: 50%). Jede ungeplante Ausgabe destabilisiert sofort.`);
+  if (d.totalIncome > 0 && (d.fixk+d.lmk+d.engk+d.urlaubk) / d.totalIncome > 0.6) {
+    add('critical','[CRITICAL]',`GESAMTAUSGABEN-LAST KRITISCH. ${Math.round((d.fixk+d.lmk+d.engk+d.urlaubk)/d.totalIncome*100)}% des Einkommens gebunden (Grenze: 60%). Freiraum für Aufbau und Notfälle kaum vorhanden.`);
     any = true;
   }
   if (d.totalIncome > 0 && d.kfzTotal / d.totalIncome > 0.2) {
@@ -1333,7 +1482,10 @@ function buildTable() {
   if (d.stR||d.netto) addR('Angepasstes Gehalt Netto','Netto + Steuer/12',d.nettoAdj,'b',false);
   if (d.partnerContrib>0) addR('Partner-Deckungsbeitrag (zugeführt)',`+${fm(d.partnerContrib)} € → Haushaltseinkommen`,d.partnerContrib,'g',false);
   if (d.stR||d.netto||d.partnerContrib) addR('Gesamteinkommen Haushalt','Eigenes Netto + Partner-DB',d.totalIncome,'b',true);
-  if (d.fixk)         addR('Fixkosten','Eingabe',-d.fixk,'r',false);
+  if (d.fixk)  addR('Nebenkosten (Miete/Kredit/Abos/Versicherungen)','Eingabe',-d.fixk,'r',false);
+  if (d.lmk)   addR('Lebensmittel & Haushalt','Eingabe',-d.lmk,'r',false);
+  if (d.engk)    addR('Energie & Grundkosten','Eingabe',-d.engk,'r',false);
+  if (d.urlaubk) addR('Urlaub & Freizeit (monatlich)',`${fm(d.urlaubk*12)} € ÷ 12`,-d.urlaubk,'r',false);
 
   if (d.pb > 0) {
     addS('MODUL_B — PARTNER-CHECK');
@@ -1345,21 +1497,25 @@ function buildTable() {
     addR('Wahrer Deckungsbeitrag','Real-Netto − Kita − Pendeln',d.partnerDB,d.partnerDB>=0?'a':'r',true);
   }
 
-  const addKfz = (lbl, c, p, km, st, lfd, leasing) => {
-    if (!p && !km && !lfd) return;
-    addS(lbl + (leasing ? ' [LEASING]' : ''));
+  const addKfz = (lbl, c, p, km, st, lfd, art) => {
+    if (!p && !km && !lfd && !c.rep) return;
+    const artLabel = art==='leasing' ? ' [LEASING]' : art==='finanz' ? ' [FINANZIERUNG]' : '';
+    addS(lbl + artLabel);
     const rate = st==='new'?'15%':'8%';
-    if (!leasing && p) {
+    const leasing = art;
+    if (art!=='leasing' && p) {
       addR(`Wertverlust (${rate} p.a.)`,`${fm(p)} × ${rate} ÷ 12`,-c.wv,'r',false);
       addR('Opportunitätskosten (4% p.a.)',`${fm(p)} × 4% ÷ 12`,-c.op,'r',false);
     }
-    if (leasing) addR('Leasing/Finanzierung — kein kalkulat. Wertverlust','Leasing aktiv',0,'g',false);
+    if (leasing==='leasing') addR('Leasing — kein Wertverlust (kein Eigentumserwerb)','Leasing aktiv',0,'g',false);
+    if (leasing==='finanz')  addR('Finanzierung — Wertverlust kalkulatorisch einberechnet','Finanzierung',0,'a',false);
     if (km) addR('Verschleiß-Puffer',`${fm(km)} km × 0,05 € ÷ 12`,-c.ver,'r',false);
     if (lfd) addR('Laufende Kosten (Rate/Vers./Steuer)','Eingabe',-lfd,'r',false);
+    if (c.rep) addR('Reparaturrücklage','Eingabe',-c.rep,'r',false);
     addR('Kfz-Gesamtbelastung','Summe',-c.total,'r',true);
   };
-  addKfz('MODUL_C — FAHRZEUG 1',d.c1,g('k1p'),g('k1km'),s('k1s').value,g('k1lfd'),leasingOn[1]);
-  if (kfz2On) addKfz('MODUL_C — FAHRZEUG 2 (PARTNER)',d.c2,g('k2p'),g('k2km'),s('k2s').value,g('k2lfd'),leasingOn[2]);
+  addKfz('MODUL_C — FAHRZEUG 1',d.c1,g('k1p'),g('k1km'),s('k1s').value,g('k1lfd'),fahrzeugArt[1]);
+  if (kfz2On) addKfz('MODUL_C — FAHRZEUG 2 (PARTNER)',d.c2,g('k2p'),g('k2km'),s('k2s').value,g('k2lfd'),fahrzeugArt[2]);
 
   if (g('hausW')>0) {
     addS('MODUL_D — IMMOBILIEN-SCHATTEN');
@@ -1382,8 +1538,9 @@ function buildTable() {
 /* ── Bar animations ── */
 function doAnims() {
   const d = D, t = d.totalIncome || 1;
+  const fixAll = d.fixk + d.lmk + d.engk + d.urlaubk; // all living costs
   const pSys  = Math.min(100, (d.sysLoss/t)*100);
-  const pFix  = Math.min(100-pSys, (d.fixk/t)*100);
+  const pFix  = Math.min(100-pSys, (fixAll/t)*100);
   const pDec  = Math.min(100-pSys-pFix, (d.decay/t)*100);
   const pLife = Math.max(0, 100-pSys-pFix-pDec);
 
@@ -1395,7 +1552,7 @@ function doAnims() {
   sl('sl-sys',pSys); sl('sl-fix',pFix); sl('sl-dec',pDec); sl('sl-life',pLife);
 
   const vl = (id,v,p) => s(id).textContent = `${fm(v)} € (${Math.round(p)}%)`;
-  vl('bv-sys',d.sysLoss,pSys); vl('bv-fix',d.fixk,pFix); vl('bv-dec',d.decay,pDec); vl('bv-life',d.life,pLife);
+  vl('bv-sys',d.sysLoss,pSys); vl('bv-fix',fixAll,pFix); vl('bv-dec',d.decay,pDec); vl('bv-life',d.life,pLife);
 }
 
 /* ── Typewriter log ── */
@@ -1405,16 +1562,19 @@ function doLog() {
   const dt = new Date().toLocaleDateString('de-DE')+' '+new Date().toLocaleTimeString('de-DE');
 
   lines.push({t:'lh',s:`// CL GLOBAL // FREIHEIT DURCH KLARHEIT // AUDIT // ${dt}`});
-  lines.push({t:'li',s:`// Gesamteinkommen: ${fm(d.totalIncome)} €/Mo (Netto: ${fm(d.nettoAdj)} € + Partner-DB: ${fm(d.partnerContrib)} €) | Fixkosten: ${fm(d.fixk)} €/Mo`});
+  lines.push({t:'li',s:`// Einkommen: ${fm(d.totalIncome)} €/Mo | Ausgaben: ${fm(d.fixk+d.lmk+d.engk+d.urlaubk)} €/Mo (NK+LM+Energie+Urlaub)`});
   lines.push({t:'li',s:'// ────────────────────────────────────────────────────'});
 
   if (d.stR > 0) lines.push({t:'lo',s:`   INFO: Steuerrückerstattung +${fm(d.stR/12)} €/Mo berücksichtigt.`});
 
-  if (d.fixk > 0 && d.nettoAdj > 0) {
-    const r = Math.round((d.fixk/d.nettoAdj)*100);
-    lines.push(r>50
-      ? {t:'lw',s:`   [CRITICAL] FIXKOSTEN-LAST ÜBERSTEIGT SICHERHEITSGRENZE. Quote: ${r}% (Grenze: 50%).`}
-      : {t:'li',s:`   Fixkosten-Quote: ${r}% — innerhalb Toleranz.`});
+  if ((d.fixk > 0 || d.lmk > 0 || d.engk > 0 || d.urlaubk > 0) && d.totalIncome > 0) {
+    const aus = d.fixk + d.lmk + d.engk + d.urlaubk;
+    const r = Math.round((aus / d.totalIncome) * 100);
+    if (d.lmk > 0 || d.engk > 0 || d.urlaubk > 0)
+      lines.push({t:'li',s:`   Lebenshal.: Nebenk. ${fm(d.fixk)} + LM ${fm(d.lmk)} + Energie ${fm(d.engk)} + Urlaub ${fm(d.urlaubk)} = ${fm(aus)} €/Mo`});
+    lines.push(r > 60
+      ? {t:'lw',s:`   [CRITICAL] GESAMTAUSGABEN-LAST KRITISCH. Quote: ${r}% des Einkommens (Grenze: 60%).`}
+      : {t:'li',s:`   Gesamtausgaben-Quote: ${r}% — noch im grünen Bereich.`});
   }
 
   if (d.pb > 0) {
@@ -1432,6 +1592,9 @@ function doLog() {
       lines.push({t:'lw',s:`   [WARN] Kfz 1 — Wertverlust: ${fm(d.c1.wv)} €/Mo (stille Entwertung).`});
       lines.push({t:'lw',s:`   [WARN] Kfz 1 — Opportunität: ${fm(d.c1.op)} €/Mo (entgangene Zinsen).`});
       if (d.c1.lfd>0) lines.push({t:'lw',s:`   [WARN] Kfz 1 — Laufende Kosten (Rate/Vers.): ${fm(d.c1.lfd)} €/Mo.`});
+      if (d.c1.rep>0) lines.push({t:'li',s:`   Kfz 1 — Reparaturrücklage: ${fm(d.c1.rep)} €/Mo berücksichtigt.`});
+      if (fahrzeugArt[1]==='leasing') lines.push({t:'lo',s:`   Kfz 1 — LEASING: kein kalkulatorischer Wertverlust.`});
+      if (fahrzeugArt[1]==='finanz')  lines.push({t:'li',s:`   Kfz 1 — FINANZIERUNG: Wertverlust kalkulatorisch einberechnet.`});
     }
     if (kfz2On&&d.c2.total>0) lines.push({t:'lw',s:`   [WARN] Kfz 2 (Partner) — Gesamtlast: ${fm(d.c2.total)} €/Mo.`});
     const kp = d.totalIncome>0?Math.round((d.kfzTotal/d.totalIncome)*100):0;
