@@ -941,7 +941,7 @@ const TRUTHS = [
   "Was du heute als 'normal' bezeichnest, ist oft nur die Summe teurer Gewohnheiten, die dir deine Freiheit rauben, ohne dass eine Bank involviert ist."
 ];
 
-const todayIdx = new Date().getDate() % TRUTHS.length;
+const todayIdx = Math.floor(Math.random() * TRUTHS.length);
 let hlActive = todayIdx;
 const hlWrap = document.getElementById('hlWrap');
 
