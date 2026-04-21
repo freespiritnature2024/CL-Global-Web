@@ -3,594 +3,525 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Matrix-Exit Audit v2.0 — CL Global</title>
+<title>Leben in Freiheit — CL Global</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
-/* ═══════════════════════════════════════════════════
-   RESET & DESIGN TOKENS
-═══════════════════════════════════════════════════ */
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-:root {
-  --black:   #000000;
-  --white:   #ffffff;
-  --red:     #dc2626;
-  --red2:    #b91c1c;
-  --green:   #15803d;
-  --amber:   #b45309;
-  --blue:    #1d4ed8;
-  --purple:  #6d28d9;
-  --grey1:   #f4f4f4;   /* subtle bg for cells */
-  --grey2:   #e8e8e8;   /* borders secondary */
-  --grey3:   #9ca3af;   /* muted text */
-  --bw:      2px;       /* border width standard */
-  --bw-thin: 1px;
+/* ══════════════════════════════════════════════
+   RESET & TOKENS
+══════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bk:#000000;--wh:#ffffff;--red:#dc2626;--red2:#b91c1c;
+  --grn:#15803d;--amb:#b45309;--blu:#1d4ed8;--pur:#6d28d9;
+  --g1:#f5f5f3;--g2:#e8e8e4;--g3:#9ca3af;--g4:#d1d5db;
+  --bw:2px;--thin:1px;
 }
+html{font-size:14px;scroll-behavior:smooth}
+body{background:var(--wh);color:var(--bk);font-family:'Inter',sans-serif;line-height:1.6;-webkit-font-smoothing:antialiased}
+.mono{font-family:'JetBrains Mono',monospace}
+img{max-width:100%}
 
-html { font-size: 14px; scroll-behavior: smooth; }
-body {
-  background: var(--white);
-  color: var(--black);
-  font-family: 'Inter', sans-serif;
-  line-height: 1.5;
-  -webkit-font-smoothing: antialiased;
-}
-.mono { font-family: 'JetBrains Mono', monospace; }
-
-/* ═══════════════════════════════════════════════════
+/* ══════════════════════════════════════════════
    LAYOUT
-═══════════════════════════════════════════════════ */
-.wrap { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
-@media(max-width:540px){ .wrap { padding: 0 16px; } }
+══════════════════════════════════════════════ */
+.wrap{max-width:1100px;margin:0 auto;padding:0 28px}
+@media(max-width:560px){.wrap{padding:0 16px}}
 
-/* ═══════════════════════════════════════════════════
+/* ══════════════════════════════════════════════
    HEADER
-═══════════════════════════════════════════════════ */
-header {
-  border-bottom: var(--bw) solid var(--black);
-  background: var(--white);
-  position: sticky; top: 0; z-index: 200;
-}
-.hdr { height: 52px; display: flex; align-items: center; justify-content: space-between; }
-.logo {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 13px; font-weight: 700; letter-spacing: 0.08em;
-}
-.logo-red { color: var(--red); }
-.hdr-right { display: flex; align-items: center; gap: 16px; }
-.hdr-tag {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 9px; letter-spacing: 0.16em; text-transform: uppercase;
-  border: var(--bw-thin) solid var(--black); padding: 3px 10px;
-  color: var(--black);
-}
-.hdr-version {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 9px; letter-spacing: 0.1em; color: var(--grey3);
-}
+══════════════════════════════════════════════ */
+header{border-bottom:var(--bw) solid var(--bk);background:var(--wh);position:sticky;top:0;z-index:200}
+.hdr{height:52px;display:flex;align-items:center;justify-content:space-between}
+.logo{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;letter-spacing:.08em}
+.logo b{color:var(--red)}
+.hdr-r{display:flex;align-items:center;gap:14px}
+.hdr-tag{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.16em;text-transform:uppercase;border:var(--thin) solid var(--bk);padding:3px 10px}
+.hdr-cta{font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;background:var(--bk);color:var(--wh);border:var(--thin) solid var(--bk);padding:5px 14px;text-decoration:none;transition:background .12s,color .12s}
+.hdr-cta:hover{background:var(--wh);color:var(--bk)}
 
-/* ═══════════════════════════════════════════════════
-   HERO — FULL VIEWPORT
-═══════════════════════════════════════════════════ */
-.hero {
-  min-height: calc(100vh - 52px);
-  border-bottom: var(--bw) solid var(--black);
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  text-align: center; padding: 60px 24px;
-  position: relative;
-}
+/* ══════════════════════════════════════════════
+   HERO
+══════════════════════════════════════════════ */
+.hero{min-height:calc(100vh - 52px);border-bottom:var(--bw) solid var(--bk);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:60px 24px 80px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background-image:linear-gradient(var(--g2) 1px,transparent 1px),linear-gradient(90deg,var(--g2) 1px,transparent 1px);background-size:40px 40px;opacity:.45;pointer-events:none}
+.hero-inner{position:relative;z-index:1;max-width:860px;width:100%}
 
-/* Subtle graph-paper grid */
-.hero::before {
-  content: '';
-  position: absolute; inset: 0;
-  background-image:
-    linear-gradient(var(--grey2) 1px, transparent 1px),
-    linear-gradient(90deg, var(--grey2) 1px, transparent 1px);
-  background-size: 40px 40px;
-  opacity: 0.4;
-  pointer-events: none;
-}
-.hero-inner { position: relative; z-index: 1; max-width: 900px; }
+/* Fixed slogan */
+.hero-slogan{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;letter-spacing:.3em;text-transform:uppercase;color:var(--bk);margin-bottom:32px;display:flex;align-items:center;justify-content:center;gap:14px}
+.hero-slogan::before,.hero-slogan::after{content:'';flex:0 0 28px;height:2px;background:var(--bk)}
 
-.hero-pre {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 9px; letter-spacing: 0.22em; text-transform: uppercase;
-  color: var(--grey3); margin-bottom: 28px;
-  display: flex; align-items: center; justify-content: center; gap: 12px;
-}
-.hero-pre::before,
-.hero-pre::after { content: ''; flex: 0 0 32px; height: 1px; background: var(--grey3); }
+/* Rotating headline */
+.hl-wrap{min-height:180px;position:relative;margin-bottom:32px;overflow:hidden}
+@media(max-width:600px){.hl-wrap{min-height:280px}}
+.hl{position:absolute;top:0;left:0;right:0;font-size:clamp(20px,3.6vw,42px);font-weight:900;line-height:1.15;letter-spacing:-.025em;color:var(--bk);opacity:0;visibility:hidden;transform:translateY(8px);transition:opacity .5s ease,transform .5s ease;pointer-events:none}
+.hl.on{opacity:1;visibility:visible;transform:translateY(0);pointer-events:auto}
+.hl.out{opacity:0;transform:translateY(-8px)}
 
-/* Headline — daily rotation */
-.hl-wrap { min-height: 160px; position: relative; margin-bottom: 36px; }
-@media(max-width:600px){ .hl-wrap { min-height: 220px; } }
+.hero-sub{font-family:'JetBrains Mono',monospace;font-size:clamp(10px,1.4vw,13px);letter-spacing:.16em;text-transform:uppercase;color:var(--red);margin-bottom:36px;display:flex;align-items:center;justify-content:center;gap:10px}
+.hero-sub::before,.hero-sub::after{content:'';flex:0 0 20px;height:2px;background:var(--red)}
 
-.hl {
-  position: absolute; top: 0; left: 0; right: 0;
-  font-size: clamp(22px, 4vw, 46px);
-  font-weight: 900; line-height: 1.1; letter-spacing: -0.03em;
-  color: var(--black);
-  opacity: 0; transform: translateY(6px);
-  transition: opacity 0.5s ease, transform 0.5s ease;
-}
-.hl.on  { opacity: 1; transform: translateY(0); }
-.hl.out { opacity: 0; transform: translateY(-6px); }
+.hero-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.btn-primary{display:inline-flex;align-items:center;gap:8px;background:var(--bk);color:var(--wh);font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;padding:14px 32px;border:var(--bw) solid var(--bk);text-decoration:none;cursor:pointer;transition:background .12s,color .12s}
+.btn-primary:hover{background:var(--wh);color:var(--bk)}
+.btn-outline{display:inline-flex;align-items:center;gap:8px;background:var(--wh);color:var(--bk);font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;padding:14px 32px;border:var(--bw) solid var(--bk);text-decoration:none;cursor:pointer;transition:background .12s,color .12s}
+.btn-outline:hover{background:var(--bk);color:var(--wh)}
 
-.hero-sub {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: clamp(11px, 1.6vw, 14px);
-  letter-spacing: 0.12em; text-transform: uppercase;
-  color: var(--red); margin-bottom: 40px;
-  display: flex; align-items: center; justify-content: center; gap: 8px;
-}
-.hero-sub::before,
-.hero-sub::after { content: ''; flex: 0 0 20px; height: 2px; background: var(--red); }
+/* Dots */
+.hero-dots{position:absolute;bottom:24px;left:50%;transform:translateX(-50%);display:flex;gap:8px;z-index:2}
+.hero-dot{width:6px;height:6px;border:1px solid var(--bk);border-radius:50%;cursor:pointer;transition:background .15s}
+.hero-dot.active{background:var(--bk)}
 
-.hero-cta {
-  display: inline-flex; align-items: center; gap: 10px;
-  background: var(--black); color: var(--white);
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase;
-  padding: 14px 32px; border: var(--bw) solid var(--black);
-  cursor: pointer; text-decoration: none;
-  transition: background 0.12s, color 0.12s;
-}
-.hero-cta:hover { background: var(--white); color: var(--black); }
+/* ══════════════════════════════════════════════
+   UNIVERSAL SECTION STYLES
+══════════════════════════════════════════════ */
+.section{padding:72px 0;border-bottom:var(--bw) solid var(--bk)}
+.sec-eyebrow{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:var(--g3);margin-bottom:16px;display:flex;align-items:center;gap:10px}
+.sec-eyebrow::before{content:'';width:16px;height:1px;background:var(--g3)}
+.sec-title{font-size:clamp(22px,3vw,36px);font-weight:800;letter-spacing:-.025em;line-height:1.15;margin-bottom:24px}
+.sec-title em{color:var(--red);font-style:normal}
+.sec-text{font-size:15px;color:#444;line-height:1.85;max-width:700px}
+.sec-text p+p{margin-top:14px}
 
-.hero-dots {
-  position: absolute; bottom: 24px; left: 50%; transform: translateX(-50%);
-  display: flex; gap: 8px;
-}
-.hero-dot {
-  width: 6px; height: 6px; border: 1px solid var(--black);
-  border-radius: 50%; cursor: pointer; transition: background 0.15s;
-}
-.hero-dot.active { background: var(--black); }
+/* ══════════════════════════════════════════════
+   VORWORT SECTION
+══════════════════════════════════════════════ */
+.vorwort-grid{display:grid;grid-template-columns:1fr 1fr;gap:0;border:var(--bw) solid var(--bk);margin-top:40px}
+@media(max-width:700px){.vorwort-grid{grid-template-columns:1fr}}
+.vorwort-cell{padding:36px 36px}
+.vorwort-cell+.vorwort-cell{border-left:var(--bw) solid var(--bk)}
+@media(max-width:700px){.vorwort-cell+.vorwort-cell{border-left:none;border-top:var(--bw) solid var(--bk)}}
+.vorwort-quote{font-size:clamp(18px,2.5vw,28px);font-weight:800;letter-spacing:-.02em;line-height:1.2;color:var(--bk)}
+.vorwort-quote span{color:var(--red)}
+.vorwort-body{font-size:14px;color:#444;line-height:1.9}
+.vorwort-body p+p{margin-top:12px}
 
-/* ═══════════════════════════════════════════════════
-   SECTION HEADER
-═══════════════════════════════════════════════════ */
-.sec-hdr {
-  display: flex; align-items: center; gap: 0;
-  border: var(--bw) solid var(--black);
-  border-bottom: none; /* merges with grid below */
-  margin-bottom: 0;
-}
-.sec-badge {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase;
-  background: var(--black); color: var(--white);
-  padding: 8px 14px; flex-shrink: 0;
-}
-.sec-title {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase;
-  color: var(--black); padding: 8px 14px;
-}
-.sec-rule { flex: 1; height: var(--bw); background: var(--black); }
+/* ══════════════════════════════════════════════
+   ÜBER MICH
+══════════════════════════════════════════════ */
+.story-grid{display:grid;grid-template-columns:1fr 2fr;gap:0;border:var(--bw) solid var(--bk);margin-top:40px}
+@media(max-width:720px){.story-grid{grid-template-columns:1fr}}
+.story-left{padding:36px;background:var(--bk);color:var(--wh);display:flex;flex-direction:column;justify-content:space-between}
+.story-name{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--red);margin-bottom:16px}
+.story-headline{font-size:clamp(20px,2.5vw,30px);font-weight:900;letter-spacing:-.025em;line-height:1.15;color:var(--wh)}
+.story-headline em{color:var(--red);font-style:normal}
+.story-stats{margin-top:28px;display:flex;flex-direction:column;gap:10px}
+.story-stat{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.06em;color:#aaa;border-top:1px solid #333;padding-top:10px}
+.story-stat b{color:var(--wh);display:block;font-size:13px;margin-bottom:2px}
+.story-right{padding:36px;border-left:var(--bw) solid var(--bk)}
+@media(max-width:720px){.story-right{border-left:none;border-top:var(--bw) solid var(--bk)}}
+.story-timeline{display:flex;flex-direction:column;gap:20px}
+.tline-item{display:flex;gap:16px;align-items:flex-start}
+.tline-dot{width:10px;height:10px;border:var(--bw) solid var(--bk);flex-shrink:0;margin-top:4px;position:relative}
+.tline-dot.red{background:var(--red);border-color:var(--red)}
+.tline-dot.grn{background:var(--grn);border-color:var(--grn)}
+.tline-body{}
+.tline-label{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--g3);margin-bottom:4px}
+.tline-text{font-size:14px;color:#333;line-height:1.7}
+.tline-text b{color:var(--bk);font-weight:700}
 
-/* ═══════════════════════════════════════════════════
-   MODULE SECTIONS
-═══════════════════════════════════════════════════ */
-.modul { padding: 44px 0 0; }
-.modul + .modul { padding-top: 40px; }
-.modul-last { padding-bottom: 44px; border-bottom: var(--bw) solid var(--black); }
+/* ══════════════════════════════════════════════
+   MODULE HEADERS (Audit)
+══════════════════════════════════════════════ */
+.mod-hdr{display:flex;align-items:center;gap:0;border:var(--bw) solid var(--bk);border-bottom:none}
+.mod-badge{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.2em;text-transform:uppercase;background:var(--bk);color:var(--wh);padding:8px 14px;flex-shrink:0}
+.mod-title{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;padding:8px 14px}
+.mod-rule{flex:1;height:var(--bw);background:var(--bk)}
 
-/* ═══════════════════════════════════════════════════
-   GRID SYSTEM (BORDERED CELLS)
-═══════════════════════════════════════════════════ */
-.grid {
-  border: var(--bw) solid var(--black);
-  display: grid;
-}
-.g2  { grid-template-columns: 1fr 1fr; }
-.g3  { grid-template-columns: 1fr 1fr 1fr; }
-.g4  { grid-template-columns: 1fr 1fr 1fr 1fr; }
-.g5  { grid-template-columns: 1fr 1fr 1fr 1fr 1fr; }
-@media(max-width:760px){ .g3,.g4,.g5 { grid-template-columns: 1fr 1fr; } }
-@media(max-width:520px){ .g2,.g3,.g4,.g5 { grid-template-columns: 1fr; } }
+/* Grid cells */
+.grid{border:var(--bw) solid var(--bk);display:grid}
+.g2{grid-template-columns:1fr 1fr}
+.g3{grid-template-columns:1fr 1fr 1fr}
+.g4{grid-template-columns:1fr 1fr 1fr 1fr}
+.g5{grid-template-columns:1fr 1fr 1fr 1fr 1fr}
+@media(max-width:760px){.g3,.g4,.g5{grid-template-columns:1fr 1fr}}
+@media(max-width:520px){.g2,.g3,.g4,.g5{grid-template-columns:1fr}}
 
-.cell {
-  padding: 18px 18px 20px;
-  border-right: var(--bw-thin) solid var(--black);
-  border-bottom: var(--bw-thin) solid var(--black);
-  background: var(--white);
-}
-.cell:last-child,
-.cell:nth-child(2n):last-child,
-.cell:nth-child(3n):last-child,
-.cell:nth-child(4n):last-child { border-right: none; }
-/* Remove bottom border for last row — handled by outer grid border */
-.cell.no-bb { border-bottom: none; }
-.cell-shade { background: var(--grey1); }
-.cell-result { background: var(--grey1); }
-.cell-black { background: var(--black); color: var(--white); }
-.cell-red   { background: var(--red); color: var(--white); }
+.cell{padding:18px 18px 20px;border-right:var(--thin) solid var(--bk);border-bottom:var(--thin) solid var(--bk);background:var(--wh)}
+.cell.no-bb{border-bottom:none}
+.cell.shade{background:var(--g1)}
+.cell.result{background:var(--g1)}
 
-/* ═══════════════════════════════════════════════════
+/* ══════════════════════════════════════════════
    FIELD LABELS & INPUTS
-═══════════════════════════════════════════════════ */
-.flbl {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase;
-  color: var(--grey3); margin-bottom: 8px;
-  display: flex; align-items: center; gap: 6px;
-}
-.fhint   { font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--grey3); margin-top: 5px; }
-.fformula{ font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--grey3); margin-top: 4px; font-style: italic; }
+══════════════════════════════════════════════ */
+.flbl{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--g3);margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.fhint{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--g3);margin-top:5px}
+.fform{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--g3);margin-top:4px;font-style:italic}
+.inp{width:100%;background:var(--wh);border:var(--thin) solid var(--bk);color:var(--bk);font-family:'JetBrains Mono',monospace;font-size:16px;font-weight:600;padding:9px 11px;outline:none;-webkit-appearance:none;border-radius:0;transition:border-color .12s,box-shadow .12s}
+.inp:focus{border-color:var(--red);box-shadow:0 0 0 2px rgba(220,38,38,.12)}
+.inp::placeholder{color:#d1d5db;font-weight:300}
+select.inp{cursor:pointer}
+.lval{font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:700;line-height:1;margin-top:6px;transition:color .2s}
+.llbl{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--g3);margin-top:6px}
+.lform{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--g3);margin-top:8px;line-height:1.7}
 
-.inp {
-  width: 100%;
-  background: var(--white);
-  border: var(--bw-thin) solid var(--black);
-  color: var(--black);
-  font-family: 'JetBrains Mono', monospace; font-size: 17px; font-weight: 600;
-  padding: 9px 11px; outline: none;
-  transition: border-color 0.12s, box-shadow 0.12s;
-  -webkit-appearance: none; border-radius: 0;
-}
-.inp:focus { border-color: var(--red); box-shadow: 0 0 0 2px rgba(220,38,38,0.15); }
-.inp::placeholder { color: #ccc; font-weight: 300; }
-select.inp { cursor: pointer; }
+/* Psychologie checkboxes */
+.psych-row{display:flex;flex-direction:column;gap:6px;margin-top:10px;padding-top:10px;border-top:1px solid var(--g2)}
+.psych-item{display:flex;align-items:center;gap:8px;cursor:pointer}
+.psych-cb{width:13px;height:13px;border:var(--thin) solid var(--g3);flex-shrink:0;background:var(--wh);position:relative;transition:background .12s,border-color .12s}
+.psych-cb.on{background:var(--bk);border-color:var(--bk)}
+.psych-cb.on::after{content:'';position:absolute;top:1px;left:4px;width:3px;height:6px;border:1.5px solid var(--wh);border-top:none;border-left:none;transform:rotate(45deg)}
+.psych-lbl{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--g3);letter-spacing:.05em;user-select:none}
+.psych-lbl.happiness{color:var(--grn)}
+.psych-lbl.status{color:var(--amb)}
 
-/* Live result values */
-.lval { font-family: 'JetBrains Mono', monospace; font-size: 24px; font-weight: 700; line-height: 1; margin-top: 6px; transition: color 0.2s; }
-.llbl { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--grey3); margin-top: 6px; }
-.lform{ font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--grey3); margin-top: 8px; line-height: 1.7; }
-
-/* ═══════════════════════════════════════════════════
+/* ══════════════════════════════════════════════
    INFO TOOLTIP
-═══════════════════════════════════════════════════ */
-.tip-wrap { position: relative; display: inline-flex; }
-.tip-icon {
-  display: inline-flex; align-items: center; justify-content: center;
-  width: 14px; height: 14px;
-  border: 1px solid var(--black); background: var(--white);
-  font-family: 'Inter', sans-serif; font-size: 9px; font-weight: 700;
-  color: var(--black); cursor: pointer; flex-shrink: 0;
-  transition: background 0.12s, color 0.12s;
-}
-.tip-icon:hover, .tip-wrap.open .tip-icon { background: var(--black); color: var(--white); }
-.tip-box {
-  position: absolute; top: calc(100% + 6px); left: 50%; transform: translateX(-50%);
-  background: var(--black); color: var(--white);
-  font-family: 'JetBrains Mono', monospace; font-size: 10px; line-height: 1.75;
-  padding: 14px 16px; width: 290px; z-index: 300;
-  border: var(--bw) solid var(--black);
-  pointer-events: none; opacity: 0; transition: opacity 0.15s;
-}
-.tip-wrap:hover .tip-box,
-.tip-wrap.open .tip-box { opacity: 1; pointer-events: auto; }
-.tip-box b { color: #f87171; }
+══════════════════════════════════════════════ */
+.tip-wrap{position:relative;display:inline-flex}
+.tip-icon{display:inline-flex;align-items:center;justify-content:center;width:14px;height:14px;border:1px solid var(--bk);background:var(--wh);font-family:'Inter',sans-serif;font-size:9px;font-weight:700;color:var(--bk);cursor:pointer;flex-shrink:0;transition:background .12s,color .12s}
+.tip-icon:hover,.tip-wrap.open .tip-icon{background:var(--bk);color:var(--wh)}
+.tip-box{position:absolute;top:calc(100% + 6px);left:50%;transform:translateX(-50%);background:var(--bk);color:var(--wh);font-family:'JetBrains Mono',monospace;font-size:10px;line-height:1.75;padding:14px 16px;width:290px;z-index:300;border:var(--bw) solid var(--bk);pointer-events:none;opacity:0;transition:opacity .15s}
+.tip-wrap:hover .tip-box,.tip-wrap.open .tip-box{opacity:1;pointer-events:auto}
+.tip-box b{color:#f87171}
 
-/* Inline term tooltips */
-.term { position: relative; display: inline; }
-.term-lbl { border-bottom: 1px dashed var(--grey3); cursor: help; font-family: 'JetBrains Mono', monospace; }
-.term-box {
-  position: absolute; bottom: calc(100% + 6px); left: 0;
-  background: var(--black); color: var(--white);
-  font-family: 'JetBrains Mono', monospace; font-size: 10px; line-height: 1.6;
-  padding: 10px 13px; width: 240px; z-index: 300;
-  border: var(--bw) solid var(--black);
-  opacity: 0; pointer-events: none; transition: opacity 0.15s;
-}
-.term:hover .term-box { opacity: 1; }
+/* Term tooltip */
+.term{position:relative;display:inline}
+.term-lbl{border-bottom:1px dashed var(--g3);cursor:help;font-family:'JetBrains Mono',monospace}
+.term-box{position:absolute;bottom:calc(100% + 6px);left:0;background:var(--bk);color:var(--wh);font-family:'JetBrains Mono',monospace;font-size:10px;line-height:1.6;padding:10px 13px;width:240px;z-index:300;border:var(--bw) solid var(--bk);opacity:0;pointer-events:none;transition:opacity .15s}
+.term:hover .term-box{opacity:1}
 
-/* ═══════════════════════════════════════════════════
-   CHECKBOX TOGGLE
-═══════════════════════════════════════════════════ */
-.toggle-row {
-  display: flex; align-items: center; gap: 12px;
-  padding: 13px 18px;
-  border: var(--bw) solid var(--black); border-top: none;
-  cursor: pointer; background: var(--grey1);
-  transition: background 0.12s;
-}
-.toggle-row:hover { background: var(--black); color: var(--white); }
-.toggle-row:hover .toggle-lbl { color: var(--white); }
-.toggle-row:hover .tcb { border-color: var(--white); }
-.tcb {
-  width: 16px; height: 16px;
-  border: var(--bw) solid var(--black); background: var(--white);
-  flex-shrink: 0; position: relative; transition: background 0.12s, border-color 0.12s;
-}
-.tcb.on { background: var(--red); border-color: var(--red); }
-.tcb.on::after {
-  content: ''; position: absolute; top: 1px; left: 5px;
-  width: 4px; height: 8px;
-  border: 2px solid var(--white); border-top: none; border-left: none;
-  transform: rotate(45deg);
-}
-.toggle-lbl {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px; letter-spacing: 0.06em; color: var(--black);
-}
+/* ══════════════════════════════════════════════
+   TOGGLE CHECKBOX
+══════════════════════════════════════════════ */
+.toggle-row{display:flex;align-items:center;gap:12px;padding:13px 18px;border:var(--bw) solid var(--bk);border-top:none;cursor:pointer;background:var(--g1);transition:background .12s}
+.toggle-row:hover{background:var(--bk)}
+.toggle-row:hover .toggle-lbl{color:var(--wh)}
+.toggle-row:hover .tcb{border-color:var(--wh)}
+.tcb{width:16px;height:16px;border:var(--bw) solid var(--bk);background:var(--wh);flex-shrink:0;position:relative;transition:background .12s,border-color .12s}
+.tcb.on{background:var(--red);border-color:var(--red)}
+.tcb.on::after{content:'';position:absolute;top:1px;left:5px;width:4px;height:8px;border:2px solid var(--wh);border-top:none;border-left:none;transform:rotate(45deg)}
+.toggle-lbl{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.06em;color:var(--bk)}
 
-/* ═══════════════════════════════════════════════════
+/* ══════════════════════════════════════════════
    VEHICLE BLOCK
-═══════════════════════════════════════════════════ */
-.veh-hdr {
-  display: flex; align-items: center; gap: 0;
-  border: var(--bw) solid var(--black); border-bottom: none;
-  margin-top: 20px;
-}
-.veh-badge {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 9px; letter-spacing: 0.16em; text-transform: uppercase;
-  background: var(--black); color: var(--white); padding: 7px 12px; flex-shrink: 0;
-}
-.veh-live {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px; color: var(--grey3); padding: 7px 14px; margin-left: auto;
-}
-.veh-live b { color: var(--red); font-weight: 700; }
-.veh-breakdown {
-  border: var(--bw) solid var(--black); border-top: var(--bw-thin) solid var(--grey2);
-  display: grid; grid-template-columns: 1fr 1fr 1fr;
-}
-@media(max-width:480px){ .veh-breakdown { grid-template-columns: 1fr; } }
-.veh-cell {
-  padding: 12px 16px;
-  border-right: var(--bw-thin) solid var(--black);
-  background: var(--grey1);
-}
-.veh-cell:last-child { border-right: none; }
-.veh-cell-lbl { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--grey3); margin-bottom: 4px; }
-.veh-cell-val { font-family: 'JetBrains Mono', monospace; font-size: 15px; font-weight: 700; color: var(--red); }
+══════════════════════════════════════════════ */
+.veh-hdr{display:flex;align-items:center;gap:0;border:var(--bw) solid var(--bk);border-bottom:none;margin-top:20px}
+.veh-badge{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.16em;text-transform:uppercase;background:var(--bk);color:var(--wh);padding:7px 12px;flex-shrink:0}
+.veh-live{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--g3);padding:7px 14px;margin-left:auto}
+.veh-live b{color:var(--red);font-weight:700}
+.veh-bd{border:var(--bw) solid var(--bk);border-top:var(--thin) solid var(--g2);display:grid;grid-template-columns:1fr 1fr 1fr}
+@media(max-width:480px){.veh-bd{grid-template-columns:1fr}}
+.veh-cell{padding:12px 16px;border-right:var(--thin) solid var(--bk);background:var(--g1)}
+.veh-cell:last-child{border-right:none}
+.veh-lbl{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--g3);margin-bottom:4px}
+.veh-val{font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:700;color:var(--red)}
+#kfz2-wrap{display:none}
+#kfz2-wrap.vis{display:block}
 
-#kfz2-wrap { display: none; }
-#kfz2-wrap.vis { display: block; }
+/* ══════════════════════════════════════════════
+   ANALYSE BUTTON
+══════════════════════════════════════════════ */
+.analyse-sec{padding:28px 0 44px;margin-top:20px}
+.analyse-inner{display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+.abtn{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;background:var(--bk);color:var(--wh);border:var(--bw) solid var(--bk);cursor:pointer;padding:14px 40px;display:flex;align-items:center;gap:10px;transition:background .12s,color .12s;white-space:nowrap}
+.abtn:hover{background:var(--wh);color:var(--bk)}
+.abtn.busy{background:var(--g3);border-color:var(--g3);cursor:wait}
+.ahint{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--g3);line-height:1.9;letter-spacing:.04em}
 
-/* ═══════════════════════════════════════════════════
-   ANALYSE BUTTON SECTION
-═══════════════════════════════════════════════════ */
-.analyse-sec {
-  padding: 0 0 44px; /* sits inside modul-last */
-  margin-top: 20px;
-}
-.analyse-inner { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
-.abtn {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase;
-  background: var(--black); color: var(--white);
-  border: var(--bw) solid var(--black); cursor: pointer;
-  padding: 14px 40px; display: flex; align-items: center; gap: 10px;
-  transition: background 0.12s, color 0.12s;
-  white-space: nowrap;
-}
-.abtn:hover { background: var(--white); color: var(--black); }
-.abtn.busy  { background: var(--grey3); border-color: var(--grey3); cursor: wait; }
-.ahint {
-  font-family: 'JetBrains Mono', monospace; font-size: 9px;
-  color: var(--grey3); line-height: 1.9; letter-spacing: 0.04em;
-}
-
-/* ═══════════════════════════════════════════════════
+/* ══════════════════════════════════════════════
    LOADING
-═══════════════════════════════════════════════════ */
-#loading { display: none; padding: 44px 0; border-bottom: var(--bw) solid var(--black); }
-.load-box { border: var(--bw) solid var(--black); padding: 22px; max-width: 600px; }
-.load-lbl { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--grey3); margin-bottom: 8px; }
-.load-track { background: var(--grey1); border: 1px solid var(--black); height: 4px; margin-bottom: 18px; }
-.load-fill  { height: 100%; background: var(--black); width: 0%; transition: width 0.1s linear; }
-.load-line  { font-family: 'JetBrains Mono', monospace; font-size: 11px; line-height: 2.1; opacity: 0; color: var(--grey3); }
-.load-line.done { opacity: 1; }
-.load-line.act  { opacity: 1; color: var(--black); }
-.load-line.act::after { content: '█'; animation: blink 0.9s step-end infinite; color: var(--red); }
-@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+══════════════════════════════════════════════ */
+#loading{display:none;padding:44px 0;border-bottom:var(--bw) solid var(--bk)}
+.load-box{border:var(--bw) solid var(--bk);padding:22px;max-width:600px}
+.load-lbl{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--g3);margin-bottom:8px}
+.load-track{background:var(--g1);border:1px solid var(--bk);height:4px;margin-bottom:18px}
+.load-fill{height:100%;background:var(--bk);width:0%;transition:width .1s linear}
+.load-line{font-family:'JetBrains Mono',monospace;font-size:11px;line-height:2.1;opacity:0;color:var(--g3)}
+.load-line.done{opacity:1}
+.load-line.act{opacity:1;color:var(--bk)}
+.load-line.act::after{content:'█';animation:blink .9s step-end infinite;color:var(--red)}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
 
-/* ═══════════════════════════════════════════════════
+/* ══════════════════════════════════════════════
    RESULTS
-═══════════════════════════════════════════════════ */
-#results { display: none; }
+══════════════════════════════════════════════ */
+#results{display:none}
 
-/* ─── Slave day card ─── */
-.res-section { padding: 44px 0; border-bottom: var(--bw) solid var(--black); }
-.res-hdr { display: flex; align-items: center; gap: 0; border: var(--bw) solid var(--black); border-bottom: none; margin-bottom: 0; }
-.res-badge { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; background: var(--black); color: var(--white); padding: 7px 12px; }
-.res-title { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; padding: 7px 12px; }
+.res-sec{padding:44px 0;border-bottom:var(--bw) solid var(--bk)}
+.res-hdr{display:flex;align-items:center;gap:0;border:var(--bw) solid var(--bk);border-bottom:none}
+.res-badge{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.2em;text-transform:uppercase;background:var(--bk);color:var(--wh);padding:7px 12px}
+.res-title{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;padding:7px 12px}
 
-.slave-grid {
-  display: grid; grid-template-columns: 260px 1fr; gap: 0;
-  border: var(--bw) solid var(--black); border-top: none;
-  margin-bottom: 20px;
-}
-@media(max-width:680px){ .slave-grid { grid-template-columns: 1fr; } }
-.slave-card {
-  padding: 28px 28px 24px;
-  border-right: var(--bw) solid var(--black);
-  border-top: 3px solid var(--red);
-}
-.slave-tag   { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--red); margin-bottom: 8px; }
-.slave-num   { font-family: 'JetBrains Mono', monospace; font-size: clamp(60px, 10vw, 96px); font-weight: 700; line-height: 1; letter-spacing: -0.04em; color: var(--red); }
-.slave-sfx   { font-family: 'JetBrains Mono', monospace; font-size: 15px; font-weight: 300; color: var(--grey3); margin-left: 2px; }
-.slave-desc  { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--grey3); margin-top: 10px; line-height: 1.7; }
-.slave-free  { font-family: 'JetBrains Mono', monospace; font-size: 28px; font-weight: 700; color: var(--green); margin-top: 12px; }
-.slave-free-l{ font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--grey3); }
+/* Autonomie-Breakpoint (was slave-day) */
+.abp-grid{display:grid;grid-template-columns:260px 1fr;gap:0;border:var(--bw) solid var(--bk);border-top:none;margin-bottom:0}
+@media(max-width:680px){.abp-grid{grid-template-columns:1fr}}
+.abp-card{padding:28px 28px 24px;border-right:var(--bw) solid var(--bk);border-top:3px solid var(--red)}
+@media(max-width:680px){.abp-card{border-right:none}}
+.abp-tag{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--red);margin-bottom:8px}
+.abp-num{font-family:'JetBrains Mono',monospace;font-size:clamp(56px,10vw,92px);font-weight:700;line-height:1;letter-spacing:-.04em;color:var(--red)}
+.abp-sfx{font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:300;color:var(--g3);margin-left:2px}
+.abp-desc{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--g3);margin-top:10px;line-height:1.7}
+.abp-free{font-family:'JetBrains Mono',monospace;font-size:28px;font-weight:700;color:var(--grn);margin-top:12px}
+.abp-free-l{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--g3)}
 
-.kpi-grid { display: grid; grid-template-columns: 1fr 1fr; }
-@media(max-width:440px){ .kpi-grid { grid-template-columns: 1fr; } }
-.kpi-cell { padding: 20px 20px; border-bottom: var(--bw-thin) solid var(--black); border-right: var(--bw-thin) solid var(--black); }
-.kpi-cell:nth-child(2n) { border-right: none; }
-.kpi-cell:nth-last-child(-n+2) { border-bottom: none; }
-.kpi-tag { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.13em; text-transform: uppercase; color: var(--grey3); margin-bottom: 5px; }
-.kpi-num { font-family: 'JetBrains Mono', monospace; font-size: 20px; font-weight: 700; line-height: 1; }
-.kpi-num.r  { color: var(--red); }
-.kpi-num.g  { color: var(--green); }
-.kpi-num.a  { color: var(--amber); }
-.kpi-num.b  { color: var(--blue); }
-.kpi-eur    { font-size: 11px; font-weight: 300; color: var(--grey3); margin-left: 2px; }
-.kpi-sub    { font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--grey3); margin-top: 4px; }
+.kpi-grid{display:grid;grid-template-columns:1fr 1fr}
+@media(max-width:440px){.kpi-grid{grid-template-columns:1fr}}
+.kpi-cell{padding:18px 20px;border-bottom:var(--thin) solid var(--bk);border-right:var(--thin) solid var(--bk)}
+.kpi-cell:nth-child(2n){border-right:none}
+.kpi-cell:nth-last-child(-n+2){border-bottom:none}
+.kpi-tag{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.13em;text-transform:uppercase;color:var(--g3);margin-bottom:5px}
+.kpi-num{font-family:'JetBrains Mono',monospace;font-size:20px;font-weight:700;line-height:1}
+.kpi-num.r{color:var(--red)}
+.kpi-num.g{color:var(--grn)}
+.kpi-num.a{color:var(--amb)}
+.kpi-num.b{color:var(--blu)}
+.kpi-eur{font-size:11px;font-weight:300;color:var(--g3);margin-left:2px}
+.kpi-sub{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--g3);margin-top:4px}
 
-/* ─── Alert badges ─── */
-.alerts { display: flex; flex-direction: column; gap: 0; border: var(--bw) solid var(--black); border-top: none; margin-bottom: 0; }
-.alert {
-  display: flex; align-items: flex-start; gap: 0;
-  border-bottom: 1px solid var(--black);
-  font-family: 'JetBrains Mono', monospace; font-size: 10px; line-height: 1.6;
-}
-.alert:last-child { border-bottom: none; }
-.alert-prefix {
-  font-size: 9px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
-  padding: 10px 12px; flex-shrink: 0; min-width: 100px; text-align: center;
-  border-right: var(--bw-thin) solid var(--black);
-}
-.alert-txt { padding: 10px 14px; }
-.alert.critical .alert-prefix { background: var(--red); color: var(--white); }
-.alert.critical .alert-txt    { color: var(--red); background: #fff5f5; }
-.alert.warn .alert-prefix { background: var(--black); color: #fbbf24; }
-.alert.warn .alert-txt    { color: var(--amber); }
-.alert.alarm .alert-prefix { background: var(--purple); color: var(--white); }
-.alert.alarm .alert-txt    { color: var(--purple); }
-.alert.ok .alert-prefix { background: var(--green); color: var(--white); }
-.alert.ok .alert-txt    { color: var(--green); }
+/* Status-Overhead card */
+.overhead-card{border:var(--bw) solid var(--bk);border-top:none;padding:20px 24px;background:var(--g1);display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;background:var(--bk)}
+@media(max-width:560px){.overhead-card{grid-template-columns:1fr}}
+.oh-cell{background:var(--g1);padding:16px 18px}
+.oh-tag{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--g3);margin-bottom:5px}
+.oh-val{font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:700;color:var(--amb)}
+.oh-sub{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--g3);margin-top:4px}
 
-/* ─── Chart ─── */
-.chart-section { padding: 44px 0; border-bottom: var(--bw) solid var(--black); }
-.chart-box { border: var(--bw) solid var(--black); padding: 24px; }
-.chart-ttl { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--grey3); margin-bottom: 22px; }
+/* Alerts */
+.alerts{display:flex;flex-direction:column;gap:0;border:var(--bw) solid var(--bk);border-top:none;margin-bottom:0}
+.alert{display:flex;align-items:flex-start;gap:0;border-bottom:1px solid var(--bk);font-family:'JetBrains Mono',monospace;font-size:10px;line-height:1.6}
+.alert:last-child{border-bottom:none}
+.alert-pre{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:10px 12px;flex-shrink:0;min-width:100px;text-align:center;border-right:var(--thin) solid var(--bk)}
+.alert-txt{padding:10px 14px}
+.alert.critical .alert-pre{background:var(--red);color:var(--wh)}
+.alert.critical .alert-txt{color:var(--red2);background:#fff5f5}
+.alert.warn .alert-pre{background:var(--bk);color:#fbbf24}
+.alert.warn .alert-txt{color:var(--amb)}
+.alert.alarm .alert-pre{background:var(--pur);color:var(--wh)}
+.alert.alarm .alert-txt{color:var(--pur)}
+.alert.ok .alert-pre{background:var(--grn);color:var(--wh)}
+.alert.ok .alert-txt{color:var(--grn)}
 
-/* Composite stacked bar */
-.stacked-wrap { margin-bottom: 24px; }
-.stacked-l { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--grey3); margin-bottom: 7px; }
-.stacked-track { height: 40px; background: var(--grey1); border: var(--bw-thin) solid var(--black); overflow: hidden; display: flex; }
-.sseg { height: 100%; display: flex; align-items: center; justify-content: center; overflow: hidden; transition: width 1.1s cubic-bezier(0.4,0,0.2,1); }
-.sseg-lbl { font-family: 'JetBrains Mono', monospace; font-size: 9px; font-weight: 700; color: rgba(255,255,255,0.9); white-space: nowrap; padding: 0 5px; }
+/* Chart */
+.chart-sec{padding:44px 0;border-bottom:var(--bw) solid var(--bk)}
+.chart-box{border:var(--bw) solid var(--bk);border-top:none;padding:24px}
+.chart-ttl{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--g3);margin-bottom:20px}
+.stacked-wrap{margin-bottom:24px}
+.stacked-l{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--g3);margin-bottom:7px}
+.stacked-track{height:40px;background:var(--g1);border:var(--thin) solid var(--bk);overflow:hidden;display:flex}
+.sseg{height:100%;display:flex;align-items:center;justify-content:center;overflow:hidden;transition:width 1.1s cubic-bezier(.4,0,.2,1)}
+.sseg-lbl{font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;color:rgba(255,255,255,.9);white-space:nowrap;padding:0 5px}
+.brow{margin-bottom:12px}
+.bmeta{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px}
+.bname{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--g3);display:flex;align-items:center;gap:6px}
+.bswatch{width:8px;height:8px;flex-shrink:0;border:1px solid rgba(0,0,0,.2)}
+.bval{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--bk);font-weight:500}
+.btrack{height:20px;background:var(--g1);border:1px solid var(--g2);overflow:hidden}
+.bfill{height:100%;transition:width 1s cubic-bezier(.4,0,.2,1)}
+.legend{display:flex;flex-wrap:wrap;gap:16px;margin-top:18px;padding-top:16px;border-top:1px solid var(--g2)}
+.leg{display:flex;align-items:center;gap:6px;font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--g3)}
+.leg-d{width:9px;height:9px;border:1px solid rgba(0,0,0,.1)}
 
-.brow { margin-bottom: 12px; }
-.bmeta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
-.bname { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--grey3); display: flex; align-items: center; gap: 6px; }
-.bswatch { width: 8px; height: 8px; flex-shrink: 0; border: 1px solid rgba(0,0,0,0.2); }
-.bval  { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--black); font-weight: 500; }
-.btrack { height: 20px; background: var(--grey1); border: 1px solid var(--grey2); overflow: hidden; }
-.bfill  { height: 100%; transition: width 1s cubic-bezier(0.4,0,0.2,1); }
+/* Terminal */
+.term-sec{padding:44px 0;border-bottom:var(--bw) solid var(--bk)}
+.terminal{border:var(--bw) solid var(--bk);border-top:none;overflow:hidden}
+.term-bar{background:var(--bk);padding:9px 16px;display:flex;align-items:center;gap:10px;border-bottom:var(--bw) solid var(--bk)}
+.tdots{display:flex;gap:5px}
+.tdot{width:9px;height:9px;border-radius:50%}
+.term-ttl{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:#666}
+.term-body{padding:20px 22px 24px;background:var(--wh);min-height:160px;border-left:3px solid var(--bk)}
+.log-line{font-family:'JetBrains Mono',monospace;font-size:10px;line-height:2.1;opacity:0}
+.log-line.vis{opacity:1}
+.log-line.lw{color:var(--red)}
+.log-line.lo{color:var(--grn)}
+.log-line.li{color:var(--g3)}
+.log-line.lh{color:var(--bk);font-weight:700}
+.log-line.la{color:var(--pur)}
+.log-line.lm{color:var(--amb)}
+.log-prompt{color:#ccc;margin-right:6px;user-select:none}
 
-.legend { display: flex; flex-wrap: wrap; gap: 16px; margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--grey2); }
-.leg    { display: flex; align-items: center; gap: 6px; font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--grey3); }
-.leg-d  { width: 9px; height: 9px; border: 1px solid rgba(0,0,0,0.1); }
+/* Detail table */
+.det-sec{padding:44px 0;border-bottom:var(--bw) solid var(--bk)}
+.det-table{width:100%;border-collapse:collapse;border:var(--bw) solid var(--bk);border-top:none}
+.det-table th{background:var(--bk);color:var(--wh);padding:8px 13px;text-align:left;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.14em;text-transform:uppercase;border-right:1px solid #333}
+.det-table th:last-child{text-align:right;border-right:none}
+.det-table td{padding:9px 13px;font-family:'JetBrains Mono',monospace;font-size:11px;border-bottom:1px solid var(--g2);color:var(--g3);border-right:1px solid var(--g2)}
+.det-table td:first-child{color:var(--bk)}
+.det-table td:last-child{text-align:right;font-weight:600;border-right:none}
+.det-table tr:last-child td{border-bottom:none}
+.det-table tr.sec-row td{background:var(--g1);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--g3);padding:5px 13px;border-right:none}
+.det-table tr.tot-row td{background:var(--bk);color:var(--wh)!important;font-weight:700;font-size:12px;border-color:#333}
+.det-table tbody tr:not(.sec-row):not(.tot-row):hover td{background:var(--g1)}
 
-/* ─── Terminal ─── */
-.term-section { padding: 44px 0; border-bottom: var(--bw) solid var(--black); }
-.terminal { border: var(--bw) solid var(--black); overflow: hidden; }
-.term-bar {
-  background: var(--black); padding: 9px 16px;
-  display: flex; align-items: center; gap: 10px; border-bottom: var(--bw) solid var(--black);
-}
-.tdots { display: flex; gap: 5px; }
-.tdot  { width: 9px; height: 9px; border-radius: 50%; }
-.term-ttl { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: #666; }
-.term-body { padding: 20px 22px 24px; background: var(--white); min-height: 160px; border-left: 3px solid var(--black); }
-.log-line { font-family: 'JetBrains Mono', monospace; font-size: 10px; line-height: 2.1; opacity: 0; }
-.log-line.vis { opacity: 1; }
-.log-line.lw  { color: var(--red); }
-.log-line.lo  { color: var(--green); }
-.log-line.li  { color: var(--grey3); }
-.log-line.lh  { color: var(--black); font-weight: 700; }
-.log-line.la  { color: var(--purple); }
-.log-line.lm  { color: var(--amber); }
-.log-prompt   { color: #ccc; margin-right: 6px; user-select: none; }
+/* ══════════════════════════════════════════════
+   PRODUKTE / ANGEBOTE
+══════════════════════════════════════════════ */
+.products-sec{padding:72px 0;border-bottom:var(--bw) solid var(--bk)}
+.products-grid{display:grid;grid-template-columns:1fr 1fr;gap:0;border:var(--bw) solid var(--bk);margin-top:40px}
+@media(max-width:700px){.products-grid{grid-template-columns:1fr}}
+.product-card{padding:36px;border-right:var(--bw) solid var(--bk)}
+.product-card:last-child{border-right:none}
+@media(max-width:700px){.product-card{border-right:none;border-bottom:var(--bw) solid var(--bk)}}
+@media(max-width:700px){.product-card:last-child{border-bottom:none}}
+.prod-eyebrow{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--g3);margin-bottom:14px}
+.prod-name{font-size:clamp(18px,2.2vw,26px);font-weight:800;letter-spacing:-.02em;margin-bottom:8px}
+.prod-sub{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--g3);letter-spacing:.08em;margin-bottom:20px}
+.prod-price{font-family:'JetBrains Mono',monospace;font-size:32px;font-weight:700;color:var(--bk);margin-bottom:6px}
+.prod-price span{font-size:13px;color:var(--g3);font-weight:300}
+.prod-desc{font-size:13px;color:#555;line-height:1.75;margin-bottom:24px}
+.prod-features{list-style:none;margin-bottom:24px}
+.prod-features li{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--g3);line-height:1.9;padding-left:14px;position:relative}
+.prod-features li::before{content:'→';position:absolute;left:0;color:var(--bk)}
+.prod-btn{display:inline-flex;align-items:center;gap:8px;background:var(--bk);color:var(--wh);font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:12px 24px;text-decoration:none;border:var(--bw) solid var(--bk);transition:background .12s,color .12s}
+.prod-btn:hover{background:var(--wh);color:var(--bk)}
+.prod-btn.red{background:var(--red);border-color:var(--red)}
+.prod-btn.red:hover{background:var(--wh);color:var(--red)}
 
-/* ─── Detail table ─── */
-.det-section { padding: 44px 0; border-bottom: var(--bw) solid var(--black); }
-.det-table { width: 100%; border-collapse: collapse; border: var(--bw) solid var(--black); }
-.det-table th {
-  background: var(--black); color: var(--white);
-  padding: 8px 13px; text-align: left;
-  font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase;
-  border-right: 1px solid #333;
-}
-.det-table th:last-child { text-align: right; border-right: none; }
-.det-table td { padding: 9px 13px; font-family: 'JetBrains Mono', monospace; font-size: 11px; border-bottom: 1px solid var(--grey2); color: var(--grey3); border-right: 1px solid var(--grey2); }
-.det-table td:first-child { color: var(--black); }
-.det-table td:last-child { text-align: right; font-weight: 600; border-right: none; }
-.det-table tr:last-child td { border-bottom: none; }
-.det-table tr.sec-row td { background: var(--grey1); font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--grey3); padding: 5px 13px; border-right: none; }
-.det-table tr.tot-row td { background: var(--black); color: var(--white) !important; font-weight: 700; font-size: 12px; border-color: #333; }
-.det-table tbody tr:not(.sec-row):not(.tot-row):hover td { background: var(--grey1); }
+/* Toolkit cards */
+.toolkit-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border:var(--bw) solid var(--bk);border-top:none}
+@media(max-width:680px){.toolkit-grid{grid-template-columns:1fr}}
+.tk-card{padding:28px;border-right:var(--thin) solid var(--bk)}
+.tk-card:last-child{border-right:none}
+@media(max-width:680px){.tk-card{border-right:none;border-bottom:var(--thin) solid var(--bk)}}
+@media(max-width:680px){.tk-card:last-child{border-bottom:none}}
+.tk-tag{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--g3);margin-bottom:10px;background:var(--g1);padding:3px 8px;display:inline-block}
+.tk-name{font-size:16px;font-weight:800;letter-spacing:-.01em;margin-bottom:8px}
+.tk-desc{font-size:12px;color:#666;line-height:1.7;margin-bottom:16px}
+.tk-status{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--g3);border:var(--thin) solid var(--g3);padding:3px 8px;display:inline-block}
 
-/* ═══════════════════════════════════════════════════
+/* ══════════════════════════════════════════════
    CTA
-═══════════════════════════════════════════════════ */
-.cta-sec { padding: 64px 0; }
-.cta-box {
-  border: var(--bw) solid var(--black); border-top: 4px solid var(--red);
-  display: grid; grid-template-columns: 1fr auto; gap: 0; align-items: stretch;
-}
-@media(max-width:620px){ .cta-box { grid-template-columns: 1fr; } }
-.cta-left  { padding: 36px 36px; border-right: var(--bw) solid var(--black); }
-@media(max-width:620px){ .cta-left { border-right: none; border-bottom: var(--bw) solid var(--black); } }
-.cta-right { padding: 36px 36px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; min-width: 220px; }
-.cta-ey { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--red); margin-bottom: 10px; }
-.cta-h  { font-size: clamp(20px, 2.8vw, 30px); font-weight: 800; letter-spacing: -0.025em; line-height: 1.15; margin-bottom: 12px; }
-.cta-h em { color: var(--red); font-style: normal; }
-.cta-p  { font-size: 14px; color: var(--grey3); line-height: 1.75; max-width: 460px; }
-.trust  { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 18px; }
-.trust-i { display: flex; align-items: center; gap: 6px; font-size: 12px; font-family: 'JetBrains Mono', monospace; font-size: 10px; }
-.ck { color: var(--green); font-weight: 700; }
-.cta-btn {
-  display: inline-flex; align-items: center; gap: 8px;
-  background: var(--black); color: var(--white);
-  font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
-  padding: 14px 28px; text-decoration: none; border: var(--bw) solid var(--black);
-  transition: background 0.12s, color 0.12s; white-space: nowrap;
-}
-.cta-btn:hover { background: var(--white); color: var(--black); }
-.cta-price { font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--grey3); letter-spacing: 0.1em; }
+══════════════════════════════════════════════ */
+.cta-sec{padding:64px 0}
+.cta-box{border:var(--bw) solid var(--bk);border-top:4px solid var(--red);display:grid;grid-template-columns:1fr auto;gap:0;align-items:stretch}
+@media(max-width:620px){.cta-box{grid-template-columns:1fr}}
+.cta-left{padding:36px;border-right:var(--bw) solid var(--bk)}
+@media(max-width:620px){.cta-left{border-right:none;border-bottom:var(--bw) solid var(--bk)}}
+.cta-right{padding:36px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;min-width:220px}
+.cta-ey{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--red);margin-bottom:10px}
+.cta-h{font-size:clamp(20px,2.8vw,30px);font-weight:800;letter-spacing:-.025em;line-height:1.15;margin-bottom:12px}
+.cta-h em{color:var(--red);font-style:normal}
+.cta-p{font-size:14px;color:#555;line-height:1.75;max-width:460px}
+.trust{display:flex;flex-wrap:wrap;gap:12px;margin-top:18px}
+.trust-i{display:flex;align-items:center;gap:6px;font-family:'JetBrains Mono',monospace;font-size:10px}
+.ck{color:var(--grn);font-weight:700}
 
-/* Footer */
-footer { border-top: var(--bw) solid var(--black); padding: 22px 0; }
-.ftr { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
-.ftr-l { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700; }
-.ftr-l b { color: var(--red); }
-.ftr-r { font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--grey3); letter-spacing: 0.1em; }
+footer{border-top:var(--bw) solid var(--bk);padding:22px 0}
+.ftr{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}
+.ftr-l{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700}
+.ftr-l b{color:var(--red)}
+.ftr-r{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--g3);letter-spacing:.1em}
 </style>
 </head>
 <body>
 
-<!-- ═══ HEADER ═══ -->
+<!-- ══ HEADER ══ -->
 <header>
   <div class="wrap">
     <div class="hdr">
-      <div class="logo"><span class="logo-red">CL</span> GLOBAL</div>
-      <div class="hdr-right">
-        <div class="hdr-tag">Matrix-Exit Audit</div>
-        <div class="hdr-version">v2.0</div>
+      <div class="logo"><b>CL</b> GLOBAL</div>
+      <div class="hdr-r">
+        <div class="hdr-tag">Leben in Freiheit</div>
+        <a href="#angebote" class="hdr-cta">Angebote</a>
       </div>
     </div>
   </div>
 </header>
 
-<!-- ═══ HERO ═══ -->
+<!-- ══ HERO ══ -->
 <section class="hero" id="hero">
   <div class="hero-inner">
-    <div class="hero-pre">Finanzielle Statik-Prüfung</div>
-
-    <div class="hl-wrap" id="hlWrap">
-      <!-- filled by JS -->
+    <div class="hero-slogan">Freiheit durch Klarheit</div>
+    <div class="hl-wrap" id="hlWrap"></div>
+    <div class="hero-sub">Freiheit durch Klarheit</div>
+    <div class="hero-btns">
+      <a href="#system-check" class="btn-primary"><span>▾</span> Zum System-Check</a>
+      <a href="#angebote" class="btn-outline">Angebote ansehen</a>
     </div>
-
-    <div class="hero-sub">Analyse deiner finanziellen Statik</div>
-
-    <a href="#system-check" class="hero-cta">
-      <span>▾</span> Zum System-Check
-    </a>
   </div>
-
   <div class="hero-dots" id="heroDots"></div>
 </section>
 
-<!-- ═══ INPUTS ═══ -->
+<!-- ══ VORWORT ══ -->
+<section class="section" id="vorwort">
+  <div class="wrap">
+    <div class="sec-eyebrow">Die Architektur deines Lebens</div>
+    <h2 class="sec-title">Mehr als<br>nur <em>Zahlen.</em></h2>
+    <div class="vorwort-grid">
+      <div class="vorwort-cell">
+        <div class="vorwort-quote">
+          Hast du dich jemals gefragt, was der eigentliche <span>Sinn hinter all dem</span> ist?
+        </div>
+        <p style="margin-top:20px;font-size:13px;color:var(--g3);font-family:'JetBrains Mono',monospace;line-height:1.7;letter-spacing:.03em">DIE ARCHITEKTUR DEINES LEBENS: MEHR ALS NUR ZAHLEN</p>
+      </div>
+      <div class="vorwort-cell">
+        <div class="vorwort-body">
+          <p>Du stehst morgens auf, funktionierst, zahlst Rechnungen. Soll das wirklich alles gewesen sein? Ein Leben lang im Hamsterrad, nur um den Schein zu wahren?</p>
+          <p>Die meisten Menschen stecken in einer Matrix fest — Gewohnheiten und Denkmuster seit der Kindheit, unsichtbare Bindungen, die uns kontrollieren. Dinge besitzen uns. Der Kredit, das Haus, das Auto, der Status — alles schöne Gitterstäbe.</p>
+          <p>Freiheit beginnt im Kopf, nicht auf dem Konto. Ich sage dir: Es geht anders. Ich bin Dominic. Ich helfe dir dabei, beides in Einklang zu bringen — deine Glaubenssätze, deine Ziele und die harten Fakten.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ ÜBER MICH ══ -->
+<section class="section" id="ueber-mich">
+  <div class="wrap">
+    <div class="sec-eyebrow">Die Radikal-Story</div>
+    <h2 class="sec-title">Ich kenne<br>beide <em>Welten.</em></h2>
+    <div class="story-grid">
+      <div class="story-left">
+        <div>
+          <div class="story-name">Dominic — CL Global</div>
+          <div class="story-headline">Vom goldenen Käfig<br><em>zum freien Leben.</em></div>
+        </div>
+        <div class="story-stats">
+          <div class="story-stat"><b>Hausbesitzer &amp; Unternehmer</b>6 Angestellte, Immobilien in Kolumbien, Expeditionsmobil, SUV-Pickup</div>
+          <div class="story-stat"><b>−200.000 €</b>Verlust im Laufe der Selbstständigkeit — der Preis der falschen Matrix</div>
+          <div class="story-stat"><b>Heute</b>15 Jahre alter Van. Weltweit. Frei.</div>
+        </div>
+      </div>
+      <div class="story-right">
+        <div class="story-timeline">
+          <div class="tline-item">
+            <div class="tline-dot"></div>
+            <div class="tline-body">
+              <div class="tline-label">Phase 1 — Das System</div>
+              <div class="tline-text">Hausbesitzer, Unternehmer mit <b>6 Angestellten</b>, Immobilien in Kolumbien, Expeditionsmobil und SUV-Pickup. Von außen: Erfolg. Von innen: maximale Abhängigkeit.</div>
+            </div>
+          </div>
+          <div class="tline-item">
+            <div class="tline-dot red"></div>
+            <div class="tline-body">
+              <div class="tline-label">Der Wendepunkt</div>
+              <div class="tline-text">Ein Verlust von <b>200.000 Euro</b> im Laufe der Selbstständigkeit. Nicht durch Pech — sondern weil ich in der falschen Matrix operiert habe. Das System hatte mich, nicht ich das System.</div>
+            </div>
+          </div>
+          <div class="tline-item">
+            <div class="tline-dot"></div>
+            <div class="tline-body">
+              <div class="tline-label">Der radikale Schnitt</div>
+              <div class="tline-text"><b>Alles verkauft. Alles verschenkt.</b> Kein Haus, kein Fuhrpark, keine Angestellten. Vollständige Entschuldung des Lebens.</div>
+            </div>
+          </div>
+          <div class="tline-item">
+            <div class="tline-dot grn"></div>
+            <div class="tline-body">
+              <div class="tline-label">Heute — Freiheit durch Klarheit</div>
+              <div class="tline-text">Ich lebe und arbeite in einem <b>15 Jahre alten Van</b>. Starlink, Dual-Laptop, Europa-Tour ab Mitte 2026. Freiheit statt Ballast. Ich kenne beide Welten — und habe die Matrix selbst verlassen.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ AUDIT RECHNER ══ -->
 <div id="system-check">
 
-<!-- ─── MODUL A ─── -->
-<section class="modul" style="border-bottom: 2px solid #000;">
+<!-- MODUL A -->
+<section class="section" style="padding-bottom:0">
   <div class="wrap">
-    <div class="sec-hdr">
-      <div class="sec-badge">Modul A</div>
-      <div class="sec-title">Reales Einkommen &amp; Fixkosten</div>
-      <div class="sec-rule"></div>
+    <div class="sec-eyebrow">Deep Audit</div>
+    <h2 class="sec-title">Dein <em>System-Check.</em></h2>
+    <div style="height:32px"></div>
+    <div class="mod-hdr">
+      <div class="mod-badge">Modul A</div>
+      <div class="mod-title">Reales Einkommen &amp; Fixkosten</div>
+      <div class="mod-rule"></div>
     </div>
     <div class="grid g3">
       <div class="cell no-bb">
@@ -601,7 +532,7 @@ footer { border-top: var(--bw) solid var(--black); padding: 22px 0; }
       <div class="cell no-bb">
         <div class="flbl">Steuerrückerstattung (€/Jahr)</div>
         <input class="inp" type="number" id="steuerR" placeholder="600" min="0" oninput="liveA()">
-        <div class="fformula">→ wird auf Monatsbasis verteilt (÷12)</div>
+        <div class="fform">→ wird auf Monatsbasis verteilt (÷12)</div>
       </div>
       <div class="cell no-bb">
         <div class="flbl">
@@ -610,47 +541,50 @@ footer { border-top: var(--bw) solid var(--black); padding: 22px 0; }
             <div class="tip-icon">i</div>
             <div class="tip-box">
               <b>PRÜFLISTE — Alles erfasst?</b><br><br>
-              · KFZ-Versicherung<br>
-              · Haftpflicht / Rechtsschutz<br>
-              · Streaming (Netflix, Spotify …)<br>
-              · Gym-Mitgliedschaft<br>
-              · Cloud-Dienste / Software-Abos<br>
-              · Rundfunkbeitrag (18,36 €)<br>
-              · Wartungsverträge<br>
-              · Notfall-Puffer<br>
-              · Taschengeld Kinder<br>
-              · Kontoführungsgebühren
+              · KFZ-Versicherung<br>· Haftpflicht / Rechtsschutz<br>
+              · Streaming, Gym, Cloud-Abos<br>· Rundfunkbeitrag (18,36 €)<br>
+              · Wartungsverträge<br>· Notfall-Puffer<br>
+              · Taschengeld Kinder<br>· Kontoführungsgebühren
             </div>
           </div>
         </div>
         <input class="inp" type="number" id="fixk" placeholder="1400" min="0">
         <div class="fhint">Miete/Kredit + alle laufenden Verpflichtungen</div>
+        <div class="psych-row" id="psych-fixk">
+          <div class="psych-item" onclick="togglePsych('pf1')">
+            <div class="psych-cb" id="pf1"></div>
+            <div class="psych-lbl happiness">✓ Macht mich wirklich glücklich</div>
+          </div>
+          <div class="psych-item" onclick="togglePsych('pf2')">
+            <div class="psych-cb" id="pf2"></div>
+            <div class="psych-lbl status">△ Gehört in meiner Position einfach dazu (Status)</div>
+          </div>
+        </div>
       </div>
     </div>
-    <!-- Live: adjusted netto -->
-    <div style="border:2px solid #000; border-top:1px solid #e8e8e8; padding:14px 18px; display:flex; align-items:center; gap:28px; flex-wrap:wrap; background:#f4f4f4; margin-top:-1px;">
+    <div style="border:var(--bw) solid var(--bk);border-top:1px solid var(--g2);padding:14px 18px;display:flex;align-items:center;gap:28px;flex-wrap:wrap;background:var(--g1);">
       <div>
-        <div class="flbl" style="color:var(--red); margin-bottom:4px;">⟶ Angepasstes Gehalt Netto</div>
-        <div class="lval" id="nettoAdj" style="color:#000;">—</div>
+        <div class="flbl" style="color:var(--red);margin-bottom:4px">⟶ Angepasstes Gehalt Netto</div>
+        <div class="lval" id="nettoAdj" style="color:var(--bk)">—</div>
       </div>
-      <div class="lform" id="nettoFormula" style="margin-top:0;">Netto + (Steuerrückerstattung ÷ 12)</div>
+      <div class="lform" id="nettoFormula" style="margin-top:0">Netto + (Steuerrückerstattung ÷ 12)</div>
     </div>
   </div>
 </section>
 
-<!-- ─── MODUL B ─── -->
-<section class="modul" style="border-bottom: 2px solid #000;">
+<!-- MODUL B -->
+<section style="padding:40px 0 0;border-bottom:none">
   <div class="wrap">
-    <div class="sec-hdr">
-      <div class="sec-badge">Modul B</div>
-      <div class="sec-title">Partner-Check — Wahrer Deckungsbeitrag</div>
-      <div class="sec-rule"></div>
+    <div class="mod-hdr">
+      <div class="mod-badge">Modul B</div>
+      <div class="mod-title">Partner-Check — Wahrer Deckungsbeitrag</div>
+      <div class="mod-rule"></div>
     </div>
     <div class="grid g4">
       <div class="cell no-bb">
         <div class="flbl">Partner Netto (€/Monat)</div>
         <input class="inp" type="number" id="pBrutto" placeholder="2000" min="0" oninput="liveB()">
-        <div class="fformula">→ Real-Netto nach Systemkosten = Netto × 80%</div>
+        <div class="fform">→ Real-Netto = Netto × 80%</div>
       </div>
       <div class="cell no-bb">
         <div class="flbl">Kita-Kosten (€/Monat)</div>
@@ -662,11 +596,11 @@ footer { border-top: var(--bw) solid var(--black); padding: 22px 0; }
         <input class="inp" type="number" id="pendel" placeholder="150" min="0" oninput="liveB()">
         <div class="fhint">ÖPNV / Fahrtkosten / Parking</div>
       </div>
-      <div class="cell no-bb cell-shade">
+      <div class="cell no-bb result">
         <div class="flbl" style="color:var(--red)">⟶ Deckungsbeitrag</div>
-        <div class="lval" id="pDB" style="color:var(--green)">—</div>
+        <div class="lval" id="pDB" style="color:var(--grn)">—</div>
         <div class="llbl" id="pDBLbl">Wahrer Wert des Partner-Jobs</div>
-        <div class="lform" id="pFormula">Formel: (Brutto × 0.6) − Kita − Pendeln</div>
+        <div class="lform" id="pFormula">Formel: (Netto × 80%) − Kita − Pendeln</div>
       </div>
     </div>
     <div class="toggle-row" id="kfz2Toggle" onclick="toggleKfz2()">
@@ -676,13 +610,13 @@ footer { border-top: var(--bw) solid var(--black); padding: 22px 0; }
   </div>
 </section>
 
-<!-- ─── MODUL C ─── -->
-<section class="modul" style="border-bottom: 2px solid #000;">
+<!-- MODUL C -->
+<section style="padding:40px 0 0;border-bottom:none">
   <div class="wrap">
-    <div class="sec-hdr">
-      <div class="sec-badge">Modul C</div>
-      <div class="sec-title">Mobilitäts-Matrix — Wahrer Kfz-Kostensatz</div>
-      <div class="sec-rule"></div>
+    <div class="mod-hdr">
+      <div class="mod-badge">Modul C</div>
+      <div class="mod-title">Mobilitäts-Matrix — Wahrer Kfz-Kostensatz</div>
+      <div class="mod-rule"></div>
     </div>
 
     <!-- Fahrzeug 1 -->
@@ -690,108 +624,117 @@ footer { border-top: var(--bw) solid var(--black); padding: 22px 0; }
       <div class="veh-badge">Fahrzeug 1</div>
       <div class="veh-live" id="k1live">Kosten: <b>— €/Mo</b></div>
     </div>
-    <div class="grid g3">
-      <div class="cell no-bb">
+    <!-- Leasing-Toggle Fahrzeug 1 -->
+    <div class="toggle-row" id="k1leasingToggle" onclick="toggleLeasing(1)" style="border-top:var(--bw) solid var(--bk)">
+      <div class="tcb" id="k1leasingCb"></div>
+      <div class="toggle-lbl">Leasing / Finanzierung? → Wertverlust &amp; Opportunität entfallen, nur laufende Kosten relevant</div>
+    </div>
+    <div class="grid g4">
+      <div class="cell no-bb" id="k1p-cell">
         <div class="flbl">Kaufpreis (€)</div>
         <input class="inp" type="number" id="k1p" placeholder="25000" min="0" oninput="liveKfz(1)">
       </div>
-      <div class="cell no-bb">
+      <div class="cell no-bb" id="k1s-cell">
         <div class="flbl">Status</div>
         <select class="inp" id="k1s" onchange="liveKfz(1)">
           <option value="used">Gebrauchtwagen — 8% p.a.</option>
           <option value="new">Neuwagen — 15% p.a.</option>
         </select>
-        <div class="fformula">→ Wertverlust-Rate p.a.</div>
+        <div class="fform">→ Wertverlust-Rate p.a.</div>
       </div>
       <div class="cell no-bb">
         <div class="flbl">Fahrleistung (km/Jahr)</div>
         <input class="inp" type="number" id="k1km" placeholder="15000" min="0" oninput="liveKfz(1)">
-        <div class="fformula">→ Verschleiß: 0,05 €/km</div>
+        <div class="fform">→ Verschleiß: 0,05 €/km</div>
+      </div>
+      <div class="cell no-bb">
+        <div class="flbl">Laufende Kosten (€/Mo)</div>
+        <input class="inp" type="number" id="k1lfd" placeholder="180" min="0" oninput="liveKfz(1)">
+        <div class="fhint" id="k1lfd-hint">Rate/Leasing + Versicherung + Steuer</div>
+        <div class="psych-row">
+          <div class="psych-item" onclick="togglePsych('pk1h')">
+            <div class="psych-cb" id="pk1h"></div>
+            <div class="psych-lbl happiness">✓ Wirklich notwendig</div>
+          </div>
+          <div class="psych-item" onclick="togglePsych('pk1s')">
+            <div class="psych-cb" id="pk1s"></div>
+            <div class="psych-lbl status">△ Status-Symbol</div>
+          </div>
+        </div>
       </div>
     </div>
-    <div class="veh-breakdown">
-      <div class="veh-cell">
-        <div class="veh-cell-lbl">
-          <span class="term"><span class="term-lbl">Wertverlust</span><div class="term-box">Jährlicher Wertverfall: Neuwagen ca. 15%, Gebrauchtwagen ca. 8% des Kaufpreises — monatlich, ob du fährst oder nicht.</div></span>
-        </div>
-        <div class="veh-cell-val" id="k1wv">— €</div>
+    <div class="veh-bd" id="k1-bd">
+      <div class="veh-cell" id="k1wv-cell">
+        <div class="veh-lbl"><span class="term"><span class="term-lbl">Wertverlust</span><div class="term-box">Jährlicher Wertverfall: Neuwagen ~15%, Gebrauchtwagen ~8% — monatlich, ob du fährst oder nicht.</div></span></div>
+        <div class="veh-val" id="k1wv">— €</div>
       </div>
-      <div class="veh-cell">
-        <div class="veh-cell-lbl">
-          <span class="term"><span class="term-lbl">Opportunitätskosten</span><div class="term-box">Hättest du den Kaufpreis zu 4% p.a. angelegt, würdest du diesen Betrag monatlich verdienen. Dein Auto kostet dir dieses Geld zusätzlich.</div></span>
-        </div>
-        <div class="veh-cell-val" id="k1op">— €</div>
+      <div class="veh-cell" id="k1op-cell">
+        <div class="veh-lbl"><span class="term"><span class="term-lbl">Opportunität</span><div class="term-box">Entgangene Zinsen: 4% p.a. auf den Kaufpreis. Das Kapital hätte für dich arbeiten können.</div></span></div>
+        <div class="veh-val" id="k1op">— €</div>
       </div>
-      <div class="veh-cell" style="border-right:none;">
-        <div class="veh-cell-lbl">Verschleiß-Puffer</div>
-        <div class="veh-cell-val" id="k1ver">— €</div>
+      <div class="veh-cell" style="border-right:none">
+        <div class="veh-lbl">Verschleiß-Puffer</div>
+        <div class="veh-val" id="k1ver">— €</div>
       </div>
     </div>
 
     <!-- Fahrzeug 2 (optional) -->
     <div id="kfz2-wrap">
-      <div class="veh-hdr" style="margin-top:16px;">
+      <div class="veh-hdr" style="margin-top:16px">
         <div class="veh-badge">Fahrzeug 2 — Partner</div>
         <div class="veh-live" id="k2live">Kosten: <b>— €/Mo</b></div>
       </div>
-      <div class="grid g3">
-        <div class="cell no-bb">
+      <!-- Leasing-Toggle Fahrzeug 2 -->
+      <div class="toggle-row" id="k2leasingToggle" onclick="toggleLeasing(2)" style="border-top:var(--bw) solid var(--bk)">
+        <div class="tcb" id="k2leasingCb"></div>
+        <div class="toggle-lbl">Leasing / Finanzierung? → Wertverlust &amp; Opportunität entfallen</div>
+      </div>
+      <div class="grid g4">
+        <div class="cell no-bb" id="k2p-cell">
           <div class="flbl">Kaufpreis (€)</div>
           <input class="inp" type="number" id="k2p" placeholder="12000" min="0" oninput="liveKfz(2)">
         </div>
-        <div class="cell no-bb">
+        <div class="cell no-bb" id="k2s-cell">
           <div class="flbl">Status</div>
           <select class="inp" id="k2s" onchange="liveKfz(2)">
             <option value="used">Gebrauchtwagen — 8% p.a.</option>
             <option value="new">Neuwagen — 15% p.a.</option>
           </select>
-          <div class="fformula">→ Wertverlust-Rate p.a.</div>
         </div>
         <div class="cell no-bb">
           <div class="flbl">Fahrleistung (km/Jahr)</div>
           <input class="inp" type="number" id="k2km" placeholder="10000" min="0" oninput="liveKfz(2)">
-          <div class="fformula">→ Verschleiß: 0,05 €/km</div>
+        </div>
+        <div class="cell no-bb">
+          <div class="flbl">Laufende Kosten (€/Mo)</div>
+          <input class="inp" type="number" id="k2lfd" placeholder="120" min="0" oninput="liveKfz(2)">
+          <div class="fhint">Rate/Leasing + Versicherung + Steuer</div>
         </div>
       </div>
-      <div class="veh-breakdown">
-        <div class="veh-cell">
-          <div class="veh-cell-lbl">Wertverlust</div>
-          <div class="veh-cell-val" id="k2wv">— €</div>
-        </div>
-        <div class="veh-cell">
-          <div class="veh-cell-lbl">Opportunitätskosten</div>
-          <div class="veh-cell-val" id="k2op">— €</div>
-        </div>
-        <div class="veh-cell" style="border-right:none;">
-          <div class="veh-cell-lbl">Verschleiß-Puffer</div>
-          <div class="veh-cell-val" id="k2ver">— €</div>
-        </div>
+      <div class="veh-bd" id="k2-bd">
+        <div class="veh-cell" id="k2wv-cell"><div class="veh-lbl">Wertverlust</div><div class="veh-val" id="k2wv">— €</div></div>
+        <div class="veh-cell" id="k2op-cell"><div class="veh-lbl">Opportunität</div><div class="veh-val" id="k2op">— €</div></div>
+        <div class="veh-cell" style="border-right:none"><div class="veh-lbl">Verschleiß-Puffer</div><div class="veh-val" id="k2ver">— €</div></div>
       </div>
     </div>
-
   </div>
 </section>
 
-<!-- ─── MODUL D ─── -->
-<section class="modul modul-last">
+<!-- MODUL D -->
+<section style="padding:40px 0 0;border-top:none" class="section">
   <div class="wrap">
-    <div class="sec-hdr">
-      <div class="sec-badge">Modul D</div>
-      <div class="sec-title">Immobilien-Schatten — Kalkulatorische Schatten-Schuld</div>
-      <div class="sec-rule"></div>
+    <div class="mod-hdr">
+      <div class="mod-badge">Modul D</div>
+      <div class="mod-title">Immobilien-Schatten — Kalkulatorische Schatten-Schuld</div>
+      <div class="mod-rule"></div>
     </div>
     <div class="grid g2">
       <div class="cell no-bb">
         <div class="flbl">Marktwert Immobilie (€)</div>
         <input class="inp" type="number" id="hausW" placeholder="350000" min="0" oninput="liveD()">
-        <div class="fformula">
-          <span class="term">
-            <span class="term-lbl">Instandhaltungsrückstau</span>
-            <div class="term-box">Jedes Gebäude verliert ~1,5% p.a. durch Abnutzung. Wer diese Summe nicht zurücklegt, häuft stille Schulden — bis Dach, Heizung oder Leitungen fällig werden.</div>
-          </span>: Marktwert × 1,5% ÷ 12
-        </div>
+        <div class="fform"><span class="term"><span class="term-lbl">Instandhaltungsrückstau</span><div class="term-box">~1,5% p.a. des Marktwerts akkumulieren still. Wer nicht zurücklegt, häuft unsichtbare Schulden — bis Dach, Heizung oder Leitungen fällig werden.</div></span>: Marktwert × 1,5% ÷ 12</div>
       </div>
-      <div class="cell no-bb cell-shade">
+      <div class="cell no-bb result">
         <div class="flbl" style="color:var(--red)">⟶ Monatliche Schatten-Schuld</div>
         <div class="lval" id="hausLive" style="color:var(--red)">—</div>
         <div class="llbl">Kalkulatorische Instandhaltung / Monat</div>
@@ -804,19 +747,15 @@ footer { border-top: var(--bw) solid var(--black); padding: 22px 0; }
         <button class="abtn" id="aBtn" onclick="runAnalysis()">
           <span>⟶</span> Statik analysieren
         </button>
-        <div class="ahint">
-          Alle Felder sind optional — leere Werte = 0.<br>
-          Alarm-Schwellenwerte werden automatisch geprüft.
-        </div>
+        <div class="ahint">Alle Felder optional — leere Werte = 0.<br>Alarm-Schwellenwerte werden automatisch geprüft.</div>
       </div>
     </div>
-
   </div>
 </section>
 
 </div><!-- /system-check -->
 
-<!-- ═══ LOADING ═══ -->
+<!-- LOADING -->
 <div id="loading">
   <div class="wrap">
     <div class="load-box">
@@ -827,29 +766,28 @@ footer { border-top: var(--bw) solid var(--black); padding: 22px 0; }
   </div>
 </div>
 
-<!-- ═══ RESULTS ═══ -->
+<!-- RESULTS -->
 <div id="results">
 
-  <!-- Slave day + KPIs -->
-  <section class="res-section">
+  <section class="res-sec">
     <div class="wrap">
       <div class="res-hdr">
         <div class="res-badge">Audit-Ergebnis</div>
-        <div class="res-title">Finanzielle Statik-Analyse</div>
+        <div class="res-title">Freiheit durch Klarheit</div>
       </div>
-      <div class="slave-grid">
-        <div class="slave-card">
-          <div class="slave-tag">// Arbeitstage für deine Matrix</div>
-          <div><span class="slave-num" id="sDayNum">—</span><span class="slave-sfx" id="sDaySfx"></span></div>
-          <div class="slave-desc" id="sDesc">—</div>
-          <div class="slave-free-l" style="margin-top:14px;">Freie Tage / Monat</div>
-          <div class="slave-free" id="sFreeDays">—</div>
+      <div class="abp-grid">
+        <div class="abp-card">
+          <div class="abp-tag">// Arbeitstage für deine Matrix</div>
+          <div><span class="abp-num" id="sDayNum">—</span><span class="abp-sfx" id="sDaySfx"></span></div>
+          <div class="abp-desc" id="sDesc">—</div>
+          <div class="abp-free-l" style="margin-top:14px">Freie Tage / Monat</div>
+          <div class="abp-free" id="sFreeDays">—</div>
         </div>
         <div class="kpi-grid">
           <div class="kpi-cell">
-            <div class="kpi-tag">Gehalt Netto (angepasst)</div>
+            <div class="kpi-tag">Gesamteinkommen Haushalt</div>
             <div class="kpi-num b" id="kNetto">—<span class="kpi-eur"> €</span></div>
-            <div class="kpi-sub">Inkl. Steuerrückerstattung ÷ 12</div>
+            <div class="kpi-sub">Eigenes Netto + Partner-Deckungsbeitrag</div>
           </div>
           <div class="kpi-cell">
             <div class="kpi-tag">Gesamtabfluss / Monat</div>
@@ -868,31 +806,55 @@ footer { border-top: var(--bw) solid var(--black); padding: 22px 0; }
           </div>
         </div>
       </div>
+
+      <!-- Autonomie-Breakpoint + Status-Overhead -->
+      <div class="res-hdr" style="margin-top:20px;border-bottom:none">
+        <div class="res-badge" style="background:var(--amb)">Status-Overhead</div>
+        <div class="res-title">Wie viele Tage arbeitest du nur für andere?</div>
+      </div>
+      <div class="overhead-card" id="overheadCard">
+        <div class="oh-cell">
+          <div class="oh-tag">Tage für Status</div>
+          <div class="oh-val" id="ohDays">—</div>
+          <div class="oh-sub">Tage/Monat für reine Status-Ausgaben</div>
+        </div>
+        <div class="oh-cell">
+          <div class="oh-tag">Status-Overhead</div>
+          <div class="oh-val" id="ohEuro">— €</div>
+          <div class="oh-sub">Monatliche Kosten reiner Status-Positionen</div>
+        </div>
+        <div class="oh-cell">
+          <div class="oh-tag">Autonomie-Breakpoint</div>
+          <div class="oh-val" id="ohBreak" style="color:var(--grn)">—</div>
+          <div class="oh-sub">Ab hier arbeitest du für dich</div>
+        </div>
+      </div>
+
       <!-- Alerts -->
       <div class="alerts" id="alertsBox"></div>
     </div>
   </section>
 
   <!-- Chart -->
-  <section class="chart-section">
+  <section class="chart-sec">
     <div class="wrap">
-      <div class="res-hdr" style="margin-bottom:0;">
-        <div class="res-badge" style="background:var(--blue);">Visualisierung</div>
+      <div class="res-hdr">
+        <div class="res-badge" style="background:var(--blu)">Visualisierung</div>
         <div class="res-title">System-Monster — Einkommensstruktur</div>
       </div>
-      <div class="chart-box" style="border-top:none;">
+      <div class="chart-box">
         <div class="chart-ttl">// Gehalt Netto 100% aufgeteilt</div>
         <div class="stacked-wrap">
           <div class="stacked-l">Gesamt-Übersicht</div>
           <div class="stacked-track">
-            <div class="sseg" id="ss-sys"  style="background:#1d4ed8;width:0%"><span class="sseg-lbl" id="sl-sys"></span></div>
-            <div class="sseg" id="ss-fix"  style="background:#374151;width:0%"><span class="sseg-lbl" id="sl-fix"></span></div>
-            <div class="sseg" id="ss-dec"  style="background:#dc2626;width:0%"><span class="sseg-lbl" id="sl-dec"></span></div>
-            <div class="sseg" id="ss-life" style="background:#15803d;flex:1"  ><span class="sseg-lbl" id="sl-life"></span></div>
+            <div class="sseg" id="ss-sys" style="background:#1d4ed8;width:0%"><span class="sseg-lbl" id="sl-sys"></span></div>
+            <div class="sseg" id="ss-fix" style="background:#374151;width:0%"><span class="sseg-lbl" id="sl-fix"></span></div>
+            <div class="sseg" id="ss-dec" style="background:#dc2626;width:0%"><span class="sseg-lbl" id="sl-dec"></span></div>
+            <div class="sseg" id="ss-life" style="background:#15803d;flex:1"><span class="sseg-lbl" id="sl-life"></span></div>
           </div>
         </div>
         <div class="brow">
-          <div class="bmeta"><div class="bname"><div class="bswatch" style="background:#1d4ed8"></div>System/Steuern (Partner-Verlust)</div><div class="bval" id="bv-sys">—</div></div>
+          <div class="bmeta"><div class="bname"><div class="bswatch" style="background:#1d4ed8"></div>System/Abzüge (Partner-Verlust)</div><div class="bval" id="bv-sys">—</div></div>
           <div class="btrack"><div class="bfill" id="bf-sys" style="background:#1d4ed8;width:0%"></div></div>
         </div>
         <div class="brow">
@@ -908,7 +870,7 @@ footer { border-top: var(--bw) solid var(--black); padding: 22px 0; }
           <div class="btrack"><div class="bfill" id="bf-life" style="background:#15803d;width:0%"></div></div>
         </div>
         <div class="legend">
-          <div class="leg"><div class="leg-d" style="background:#1d4ed8"></div>System/Steuern</div>
+          <div class="leg"><div class="leg-d" style="background:#1d4ed8"></div>System/Abzüge</div>
           <div class="leg"><div class="leg-d" style="background:#374151"></div>Fixkosten</div>
           <div class="leg"><div class="leg-d" style="background:#dc2626"></div>Zerfall</div>
           <div class="leg"><div class="leg-d" style="background:#15803d"></div>Freie Energie</div>
@@ -918,20 +880,20 @@ footer { border-top: var(--bw) solid var(--black); padding: 22px 0; }
   </section>
 
   <!-- Terminal -->
-  <section class="term-section">
+  <section class="term-sec">
     <div class="wrap">
-      <div class="res-hdr" style="margin-bottom:0;">
-        <div class="res-badge" style="background:var(--green);">Diagnose-Log</div>
+      <div class="res-hdr">
+        <div class="res-badge" style="background:var(--grn)">Diagnose-Log</div>
         <div class="res-title">Terminal — Befunde &amp; Warnmeldungen</div>
       </div>
-      <div class="terminal" style="border-top:none;">
+      <div class="terminal">
         <div class="term-bar">
           <div class="tdots">
             <div class="tdot" style="background:#dc2626"></div>
             <div class="tdot" style="background:#d97706"></div>
             <div class="tdot" style="background:#16a34a"></div>
           </div>
-          <div class="term-ttl">cl-global // matrix-exit-audit-v2 // output.log</div>
+          <div class="term-ttl">cl-global // freiheit-durch-klarheit // audit.log</div>
         </div>
         <div class="term-body" id="termBody"></div>
       </div>
@@ -939,13 +901,13 @@ footer { border-top: var(--bw) solid var(--black); padding: 22px 0; }
   </section>
 
   <!-- Detail table -->
-  <section class="det-section">
+  <section class="det-sec">
     <div class="wrap">
-      <div class="res-hdr" style="margin-bottom:0;">
-        <div class="res-badge" style="background:#374151;">Detail</div>
+      <div class="res-hdr">
+        <div class="res-badge" style="background:#374151">Detail</div>
         <div class="res-title">Vollständige Kostenaufstellung</div>
       </div>
-      <table class="det-table" style="border-top:none;">
+      <table class="det-table">
         <thead><tr><th>Position</th><th>Berechnung</th><th>€ / Monat</th></tr></thead>
         <tbody id="detBody"></tbody>
       </table>
@@ -954,14 +916,84 @@ footer { border-top: var(--bw) solid var(--black); padding: 22px 0; }
 
 </div><!-- /results -->
 
-<!-- ═══ CTA ═══ -->
+<!-- ══ ANGEBOTE ══ -->
+<section class="products-sec" id="angebote">
+  <div class="wrap">
+    <div class="sec-eyebrow">Exit-Angebote</div>
+    <h2 class="sec-title">Dein Weg<br>aus der <em>Matrix.</em></h2>
+
+    <!-- Consulting Cards -->
+    <div class="products-grid">
+      <div class="product-card">
+        <div class="prod-eyebrow">Consulting · 60 Minuten</div>
+        <div class="prod-name">Der System-Check</div>
+        <div class="prod-sub">Erstkontakt &amp; Akut-Analyse</div>
+        <div class="prod-price">250 €<span> / Session</span></div>
+        <div class="prod-desc">Du bekommst innerhalb einer Stunde einen klaren Blick auf deine finanzielle Statik — ohne Schönreden, ohne Verkaufsdruck. Wir analysieren deinen Ist-Zustand und identifizieren die größten Hebel.</div>
+        <ul class="prod-features">
+          <li>Vollständige Statik-Analyse deiner Zahlen</li>
+          <li>Identifikation der 3 größten Kosten-Hebel</li>
+          <li>Erster konkreter Fahrplan</li>
+          <li>Remote via Video-Call, weltweit</li>
+        </ul>
+        <a href="mailto:info@cl-global-consulting.com?subject=System-Check buchen" class="prod-btn">⟶ Jetzt buchen</a>
+      </div>
+      <div class="product-card" style="border-right:none">
+        <div class="prod-eyebrow">Consulting · 90 Minuten</div>
+        <div class="prod-name">Die Matrix-Strategie</div>
+        <div class="prod-sub">Tiefenstrategie &amp; Begleitung</div>
+        <div class="prod-price" style="color:var(--red)">350 €<span style="color:var(--g3)"> / Session</span></div>
+        <div class="prod-desc">Für alle, die nicht nur wissen wollen was ist, sondern konkret heraus wollen. Tiefgreifende Strategie-Session mit individuellem Umsetzungsplan — für den echten Schnitt.</div>
+        <ul class="prod-features">
+          <li>Alles aus dem System-Check</li>
+          <li>Tiefenanalyse Glaubenssätze &amp; Muster</li>
+          <li>Konkreter Exit-Plan mit Zeitachse</li>
+          <li>PT-Struktur, US-LLC, Mobilitäts-Setup</li>
+          <li>Schriftliche Zusammenfassung im Anschluss</li>
+        </ul>
+        <a href="mailto:info@cl-global-consulting.com?subject=Matrix-Strategie buchen" class="prod-btn red">⟶ Jetzt buchen</a>
+      </div>
+    </div>
+
+    <!-- Toolkit -->
+    <div style="margin-top:40px">
+      <div class="res-hdr" style="border-bottom:var(--bw) solid var(--bk)">
+        <div class="res-badge" style="background:var(--g3)">Digitale Werkzeuge</div>
+        <div class="res-title">Toolkit — Demnächst verfügbar</div>
+      </div>
+      <div class="toolkit-grid">
+        <div class="tk-card">
+          <div class="tk-tag">PDF · Digital</div>
+          <div class="tk-name">Exit-Planer</div>
+          <div class="tk-desc">Strukturierter Schritt-für-Schritt-Plan für den radikalen Schnitt. Von der Bestandsaufnahme bis zur Umsetzung.</div>
+          <div class="tk-status">Demnächst</div>
+        </div>
+        <div class="tk-card">
+          <div class="tk-tag">PDF · Digital</div>
+          <div class="tk-name">Inventar der Freiheit</div>
+          <div class="tk-desc">Systematische Bestandsaufnahme aller Bindungen — materiell, finanziell, mental. Mit Bewertungsmatrix.</div>
+          <div class="tk-status">Demnächst</div>
+        </div>
+        <div class="tk-card">
+          <div class="tk-tag">Google Sheet · Digital</div>
+          <div class="tk-name">Master-Inventur V5</div>
+          <div class="tk-desc">Das vollständige Finanz-Analyse-Tool inkl. allen Formeln, Modulen und Auswertungen aus diesem Audit.</div>
+          <div class="tk-status">Demnächst</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══ CTA ══ -->
 <section class="cta-sec">
   <div class="wrap">
     <div class="cta-box">
       <div class="cta-left">
         <div class="cta-ey">// Nächster Schritt</div>
         <h2 class="cta-h">Deine Statik ist instabil.<br><em>Lass uns das korrigieren.</em></h2>
-        <p class="cta-p">Die Statik-Prüfung ist ein 60-Minuten-Call. Kein Pitch. Keine Schmerzen. Nur Zahlen, Struktur, Klarheit — und der präzise Fahrplan heraus.</p>
+        <p class="cta-p">Ich kenne beide Welten — den goldenen Käfig und das freie Leben. In einem 60- oder 90-Minuten-Call bekommst du klare Zahlen, eine ehrliche Analyse und einen konkreten Fahrplan heraus.</p>
         <div class="trust">
           <div class="trust-i"><span class="ck">✓</span> Kein Upsell</div>
           <div class="trust-i"><span class="ck">✓</span> Keine Verpflichtung</div>
@@ -970,8 +1002,8 @@ footer { border-top: var(--bw) solid var(--black); padding: 22px 0; }
         </div>
       </div>
       <div class="cta-right">
-        <a href="mailto:info@cl-global-consulting.com" class="cta-btn">⟶ Statik-Prüfung buchen</a>
-        <div class="cta-price">60 min // auf Anfrage</div>
+        <a href="mailto:info@cl-global-consulting.com" class="btn-primary">⟶ Jetzt buchen</a>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--g3);text-align:center">System-Check 250 € // Matrix-Strategie 350 €</div>
       </div>
     </div>
   </div>
@@ -980,41 +1012,46 @@ footer { border-top: var(--bw) solid var(--black); padding: 22px 0; }
 <footer>
   <div class="wrap">
     <div class="ftr">
-      <div class="ftr-l"><b>CL</b> GLOBAL — Statik der Freiheit</div>
+      <div class="ftr-l"><b>CL</b> GLOBAL — Freiheit durch Klarheit</div>
       <div class="ftr-r">IMPRESSUM · DATENSCHUTZ · CL-GLOBAL-CONSULTING.COM</div>
     </div>
   </div>
 </footer>
 
-<!-- ═══════════════════════════════════════════════════
+<!-- ══════════════════════════════════════════════
      JAVASCRIPT
-═══════════════════════════════════════════════════ -->
+══════════════════════════════════════════════ -->
 <script>
-/* ── "Harte Wahrheiten" — täglich rotierend ── */
+/* ── HEADLINES ── */
 const TRUTHS = [
-  "Besitzt du dein Haus wirklich, oder ist es eine Verbindlichkeit, die dich besitzt?",
-  "Dein Leasing-Vertrag ist kein Auto — es ist ein monatlicher Diebstahl deiner Lebenszeit.",
-  "Das System verkauft dir Komfort, um dir deine Unabhängigkeit zu nehmen.",
-  "Ein Zweitwagen ist oft nur ein teures Ticket für einen Job, den du ohne ihn nicht bräuchtest.",
-  "Wieviel Prozent deines Einkommens gehören dir wirklich, wenn die Bank mit am Tisch sitzt?",
-  "Status-Symbole sind die Gitterstäbe eines Käfigs, den du selbst abbezahlst.",
-  "Dein Kontostand lügt, wenn deine Zeit-Statik im Minus ist."
+  "Bist du der Architekt deines Lebens oder nur ein Mieter in der Vision anderer?",
+  "Sicherheit ist oft nur die Ratenzahlung für ein Leben, das dir nicht gehört.",
+  "Wahre Freiheit beginnt im Kopf – die Zahlen sind am Ende nur der Beweis.",
+  "Besitzt du deine Dinge wirklich, oder fressen sie deine Lebenszeit auf?",
+  "Das Hamsterrad sieht von innen oft wie eine Karriereleiter aus.",
+  "Wir opfern unsere Zeit für Geld, um uns später die Zeit zurückzukaufen.",
+  "Du kaufst Dinge, die du nicht brauchst, um Menschen zu beeindrucken, denen du egal bist – während du glaubst, es würde sie interessieren.",
+  "Du hast gelernt zu gefallen, statt zu leben – und nennst diese Konditionierung heute deine eigene Persönlichkeit.",
+  "Wer seine eigene Matrix nicht versteht, wird immer Teil einer fremden sein.",
+  "Erfolg im System ist oft nur die Erlaubnis, in einer etwas schöneren Zelle des Hamsterrads zu laufen.",
+  "Frag dich ehrlich: Lebst du deinen Traum oder erfüllst du nur die Erwartungen, die man dir seit der Kindheit eingeimpft hat?",
+  "Die Wahrheit ist nicht schwer zu finden, sie ist nur schwer zu ertragen – deshalb bleibst du lieber in deiner gewohnten Matrix.",
+  "Du verbringst mindestens die Hälfte deines Arbeitslebens damit, den Wohlstand deiner Bank zu finanzieren – und nennst es stolz dein „Eigentum\".",
+  "Ein hoher Lebensstandard ist oft nur ein goldener Käfig, den du mit deiner Zeit bezahlst, weil du verlernt hast, zwischen Notwendigkeit und Gewohnheit zu unterscheiden.",
+  "Das teuerste Gut ist nicht das bezahlte Haus – es ist der Zwang, einen Status aufrechtzuerhalten, der dich innerlich ausbrennt.",
+  "Was du heute als 'normal' bezeichnest, ist oft nur die Summe teurer Gewohnheiten, die dir deine Freiheit rauben, ohne dass eine Bank involviert ist."
 ];
 
-/* täglich statisch: gleiche Headline den ganzen Tag */
 const todayIdx = new Date().getDate() % TRUTHS.length;
-
-/* Wir zeigen trotzdem alle im Slider (täglich startet mit dem tagesbasierten Index) */
 let hlActive = todayIdx;
 const hlWrap = document.getElementById('hlWrap');
-const dotsCont= document.getElementById('heroDots');
+const dotsCont = document.getElementById('heroDots');
 
 TRUTHS.forEach((t, i) => {
   const h = document.createElement('h1');
   h.className = 'hl' + (i === todayIdx ? ' on' : '');
   h.textContent = t;
   hlWrap.appendChild(h);
-
   const dot = document.createElement('div');
   dot.className = 'hero-dot' + (i === todayIdx ? ' active' : '');
   dot.onclick = () => goHl(i);
@@ -1022,7 +1059,7 @@ TRUTHS.forEach((t, i) => {
 });
 
 function goHl(next) {
-  const hls  = hlWrap.querySelectorAll('.hl');
+  const hls = hlWrap.querySelectorAll('.hl');
   const dots = dotsCont.querySelectorAll('.hero-dot');
   hls[hlActive].classList.remove('on'); hls[hlActive].classList.add('out');
   dots[hlActive].classList.remove('active');
@@ -1032,8 +1069,6 @@ function goHl(next) {
   hls[hlActive].classList.add('on');
   dots[hlActive].classList.add('active');
 }
-
-/* Auto-rotate every 5 s */
 setInterval(() => goHl((hlActive + 1) % TRUTHS.length), 5000);
 
 /* ── Helpers ── */
@@ -1041,13 +1076,18 @@ const g  = id => parseFloat(document.getElementById(id)?.value) || 0;
 const fm = n  => n.toLocaleString('de-DE', {minimumFractionDigits:0, maximumFractionDigits:0});
 const s  = id => document.getElementById(id);
 
-/* ── Tooltip click (mobile) ── */
-function toggleTip(id) {
-  s(id).classList.toggle('open');
-}
+/* ── Tooltip ── */
+function toggleTip(id) { s(id).classList.toggle('open'); }
 document.addEventListener('click', e => {
   if (!e.target.closest('.tip-wrap')) document.querySelectorAll('.tip-wrap.open').forEach(t => t.classList.remove('open'));
 });
+
+/* ── Psychologie checkboxen ── */
+const psychStatus = {};
+function togglePsych(id) {
+  psychStatus[id] = !psychStatus[id];
+  s(id).classList.toggle('on', psychStatus[id]);
+}
 
 /* ── Kfz2 toggle ── */
 let kfz2On = false;
@@ -1057,62 +1097,91 @@ function toggleKfz2() {
   s('kfz2-wrap').classList.toggle('vis', kfz2On);
 }
 
-/* ── LIVE A ── */
+/* ── Live A ── */
 function liveA() {
   const n = g('netto'), st = g('steuerR');
   const adj = n + (st / 12);
+  const pb = g('pBrutto'), ki = g('kita'), pe = g('pendel');
+  const rn = pb * 0.80, db = rn - ki - pe;
+  const contrib = Math.max(0, db);
+  const total = adj + contrib;
   if (n || st) {
-    s('nettoAdj').textContent = fm(adj) + ' €';
-    s('nettoFormula').textContent = `${fm(n)} + (${fm(st)} ÷ 12 = ${fm(st/12)}) = ${fm(adj)} €/Monat`;
+    s('nettoAdj').textContent = fm(total) + ' €';
+    s('nettoFormula').textContent = contrib > 0
+      ? `${fm(adj)} + Partner-DB ${fm(contrib)} = ${fm(total)} €/Mo`
+      : `${fm(n)} + (${fm(st)} ÷ 12) = ${fm(adj)} €/Mo`;
   } else {
     s('nettoAdj').textContent = '—';
-    s('nettoFormula').textContent = 'Netto + (Steuerrückerstattung ÷ 12)';
+    s('nettoFormula').textContent = 'Netto + (Steuerrückerstattung ÷ 12) + Partner-Deckungsbeitrag';
   }
 }
 
-/* ── LIVE B ── */
+/* ── Live B ── */
 function liveB() {
   const pb = g('pBrutto'), ki = g('kita'), pe = g('pendel');
-  if (!pb) { s('pDB').textContent = '—'; s('pDB').style.color = 'var(--green)'; s('pFormula').textContent = 'Formel: (Netto × 80%) − Kita − Pendeln'; return; }
+  if (!pb) { s('pDB').textContent = '—'; s('pDB').style.color = 'var(--grn)'; s('pFormula').textContent = 'Formel: (Netto × 80%) − Kita − Pendeln'; return; }
   const rn = pb * 0.80, db = rn - ki - pe;
-  const el = s('pDB');
-  el.textContent = fm(db) + ' €';
-  el.style.color  = db >= 0 ? 'var(--green)' : 'var(--red)';
-  s('pDBLbl').textContent   = db >= 0 ? 'Wahrer Wert des Partner-Jobs' : '⚠ Negativer Deckungsbeitrag';
+  s('pDB').textContent = fm(db) + ' €';
+  s('pDB').style.color = db >= 0 ? 'var(--grn)' : 'var(--red)';
+  s('pDBLbl').textContent = db >= 0 ? 'Wahrer Wert des Partner-Jobs' : '⚠ Negativer Deckungsbeitrag';
   s('pFormula').textContent = `(${fm(pb)} × 80% = ${fm(rn)}) − ${fm(ki)} − ${fm(pe)} = ${fm(db)} €`;
+  // Live: update nettoAdj display mit partner-beitrag
+  liveA();
 }
 
-/* ── KFZ CALC ── */
-function kfzCalc(p, km, st) {
+/* ── Leasing toggles ── */
+const leasingOn = {1: false, 2: false};
+function toggleLeasing(n) {
+  leasingOn[n] = !leasingOn[n];
+  s(`k${n}leasingCb`).classList.toggle('on', leasingOn[n]);
+  // Kaufpreis + Status-Felder ausblenden
+  const hide = leasingOn[n];
+  s(`k${n}p-cell`).style.opacity  = hide ? '0.3' : '1';
+  s(`k${n}s-cell`).style.opacity  = hide ? '0.3' : '1';
+  s(`k${n}p-cell`).style.pointerEvents = hide ? 'none' : '';
+  s(`k${n}s-cell`).style.pointerEvents = hide ? 'none' : '';
+  // Breakdown-Zellen ausblenden
+  s(`k${n}wv-cell`).style.opacity = hide ? '0.3' : '1';
+  s(`k${n}op-cell`).style.opacity = hide ? '0.3' : '1';
+  // Hint-Text anpassen
+  if (s(`k${n}lfd-hint`)) s(`k${n}lfd-hint`).textContent = hide ? 'Leasingrate + Versicherung + Steuer' : 'Rate/Leasing + Versicherung + Steuer';
+  liveKfz(n);
+}
+
+/* ── Kfz calc ── */
+function kfzCalc(p, km, st, lfd, leasing) {
   const rate = st === 'new' ? 0.15 : 0.08;
-  const wv   = (p * rate) / 12;
-  const op   = (p * 0.04) / 12;
+  const wv   = leasing ? 0 : (p * rate) / 12;
+  const op   = leasing ? 0 : (p * 0.04) / 12;
   const ver  = (km * 0.05) / 12;
-  return { wv, op, ver, total: wv + op + ver };
+  return { wv, op, ver, lfd, total: wv + op + ver + lfd };
 }
 
 function liveKfz(n) {
-  const p  = g(`k${n}p`), km = g(`k${n}km`), st = s(`k${n}s`).value;
-  const c  = kfzCalc(p, km, st);
-  s(`k${n}wv`).textContent  = p  ? fm(c.wv)  + ' €' : '— €';
-  s(`k${n}op`).textContent  = p  ? fm(c.op)  + ' €' : '— €';
-  s(`k${n}ver`).textContent = (p && km) ? fm(c.ver) + ' €' : '— €';
-  s(`k${n}live`).innerHTML  = `Kosten: <b>${p ? fm(c.total)+' €/Mo' : '— €/Mo'}</b>`;
+  const p = g(`k${n}p`), km = g(`k${n}km`), lfd = g(`k${n}lfd`);
+  const st = s(`k${n}s`).value;
+  const leasing = leasingOn[n];
+  const c = kfzCalc(p, km, st, lfd, leasing);
+  s(`k${n}wv`).textContent  = (!leasing && p) ? fm(c.wv)  + ' €' : '— €';
+  s(`k${n}op`).textContent  = (!leasing && p) ? fm(c.op)  + ' €' : '— €';
+  s(`k${n}ver`).textContent = (p || km) ? fm(c.ver) + ' €' : '— €';
+  s(`k${n}live`).innerHTML  = `Kosten: <b>${p || lfd || km ? fm(c.total) + ' €/Mo' : '— €/Mo'}</b>`;
 }
 
-/* ── LIVE D ── */
+/* ── Live D ── */
 function liveD() {
   const hw = g('hausW');
   s('hausLive').textContent = hw ? fm((hw * 0.015) / 12) + ' €' : '—';
 }
 
-/* ── LOADING ── */
+/* ── Loading ── */
 const STEPS = [
-  '// Initialisiere Matrix-Exit Analyse-Engine v2.0...',
+  '// Initialisiere Freiheit-durch-Klarheit Analyse-Engine...',
   '// Modul_A: Reales Einkommen verarbeiten...',
   '// Modul_B: Partner-Check berechnen...',
   '// Modul_C: Mobilitäts-Matrix kalkulieren...',
   '// Modul_D: Immobilien-Schatten ermitteln...',
+  '// Psychologie-Faktor: Status-Overhead berechnen...',
   '// Alarm-Schwellenwerte prüfen...',
   '// Arbeitstage für die Matrix berechnen...',
   '// Diagnose-Log generieren...',
@@ -1139,12 +1208,12 @@ function runAnalysis() {
       if (i > 0) { const p = s(`ls${i-1}`); p.classList.remove('act'); p.classList.add('done'); }
       s(`ls${i}`).classList.add('act');
       fill.style.width = ((i + 1) / STEPS.length * 100) + '%';
-    }, i * 270);
+    }, i * 260);
   });
 
   setTimeout(() => {
     const last = s(`ls${STEPS.length-1}`);
-    last.classList.remove('act'); last.classList.add('done'); last.style.color = 'var(--green)';
+    last.classList.remove('act'); last.classList.add('done'); last.style.color = 'var(--grn)';
     computeAll();
     setTimeout(() => {
       s('loading').style.display = 'none';
@@ -1152,238 +1221,258 @@ function runAnalysis() {
       btn.classList.remove('busy'); btn.innerHTML = '<span>⟶</span> Neu analysieren';
       s('results').scrollIntoView({ behavior: 'smooth', block: 'start' });
       setTimeout(doAnims, 200);
-      setTimeout(doLog,   500);
+      setTimeout(doLog, 500);
     }, 400);
-  }, STEPS.length * 270 + 200);
+  }, STEPS.length * 260 + 200);
 }
 
-/* ── CORE MATH ── */
+/* ── Core math ── */
 let D = {};
 function computeAll() {
-  const netto = g('netto'), stR = g('steuerR');
+  const netto    = g('netto'), stR = g('steuerR');
   const nettoAdj = netto + (stR / 12);
-  const fixk = g('fixk');
-
+  const fixk     = g('fixk');
   const pb = g('pBrutto'), ki = g('kita'), pe = g('pendel');
   const realNetto = pb * 0.80;
   const sysLoss   = pb - realNetto;
   const partnerDB = realNetto - ki - pe;
   const partnerCosts = ki + pe;
+  // Partner-Deckungsbeitrag wird dem Gesamteinkommen zugeführt (wenn positiv)
+  const partnerContrib = Math.max(0, partnerDB);
 
-  const c1 = kfzCalc(g('k1p'), g('k1km'), s('k1s').value);
-  const c2 = kfz2On ? kfzCalc(g('k2p'), g('k2km'), s('k2s').value) : { wv:0, op:0, ver:0, total:0 };
+  const c1 = kfzCalc(g('k1p'), g('k1km'), s('k1s').value, g('k1lfd'), leasingOn[1]);
+  const c2 = kfz2On ? kfzCalc(g('k2p'), g('k2km'), s('k2s').value, g('k2lfd'), leasingOn[2]) : {wv:0,op:0,ver:0,lfd:0,total:0};
   const kfzTotal = c1.total + c2.total;
 
   const hausS    = (g('hausW') * 0.015) / 12;
   const decay    = kfzTotal + hausS;
   const allCosts = fixk + decay + partnerCosts;
-  const life     = Math.max(0, nettoAdj - allCosts);
-  const slaveDay = nettoAdj > 0 ? Math.min(30, Math.round((allCosts / nettoAdj) * 30)) : null;
+  // Gesamteinkommen = eigenes Netto + positiver Partner-Deckungsbeitrag
+  const totalIncome = nettoAdj + partnerContrib;
+  const life     = Math.max(0, totalIncome - allCosts);
+  const slaveDay = totalIncome > 0 ? Math.min(30, Math.round((allCosts / totalIncome) * 30)) : null;
 
-  D = { netto, stR, nettoAdj, fixk, pb, realNetto, sysLoss, partnerDB, partnerCosts, ki, pe,
+  // Status-Overhead: sum fixk if status-cb checked + kfz if status-cb checked
+  const fixStatus  = psychStatus['pf2'] ? fixk : 0;
+  const kfzStatus  = psychStatus['pk1s'] ? c1.total : 0;
+  const statusTotal = fixStatus + kfzStatus;
+  const statusDays  = totalIncome > 0 ? Math.round((statusTotal / totalIncome) * 30) : 0;
+  const breakPoint  = slaveDay !== null ? slaveDay + 1 : null;
+
+  D = { netto, stR, nettoAdj, totalIncome, fixk, pb, realNetto, sysLoss, partnerDB, partnerContrib, partnerCosts, ki, pe,
         c1, c2, kfzTotal, hausS, decay, allCosts, life, slaveDay,
-        freeDays: slaveDay !== null ? 30 - slaveDay : null };
+        freeDays: slaveDay !== null ? 30 - slaveDay : null,
+        statusTotal, statusDays, breakPoint };
 
-  s('sDayNum').textContent  = slaveDay ?? '—';
-  s('sDaySfx').textContent  = slaveDay !== null ? ' Tage' : '';
-  s('sFreeDays').textContent= D.freeDays !== null ? D.freeDays + ' Tage' : '—';
-  s('sDesc').textContent    = slaveDay !== null
+  s('sDayNum').textContent   = slaveDay ?? '—';
+  s('sDaySfx').textContent   = slaveDay !== null ? ' Tage' : '';
+  s('sFreeDays').textContent = D.freeDays !== null ? D.freeDays + ' Tage' : '—';
+  s('sDesc').textContent     = slaveDay !== null
     ? `${slaveDay} von 30 Tagen arbeitest du für die Matrix. ${D.freeDays} Tage gehören dir.`
-    : 'Gehalt Netto eingeben für Berechnung.';
+    : 'Gesamteinkommen eingeben für Berechnung.';
 
   const kset = (id, v, cls) => { s(id).innerHTML = fm(v) + '<span class="kpi-eur"> €</span>'; s(id).className = 'kpi-num ' + cls; };
-  kset('kNetto', nettoAdj, 'b');
-  kset('kTotal', allCosts,  'r');
-  kset('kDecay', decay,     'r');
-  kset('kLife',  life,      'g');
+  kset('kNetto', totalIncome, 'b');
+  kset('kTotal', allCosts,    'r');
+  kset('kDecay', decay,       'r');
+  kset('kLife',  life,        'g');
+
+  // Overhead
+  s('ohDays').textContent  = statusDays > 0 ? statusDays + ' Tage' : '0 Tage';
+  s('ohEuro').textContent  = fm(statusTotal) + ' €';
+  s('ohBreak').textContent = breakPoint !== null ? breakPoint + '. des Monats' : '—';
 
   buildAlerts();
   buildTable();
 }
 
-/* ── ALERTS ── */
 function buildAlerts() {
   const d = D, box = s('alertsBox');
   box.innerHTML = '';
-  const add = (cls, prefix, txt) => {
+  const add = (cls, pre, txt) => {
     const div = document.createElement('div');
     div.className = `alert ${cls}`;
-    div.innerHTML = `<div class="alert-prefix">${prefix}</div><div class="alert-txt">${txt}</div>`;
+    div.innerHTML = `<div class="alert-pre">${pre}</div><div class="alert-txt">${txt}</div>`;
     box.appendChild(div);
   };
-
   let any = false;
-  if (d.nettoAdj > 0 && d.fixk / d.nettoAdj > 0.5) {
-    add('critical', '[CRITICAL]', `FIXKOSTEN-LAST ÜBERSTEIGT SICHERHEITSGRENZE. Fixkosten binden ${Math.round(d.fixk/d.nettoAdj*100)}% deines Nettos (Grenze: 50%). Jede ungeplante Ausgabe destabilisiert deine Statik sofort.`);
+  if (d.totalIncome > 0 && d.fixk / d.totalIncome > 0.5) {
+    add('critical','[CRITICAL]',`FIXKOSTEN-LAST ÜBERSTEIGT SICHERHEITSGRENZE. ${Math.round(d.fixk/d.totalIncome*100)}% des Nettos gebunden (Grenze: 50%). Jede ungeplante Ausgabe destabilisiert sofort.`);
     any = true;
   }
-  if (d.nettoAdj > 0 && d.kfzTotal / d.nettoAdj > 0.2) {
-    add('warn', '[WARN]', `MOBILITÄTS-FALLE DETEKTIERT. Kfz-Gesamtkosten (${fm(d.kfzTotal)} €/Mo) überschreiten 20% des Nettoeinkommens. Mobilität vernichtet Kapitalbildungspotenzial.`);
+  if (d.totalIncome > 0 && d.kfzTotal / d.totalIncome > 0.2) {
+    add('warn','[WARN]',`MOBILITÄTS-FALLE DETEKTIERT. Kfz-Gesamtkosten (${fm(d.kfzTotal)} €/Mo) = ${Math.round(d.kfzTotal/d.totalIncome*100)}% des Nettos (Grenze: 20%).`);
     any = true;
   }
   if (d.pb > 0 && d.partnerDB < 500) {
-    const txt = d.partnerDB < 0
-      ? `PARTNER-ERWERBSTÄTIGKEIT FINANZIELL UNRENTABEL. Wahrer Deckungsbeitrag: ${fm(d.partnerDB)} €/Mo. Der Job kostet mehr, als er einbringt.`
-      : `PARTNER-ERWERBSTÄTIGKEIT GRENZWERTIG. Wahrer Deckungsbeitrag nach allen Kosten: nur ${fm(d.partnerDB)} €/Mo.`;
-    add('alarm', '[ALARM]', txt);
+    add('alarm','[ALARM]', d.partnerDB < 0
+      ? `PARTNER-ERWERBSTÄTIGKEIT FINANZIELL UNRENTABEL. Wahrer DB: ${fm(d.partnerDB)} €/Mo. Kosten übersteigen Ertrag.`
+      : `PARTNER-ERWERBSTÄTIGKEIT GRENZWERTIG. Wahrer DB: nur ${fm(d.partnerDB)} €/Mo.`);
     any = true;
   }
-  if (d.nettoAdj > 0) {
-    const pct = Math.round((d.life / d.nettoAdj) * 100);
-    if (pct < 15) {
-      add('critical', '[CRITICAL]', `NUR ${pct}% FREIE ENERGIE (${fm(d.life)} €). Statik kollabiert. Sofortmaßnahmen erforderlich.`);
-      any = true;
-    }
+  if (d.statusTotal > 0) {
+    add('warn','[STATUS]',`STATUS-OVERHEAD ERKANNT: ${fm(d.statusTotal)} €/Mo (${d.statusDays} Tage/Mo) werden nur für Status-Ausgaben gearbeitet. Das ist Zeit, die du nie zurückbekommst.`);
+    any = true;
   }
-  if (!any && d.nettoAdj > 0) {
-    add('ok', '[OK]', 'Keine kritischen Schwellenwerte überschritten. Dennoch: Optimierungspotenzial vorhanden.');
+  if (d.totalIncome > 0) {
+    const pct = Math.round((d.life / d.totalIncome) * 100);
+    if (pct < 15) { add('critical','[CRITICAL]',`NUR ${pct}% FREIE ENERGIE (${fm(d.life)} €). Statik kollabiert.`); any = true; }
   }
+  if (!any && d.nettoAdj > 0) add('ok','[OK]','Keine kritischen Schwellenwerte überschritten. Optimierungspotenzial dennoch vorhanden.');
 }
 
-/* ── DETAIL TABLE ── */
 function buildTable() {
   const d = D;
   const rows = [];
-  const addSec = t => rows.push({ sec: t });
-  const addRow = (l, f, v, c, tot) => rows.push({ l, f, v, c, tot });
+  const addS = t => rows.push({sec:t});
+  const addR = (l,f,v,c,tot) => rows.push({l,f,v,c,tot});
 
-  addSec('MODUL_A — REALES EINKOMMEN');
-  if (d.netto)   addRow('Gehalt Netto-Einkommen', 'Eingabe', d.netto, '', false);
-  if (d.stR)     addRow('Steuerrückerstattung (monatlich)', `${fm(d.stR)} ÷ 12`, d.stR/12, 'g', false);
-  if (d.stR||d.netto) addRow('Angepasstes Gehalt Netto', 'Netto + Steuer/12', d.nettoAdj, 'b', true);
-  if (d.fixk)    addRow('Fixkosten', 'Eingabe', -d.fixk, 'r', false);
+  addS('MODUL_A — REALES EINKOMMEN');
+  if (d.netto)        addR('Gehalt Netto-Einkommen','Eingabe',d.netto,'',false);
+  if (d.stR)          addR('Steuerrückerstattung (Mo)',`${fm(d.stR)} ÷ 12`,d.stR/12,'g',false);
+  if (d.stR||d.netto) addR('Angepasstes Gehalt Netto','Netto + Steuer/12',d.nettoAdj,'b',false);
+  if (d.partnerContrib>0) addR('Partner-Deckungsbeitrag (zugeführt)',`+${fm(d.partnerContrib)} € → Haushaltseinkommen`,d.partnerContrib,'g',false);
+  if (d.stR||d.netto||d.partnerContrib) addR('Gesamteinkommen Haushalt','Eigenes Netto + Partner-DB',d.totalIncome,'b',true);
+  if (d.fixk)         addR('Fixkosten','Eingabe',-d.fixk,'r',false);
 
   if (d.pb > 0) {
-    addSec('MODUL_B — PARTNER-CHECK');
-    addRow('Partner Netto', 'Eingabe', d.pb, '', false);
-    addRow('System-/Abzüge', `${fm(d.pb)} × 20%`, -d.sysLoss, 'r', false);
-    addRow('Partner Real-Netto', `${fm(d.pb)} × 80%`, d.realNetto, '', false);
-    if (d.ki) addRow('Kita-Kosten', 'Eingabe', -d.ki, 'r', false);
-    if (d.pe) addRow('Pendelkosten', 'Eingabe', -d.pe, 'r', false);
-    addRow('Wahrer Deckungsbeitrag', 'Real-Netto − Kita − Pendeln', d.partnerDB, d.partnerDB >= 0 ? 'a' : 'r', true);
+    addS('MODUL_B — PARTNER-CHECK');
+    addR('Partner Netto','Eingabe',d.pb,'',false);
+    addR('Abzüge (20%)',`${fm(d.pb)} × 20%`,-d.sysLoss,'r',false);
+    addR('Partner Real-Netto',`${fm(d.pb)} × 80%`,d.realNetto,'',false);
+    if (d.ki) addR('Kita-Kosten','Eingabe',-d.ki,'r',false);
+    if (d.pe) addR('Pendelkosten','Eingabe',-d.pe,'r',false);
+    addR('Wahrer Deckungsbeitrag','Real-Netto − Kita − Pendeln',d.partnerDB,d.partnerDB>=0?'a':'r',true);
   }
 
-  const addKfz = (label, c, p, km, st) => {
-    if (!p && !km) return;
-    addSec(label);
-    const rate = st === 'new' ? '15%' : '8%';
-    if (p) {
-      addRow(`Wertverlust (${rate} p.a.)`, `${fm(p)} × ${rate} ÷ 12`, -c.wv, 'r', false);
-      addRow('Opportunitätskosten (4% p.a.)', `${fm(p)} × 4% ÷ 12`, -c.op, 'r', false);
+  const addKfz = (lbl, c, p, km, st, lfd, leasing) => {
+    if (!p && !km && !lfd) return;
+    addS(lbl + (leasing ? ' [LEASING]' : ''));
+    const rate = st==='new'?'15%':'8%';
+    if (!leasing && p) {
+      addR(`Wertverlust (${rate} p.a.)`,`${fm(p)} × ${rate} ÷ 12`,-c.wv,'r',false);
+      addR('Opportunitätskosten (4% p.a.)',`${fm(p)} × 4% ÷ 12`,-c.op,'r',false);
     }
-    if (p && km) addRow('Verschleiß-Puffer', `${fm(km)} km × 0,05 € ÷ 12`, -c.ver, 'r', false);
-    addRow('Kfz-Gesamtbelastung', 'Summe', -c.total, 'r', true);
+    if (leasing) addR('Leasing/Finanzierung — kein kalkulat. Wertverlust','Leasing aktiv',0,'g',false);
+    if (km) addR('Verschleiß-Puffer',`${fm(km)} km × 0,05 € ÷ 12`,-c.ver,'r',false);
+    if (lfd) addR('Laufende Kosten (Rate/Vers./Steuer)','Eingabe',-lfd,'r',false);
+    addR('Kfz-Gesamtbelastung','Summe',-c.total,'r',true);
   };
-  addKfz('MODUL_C — FAHRZEUG 1', d.c1, g('k1p'), g('k1km'), s('k1s').value);
-  if (kfz2On) addKfz('MODUL_C — FAHRZEUG 2 (PARTNER)', d.c2, g('k2p'), g('k2km'), s('k2s').value);
+  addKfz('MODUL_C — FAHRZEUG 1',d.c1,g('k1p'),g('k1km'),s('k1s').value,g('k1lfd'),leasingOn[1]);
+  if (kfz2On) addKfz('MODUL_C — FAHRZEUG 2 (PARTNER)',d.c2,g('k2p'),g('k2km'),s('k2s').value,g('k2lfd'),leasingOn[2]);
 
-  if (g('hausW') > 0) {
-    addSec('MODUL_D — IMMOBILIEN-SCHATTEN');
-    addRow('Instandhaltungsrückstau', `${fm(g('hausW'))} × 1,5% ÷ 12`, -d.hausS, 'r', false);
+  if (g('hausW')>0) {
+    addS('MODUL_D — IMMOBILIEN-SCHATTEN');
+    addR('Instandhaltungsrückstau',`${fm(g('hausW'))} × 1,5% ÷ 12`,-d.hausS,'r',false);
   }
 
-  addSec('ERGEBNIS');
-  addRow('Gesamtabfluss / Monat', 'Fixkosten + Zerfall + Partnerkosten', -d.allCosts, 'r', true);
-  addRow('Echte Lebens-Energie', 'Angepasstes Netto − Gesamtabfluss', d.life, 'g', true);
+  addS('ERGEBNIS');
+  addR('Gesamtabfluss / Monat','Fixkosten + Zerfall + Partnerkosten',-d.allCosts,'r',true);
+  addR('Echte Lebens-Energie','Angepasstes Netto − Gesamtabfluss',d.life,'g',true);
 
-  const cc = { r:'var(--red)', g:'var(--green)', a:'var(--amber)', b:'var(--blue)', '':'inherit' };
+  const cc = {r:'var(--red)',g:'var(--grn)',a:'var(--amb)',b:'var(--blu)','':`var(--g3)`};
   s('detBody').innerHTML = rows.map(r => {
     if (r.sec) return `<tr class="sec-row"><td colspan="3">${r.sec}</td></tr>`;
-    const col = cc[r.c] || 'inherit';
-    const cls = r.tot ? ' class="tot-row"' : '';
-    return `<tr${cls}><td>${r.l}</td><td style="font-size:10px;">${r.f}</td><td style="color:${col}">${r.v >= 0 ? '+' : ''}${fm(r.v)} €</td></tr>`;
+    const col = cc[r.c]||'var(--g3)';
+    const cls = r.tot?' class="tot-row"':'';
+    return `<tr${cls}><td>${r.l}</td><td style="font-size:10px;">${r.f}</td><td style="color:${col}">${r.v>=0?'+':''}${fm(r.v)} €</td></tr>`;
   }).join('');
 }
 
-/* ── BAR ANIMATIONS ── */
+/* ── Bar animations ── */
 function doAnims() {
-  const d = D, t = d.nettoAdj || 1;
-  const pSys  = Math.min(100, (d.sysLoss / t) * 100);
-  const pFix  = Math.min(100 - pSys, (d.fixk / t) * 100);
-  const pDec  = Math.min(100 - pSys - pFix, (d.decay / t) * 100);
-  const pLife = Math.max(0, 100 - pSys - pFix - pDec);
+  const d = D, t = d.totalIncome || 1;
+  const pSys  = Math.min(100, (d.sysLoss/t)*100);
+  const pFix  = Math.min(100-pSys, (d.fixk/t)*100);
+  const pDec  = Math.min(100-pSys-pFix, (d.decay/t)*100);
+  const pLife = Math.max(0, 100-pSys-pFix-pDec);
 
-  const sw = (id, p) => s(id).style.width = p + '%';
-  sw('ss-sys', pSys); sw('ss-fix', pFix); sw('ss-dec', pDec); sw('ss-life', pLife);
-  sw('bf-sys', pSys); sw('bf-fix', pFix); sw('bf-dec', pDec); sw('bf-life', pLife);
+  const sw = (id,p) => s(id).style.width = p+'%';
+  sw('ss-sys',pSys); sw('ss-fix',pFix); sw('ss-dec',pDec); sw('ss-life',pLife);
+  sw('bf-sys',pSys); sw('bf-fix',pFix); sw('bf-dec',pDec); sw('bf-life',pLife);
 
-  const sl = (id, p) => s(id).textContent = p > 7 ? Math.round(p) + '%' : '';
-  sl('sl-sys', pSys); sl('sl-fix', pFix); sl('sl-dec', pDec); sl('sl-life', pLife);
+  const sl = (id,p) => s(id).textContent = p>7?Math.round(p)+'%':'';
+  sl('sl-sys',pSys); sl('sl-fix',pFix); sl('sl-dec',pDec); sl('sl-life',pLife);
 
-  const vl = (id, v, p) => s(id).textContent = `${fm(v)} € (${Math.round(p)}%)`;
-  vl('bv-sys', d.sysLoss, pSys); vl('bv-fix', d.fixk, pFix); vl('bv-dec', d.decay, pDec); vl('bv-life', d.life, pLife);
+  const vl = (id,v,p) => s(id).textContent = `${fm(v)} € (${Math.round(p)}%)`;
+  vl('bv-sys',d.sysLoss,pSys); vl('bv-fix',d.fixk,pFix); vl('bv-dec',d.decay,pDec); vl('bv-life',d.life,pLife);
 }
 
-/* ── TYPEWRITER LOG ── */
+/* ── Typewriter log ── */
 function doLog() {
   const d = D;
   const lines = [];
-  const dt = new Date().toLocaleDateString('de-DE') + ' ' + new Date().toLocaleTimeString('de-DE');
+  const dt = new Date().toLocaleDateString('de-DE')+' '+new Date().toLocaleTimeString('de-DE');
 
-  lines.push({ t:'lh', s:`// CL GLOBAL // MATRIX-EXIT AUDIT v2.0 // ${dt}` });
-  lines.push({ t:'li', s:`// Gehalt Netto: ${fm(d.nettoAdj)} €/Mo  |  Fixkosten: ${fm(d.fixk)} €/Mo` });
-  lines.push({ t:'li', s:'// ────────────────────────────────────────────────────' });
+  lines.push({t:'lh',s:`// CL GLOBAL // FREIHEIT DURCH KLARHEIT // AUDIT // ${dt}`});
+  lines.push({t:'li',s:`// Gesamteinkommen: ${fm(d.totalIncome)} €/Mo (Netto: ${fm(d.nettoAdj)} € + Partner-DB: ${fm(d.partnerContrib)} €) | Fixkosten: ${fm(d.fixk)} €/Mo`});
+  lines.push({t:'li',s:'// ────────────────────────────────────────────────────'});
 
-  if (d.stR > 0) lines.push({ t:'lo', s:`   INFO: Steuerrückerstattung +${fm(d.stR/12)} €/Mo berücksichtigt.` });
+  if (d.stR > 0) lines.push({t:'lo',s:`   INFO: Steuerrückerstattung +${fm(d.stR/12)} €/Mo berücksichtigt.`});
 
   if (d.fixk > 0 && d.nettoAdj > 0) {
-    const r = Math.round((d.fixk / d.nettoAdj) * 100);
-    if (r > 50) lines.push({ t:'lw', s:`   [CRITICAL] FIXKOSTEN-LAST ÜBERSTEIGT SICHERHEITSGRENZE. Quote: ${r}% (Grenze: 50%).` });
-    else        lines.push({ t:'li', s:`   Fixkosten-Quote: ${r}% — innerhalb Toleranz.` });
+    const r = Math.round((d.fixk/d.nettoAdj)*100);
+    lines.push(r>50
+      ? {t:'lw',s:`   [CRITICAL] FIXKOSTEN-LAST ÜBERSTEIGT SICHERHEITSGRENZE. Quote: ${r}% (Grenze: 50%).`}
+      : {t:'li',s:`   Fixkosten-Quote: ${r}% — innerhalb Toleranz.`});
   }
 
   if (d.pb > 0) {
-    lines.push({ t:'lh', s:'// MODUL_B: PARTNER-CHECK' });
-    lines.push({ t:'li', s:`   Netto: ${fm(d.pb)} €  →  Real-Netto: ${fm(d.realNetto)} € (nach 20% Abzügen)` });
-    lines.push({ t:'lw', s:`   [WARN] Abzüge kosten ${fm(d.sysLoss)} €/Monat vom Partner-Netto.` });
-    if (d.partnerDB < 500) {
-      lines.push({ t:'la', s: d.partnerDB < 0
-        ? `   [ALARM] PARTNER-ERWERBSTÄTIGKEIT FINANZIELL UNRENTABEL. DB: ${fm(d.partnerDB)} €/Mo.`
-        : `   [ALARM] PARTNER-ERWERBSTÄTIGKEIT GRENZWERTIG. Wahrer DB: nur ${fm(d.partnerDB)} €/Mo.` });
-    } else {
-      lines.push({ t:'lo', s:`   Wahrer Deckungsbeitrag: +${fm(d.partnerDB)} €` });
-    }
+    lines.push({t:'lh',s:'// MODUL_B: PARTNER-CHECK'});
+    lines.push({t:'li',s:`   Netto: ${fm(d.pb)} €  →  Real-Netto: ${fm(d.realNetto)} € (nach 20% Abzügen)`});
+    lines.push({t:'lw',s:`   [WARN] Abzüge kosten ${fm(d.sysLoss)} €/Mo vom Partner-Netto.`});
+    lines.push(d.partnerDB<500
+      ? {t:'la',s:d.partnerDB<0?`   [ALARM] PARTNER-ERWERBSTÄTIGKEIT UNRENTABEL. DB: ${fm(d.partnerDB)} €/Mo.`:`   [ALARM] PARTNER-DB GRENZWERTIG. Nur ${fm(d.partnerDB)} €/Mo.`}
+      : {t:'lo',s:`   Wahrer Deckungsbeitrag: +${fm(d.partnerDB)} €`});
   }
 
   if (d.c1.total > 0 || d.c2.total > 0) {
-    lines.push({ t:'lh', s:'// MODUL_C: MOBILITÄTS-MATRIX' });
-    if (d.c1.total > 0) {
-      lines.push({ t:'lw', s:`   [WARN] Kfz 1 — Wertverlust: ${fm(d.c1.wv)} €/Mo (stille Entwertung).` });
-      lines.push({ t:'lw', s:`   [WARN] Kfz 1 — Opportunität: ${fm(d.c1.op)} €/Mo (entgangene Zinsen).` });
-      if (d.c1.ver > 0) lines.push({ t:'lw', s:`   [WARN] Kfz 1 — Verschleiß-Puffer: ${fm(d.c1.ver)} €/Mo.` });
+    lines.push({t:'lh',s:'// MODUL_C: MOBILITÄTS-MATRIX'});
+    if (d.c1.total>0) {
+      lines.push({t:'lw',s:`   [WARN] Kfz 1 — Wertverlust: ${fm(d.c1.wv)} €/Mo (stille Entwertung).`});
+      lines.push({t:'lw',s:`   [WARN] Kfz 1 — Opportunität: ${fm(d.c1.op)} €/Mo (entgangene Zinsen).`});
+      if (d.c1.lfd>0) lines.push({t:'lw',s:`   [WARN] Kfz 1 — Laufende Kosten (Rate/Vers.): ${fm(d.c1.lfd)} €/Mo.`});
     }
-    if (kfz2On && d.c2.total > 0) lines.push({ t:'lw', s:`   [WARN] Kfz 2 (Partner) — Gesamtlast: ${fm(d.c2.total)} €/Mo.` });
-    const kp = d.nettoAdj > 0 ? Math.round((d.kfzTotal / d.nettoAdj) * 100) : 0;
-    if (kp > 20) lines.push({ t:'lm', s:`   [WARN] MOBILITÄTS-FALLE DETEKTIERT. Kfz-Last = ${kp}% des Nettos (Grenze: 20%).` });
-    else         lines.push({ t:'li', s:`   Kfz-Gesamtlast: ${fm(d.kfzTotal)} €/Mo (${kp}% des Nettos).` });
+    if (kfz2On&&d.c2.total>0) lines.push({t:'lw',s:`   [WARN] Kfz 2 (Partner) — Gesamtlast: ${fm(d.c2.total)} €/Mo.`});
+    const kp = d.totalIncome>0?Math.round((d.kfzTotal/d.totalIncome)*100):0;
+    lines.push(kp>20
+      ? {t:'lm',s:`   [WARN] MOBILITÄTS-FALLE. Kfz-Last = ${kp}% des Nettos (Grenze: 20%).`}
+      : {t:'li',s:`   Kfz-Gesamtlast: ${fm(d.kfzTotal)} €/Mo (${kp}% des Nettos).`});
   }
 
-  if (d.hausS > 0) {
-    lines.push({ t:'lh', s:'// MODUL_D: IMMOBILIEN-SCHATTEN' });
-    lines.push({ t:'lw', s:`   [WARN] Schatten-Schuld Haus: ${fm(d.hausS)} €/Mo akkumulieren still.` });
-    lines.push({ t:'li', s:'   Bei Nicht-Rückstellung: Substanzverlust. Unsichtbar auf dem Kontoauszug.' });
+  if (d.hausS>0) {
+    lines.push({t:'lh',s:'// MODUL_D: IMMOBILIEN-SCHATTEN'});
+    lines.push({t:'lw',s:`   [WARN] Schatten-Schuld Haus: ${fm(d.hausS)} €/Mo akkumulieren still.`});
   }
 
-  lines.push({ t:'li', s:'// ────────────────────────────────────────────────────' });
-  lines.push({ t:'lh', s:'// ERGEBNIS' });
-
-  if (d.slaveDay !== null) {
-    lines.push({ t:'lw', s:`   ARBEITSTAGE FÜR DIE MATRIX: ${d.slaveDay} von 30 Tagen.` });
-    lines.push({ t:'lw', s:`   ${d.freeDays} Tage gehören dir. ${d.slaveDay} Tage arbeiten für die Matrix.` });
+  if (d.statusTotal>0) {
+    lines.push({t:'lh',s:'// PSYCHOLOGIE: STATUS-OVERHEAD'});
+    lines.push({t:'lm',s:`   [STATUS] ${fm(d.statusTotal)} €/Mo (${d.statusDays} Tage) werden nur für Status gearbeitet.`});
+    lines.push({t:'lm',s:`   Frage: Ist dieser Preis es wirklich wert?`});
   }
 
-  if (d.nettoAdj > 0) {
-    const pct = Math.round((d.life / d.nettoAdj) * 100);
-    if (pct < 15)      lines.push({ t:'lw', s:`   [CRITICAL] NUR ${pct}% FREIE ENERGIE (${fm(d.life)} €). Statik kollabiert.` });
-    else if (pct < 35) lines.push({ t:'lm', s:`   [WARN] ${pct}% Freie Energie (${fm(d.life)} €). Statik fragil.` });
-    else               lines.push({ t:'lo', s:`   ${pct}% Freie Energie (${fm(d.life)} €). Ausbaufähig.` });
+  lines.push({t:'li',s:'// ────────────────────────────────────────────────────'});
+  lines.push({t:'lh',s:'// ERGEBNIS — ARBEITSTAGE FÜR DIE MATRIX'});
+
+  if (d.slaveDay!==null) {
+    lines.push({t:'lw',s:`   ARBEITSTAGE FÜR DIE MATRIX: ${d.slaveDay} von 30 Tagen.`});
+    lines.push({t:'lw',s:`   ${d.freeDays} Tage gehören dir. Autonomie-Breakpoint: ${d.breakPoint}. des Monats.`});
   }
-  lines.push({ t:'lo', s:'// Diagnose abgeschlossen. Empfehlung: Statik-Prüfung buchen.' });
+
+  if (d.totalIncome>0) {
+    const pct = Math.round((d.life/d.totalIncome)*100);
+    lines.push(pct<15
+      ? {t:'lw',s:`   [CRITICAL] NUR ${pct}% FREIE ENERGIE (${fm(d.life)} €). Statik kollabiert.`}
+      : pct<35
+        ? {t:'lm',s:`   [WARN] ${pct}% Freie Energie (${fm(d.life)} €). Statik fragil.`}
+        : {t:'lo',s:`   ${pct}% Freie Energie (${fm(d.life)} €). Ausbaufähig.`});
+  }
+  lines.push({t:'lo',s:'// Diagnose abgeschlossen. Empfehlung: System-Check oder Matrix-Strategie buchen.'});
 
   const body = s('termBody'); body.innerHTML = '';
-  const icons = { lh:'>', lw:'⚠', lo:'✓', li:'>', la:'‼', lm:'△' };
+  const icons = {lh:'>',lw:'⚠',lo:'✓',li:'>',la:'‼',lm:'△'};
 
-  lines.forEach((e, i) => {
+  lines.forEach((e,i) => {
     const div = document.createElement('div');
     div.className = `log-line ${e.t}`;
     body.appendChild(div);
@@ -1392,11 +1481,11 @@ function doLog() {
       let pos = 0;
       const prompt = `<span class="log-prompt">${icons[e.t]}</span> `;
       const tw = setInterval(() => {
-        div.innerHTML = prompt + e.s.slice(0, pos);
+        div.innerHTML = prompt + e.s.slice(0,pos);
         pos++;
-        if (pos > e.s.length) clearInterval(tw);
+        if (pos>e.s.length) clearInterval(tw);
       }, 9);
-    }, i * 100);
+    }, i*100);
   });
 }
 </script>
