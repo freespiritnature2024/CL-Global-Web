@@ -653,39 +653,36 @@ select.ifield { cursor:pointer; }
 
   <!-- Detail Table -->
   <div class="bg-white rounded-lg border border-gray-200 shadow-sm p-8">
-    <p class="mono text-xs tracking-[0.16em] uppercase text-gray-400 mb-6">Vollständige Kostenaufstellung</p>
-    <table class="det-table w-full border-collapse text-sm">
+    <div class="flex items-center justify-between mb-6">
+      <p class="mono text-xs tracking-[0.16em] uppercase text-gray-400">Vollständige Kostenaufstellung</p>
+      <button onclick="downloadPDF()" class="mono text-xs font-medium text-white px-4 py-2 transition-colors flex items-center gap-2" style="background:#111827" onmouseover="this.style.background='#DC2626'" onmouseout="this.style.background='#111827'">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Als PDF speichern
+      </button>
+    </div>
+    <table class="det-table w-full border-collapse text-sm" id="kostenTable">
       <thead><tr class="border-b-2 border-gray-200"><th class="text-left mono text-[10px] uppercase tracking-wide text-gray-400 pb-3 font-medium">Position</th><th class="text-left mono text-[10px] uppercase tracking-wide text-gray-400 pb-3 font-medium">Berechnung</th><th class="text-right mono text-[10px] uppercase tracking-wide text-gray-400 pb-3 font-medium">€ / Mo</th></tr></thead>
       <tbody id="detBody"></tbody>
     </table>
   </div>
 
-  <!-- Finanzielle Klarheit -->
-  <div class="bg-white rounded-lg border border-gray-200 shadow-sm p-8">
-    <p class="mono text-xs tracking-[0.16em] uppercase text-gray-400 mb-2">Finanzielle Klarheit</p>
-    <h3 class="text-xl font-bold text-gray-900 mb-8">Was dein Geld wirklich tut</h3>
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-      <div class="bg-amber-50 rounded-md p-5 border border-amber-100">
-        <p class="mono text-[10px] uppercase tracking-wide text-gray-400 mb-2">Status-Ausgaben</p>
-        <p class="mono text-2xl font-bold text-amber-700" id="klStatus">— €</p>
-        <p class="mono text-xs text-gray-600 mt-2">Als „Status" markierte Positionen</p>
-      </div>
-      <div class="bg-red-50 rounded-md p-5 border border-red-100">
-        <p class="mono text-[10px] uppercase tracking-wide text-gray-400 mb-2">Substanz-Verzehr</p>
-        <p class="mono text-2xl font-bold text-red-600" id="klSubstanz">— €</p>
-        <p class="mono text-xs text-gray-600 mt-2">Haus-Instandhaltung + Kfz-WV</p>
-      </div>
-      <div class="rounded-md p-5 border" id="klFreiheitCell">
-        <p class="mono text-[10px] uppercase tracking-wide text-gray-400 mb-2">Dein Anteil für Freiheit</p>
-        <p class="mono text-2xl font-bold text-green-700" id="klFreiheit">— €</p>
-        <p class="mono text-xs text-gray-400 mt-2" id="klFreiheitDesc">Nach Status + Substanzverzehr</p>
-        <p class="mono text-xs text-red-600 mt-1 hidden" id="klWarnText"></p>
-      </div>
+  <!-- Nächster Schritt CTA -->
+  <div class="bg-gray-900 rounded-lg p-8">
+    <p class="mono text-xs tracking-[0.2em] uppercase text-gray-400 mb-4">Was jetzt?</p>
+    <h3 class="text-2xl font-bold text-white mb-3" id="ctaHeadline">Du hast deine Zahlen gesehen.</h3>
+    <p class="text-gray-400 leading-relaxed mb-8 max-w-xl" id="ctaText">Die Frage ist nicht ob du handeln solltest — sondern wie. Ein 60-minütiger Call gibt dir Klarheit über deinen nächsten konkreten Schritt. Ohne Upsell. Ohne Richtungsvorgabe.</p>
+    <div class="flex flex-wrap gap-4">
+      <a href="mailto:info@cl-global-consulting.com?subject=System-Check buchen" class="inline-block text-white text-sm font-semibold px-6 py-3 transition-colors" style="background:#DC2626" onmouseover="this.style.background='#b91c1c'" onmouseout="this.style.background='#DC2626'">System-Check buchen — 250 € →</a>
+      <a href="mailto:info@cl-global-consulting.com?subject=Matrix-Strategie buchen" class="inline-block text-white text-sm font-semibold px-6 py-3 transition-colors border border-gray-600 hover:border-gray-400">Matrix-Strategie — 350 €</a>
     </div>
-    <div id="statementBox" class="hidden mt-8 pt-6 border-t border-gray-100">
-      <blockquote class="text-base font-light italic text-gray-700 leading-relaxed border-l-2 border-gray-900 pl-5 mb-3" id="statementTxt">—</blockquote>
-      <p class="mono text-xs text-gray-400">— Dominic · Van-Leben · Freiheit durch Klarheit</p>
-    </div>
+    <p class="mono text-xs text-gray-600 mt-5">Remote · Weltweit · Kein Upsell · Keine Verpflichtung</p>
+  </div>
+
+  <!-- Hidden elements needed by buildKlarheit() -->
+  <div class="hidden">
+    <span id="klStatus"></span><span id="klSubstanz"></span><span id="klFreiheit"></span>
+    <span id="klFreiheitCell"></span><span id="klFreiheitDesc"></span><span id="klWarnText"></span>
+    <span id="statementBox"></span><span id="statementTxt"></span>
   </div>
 
   <!-- Neue Analyse -->
@@ -1476,6 +1473,86 @@ function doLog() {
   });
 }
 
+
+/* ── PDF Download ── */
+function downloadPDF() {
+  const d = D;
+  if (!d.totalIncome && !d.allCosts) { alert('Bitte zuerst eine Auswertung starten.'); return; }
+  
+  const rows = [];
+  const t = document.getElementById('kostenTable');
+  if (t) {
+    const trs = t.querySelectorAll('tr');
+    trs.forEach(tr => {
+      const cells = tr.querySelectorAll('td, th');
+      if (cells.length) rows.push(Array.from(cells).map(c => c.textContent.trim()));
+    });
+  }
+
+  const date = new Date().toLocaleDateString('de-DE');
+  
+  let html = `<!DOCTYPE html><html><head><meta charset="UTF-8">
+  <title>CL Global – Kostenaufstellung ${date}</title>
+  <style>
+    body { font-family: 'Helvetica Neue', Arial, sans-serif; color: #111; margin: 40px; font-size: 12px; }
+    h1 { font-size: 20px; font-weight: 700; margin-bottom: 4px; }
+    .sub { color: #6b7280; font-size: 11px; margin-bottom: 32px; }
+    .kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 32px; }
+    .kpi { border: 1px solid #e5e7eb; padding: 14px; border-radius: 6px; }
+    .kpi-label { font-size: 9px; text-transform: uppercase; letter-spacing: .1em; color: #9ca3af; margin-bottom: 6px; }
+    .kpi-val { font-size: 22px; font-weight: 700; font-family: monospace; }
+    .kpi-val.red { color: #DC2626; }
+    .kpi-val.green { color: #16a34a; }
+    table { width: 100%; border-collapse: collapse; margin-bottom: 32px; }
+    th { text-align: left; font-size: 9px; text-transform: uppercase; letter-spacing: .1em; color: #9ca3af; padding: 8px 10px; border-bottom: 2px solid #e5e7eb; }
+    td { padding: 9px 10px; border-bottom: 1px solid #f3f4f6; font-size: 11px; }
+    tr.sec td { background: #f9fafb; font-size: 9px; text-transform: uppercase; letter-spacing: .1em; color: #6b7280; font-weight: 600; padding: 7px 10px; }
+    tr.tot td { background: #111827; color: white; font-weight: 700; }
+    .footer { color: #9ca3af; font-size: 10px; border-top: 1px solid #e5e7eb; padding-top: 16px; margin-top: 32px; }
+    .cta { background: #f9fafb; border: 1px solid #e5e7eb; padding: 20px; border-radius: 6px; margin-bottom: 32px; }
+    .cta h3 { font-size: 14px; margin-bottom: 6px; }
+    .cta p { color: #6b7280; font-size: 11px; line-height: 1.6; }
+  </style></head><body>
+  <h1>Finanzielle Kostenaufstellung</h1>
+  <div class="sub">CL Global Consulting · Erstellt am ${date}</div>
+  
+  <div class="kpi-grid">
+    <div class="kpi"><div class="kpi-label">Gesamteinkommen</div><div class="kpi-val">${fm(d.totalIncome)} €</div></div>
+    <div class="kpi"><div class="kpi-label">Gesamtabfluss</div><div class="kpi-val red">${fm(d.allCosts)} €</div></div>
+    <div class="kpi"><div class="kpi-label">Unsichtbarer Zerfall</div><div class="kpi-val red">${fm(d.decay)} €</div></div>
+    <div class="kpi"><div class="kpi-label">Freie Energie</div><div class="kpi-val green">${fm(d.life)} €</div></div>
+  </div>`;
+
+  if (rows.length) {
+    html += '<table><tr><th>Position</th><th>Berechnung</th><th style="text-align:right">€ / Mo</th></tr>';
+    rows.forEach(r => {
+      if (r.length === 1) {
+        html += `<tr class="sec"><td colspan="3">${r[0]}</td></tr>`;
+      } else if (r[0] === 'Position') {
+        // skip header row
+      } else {
+        const isTot = r[0].includes('Gesamt') || r[0].includes('Energie') || r[0].includes('Deckung');
+        const cls = isTot ? ' class="tot"' : '';
+        html += `<tr${cls}><td>${r[0]||''}</td><td style="color:#9ca3af">${r[1]||''}</td><td style="text-align:right;font-family:monospace;font-weight:600">${r[2]||''}</td></tr>`;
+      }
+    });
+    html += '</table>';
+  }
+
+  if (d.slaveDay !== null) {
+    html += `<div class="cta"><h3>Deine Situation auf den Punkt gebracht</h3><p>${d.slaveDay} von 30 Tagen arbeitest du für die Matrix. ${d.freeDays} Tage gehören wirklich dir.<br><br>Wenn du das ändern möchtest: <strong>info@cl-global-consulting.com</strong> · System-Check 250 € · Matrix-Strategie 350 €</p></div>`;
+  }
+
+  html += `<div class="footer">CL Global Consulting · info@cl-global-consulting.com · cl-global-consulting.com<br>Freiheit durch Klarheit</div></body></html>`;
+
+  const blob = new Blob([html], {type: 'text/html'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `CL-Global-Kostenaufstellung-${date.replace(/\./g,'-')}.html`;
+  a.click();
+  URL.revokeObjectURL(url);
+}
 
 
 </script>
