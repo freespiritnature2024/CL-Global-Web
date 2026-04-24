@@ -691,7 +691,7 @@ select.ifield { cursor:pointer; }
       <p class="font-semibold text-gray-900 mb-1">Andere Zahlen testen?</p>
       <p class="mono text-xs text-gray-400">Felder ändern und neue Auswertung starten.</p>
     </div>
-    <a href="#rechner" onclick="window.scrollTo({top:document.getElementById('rechner').offsetTop-80,behavior:'smooth'})" class="mono text-sm font-medium text-white px-6 py-2.5 transition-colors cursor-pointer" style="background:#111827" onmouseover="this.style.background='#DC2626'" onmouseout="this.style.background='#111827'">← Neue Analyse</a>
+    <button onclick="resetAnalyse()" class="mono text-sm font-medium text-white px-6 py-2.5 transition-colors" style="background:#111827" onmouseover="this.style.background='#DC2626'" onmouseout="this.style.background='#111827'">← Neue Analyse (Felder leeren)</button>
   </div>
 
 </div><!-- /max-w -->
@@ -848,8 +848,19 @@ const fm=n=>Math.round(n).toLocaleString('de-DE');
 const s=id=>document.getElementById(id);
 const ps={};
 
-// Tooltips
-document.addEventListener('click',e=>{if(!e.target.closest('.tip-wrap'))document.querySelectorAll('.tip-box').forEach(b=>b.style.opacity='0');});
+// Tooltips — hover via CSS, click toggles on mobile
+document.addEventListener('click', e => {
+  const wrap = e.target.closest('.tip-wrap');
+  if (wrap) {
+    const box = wrap.querySelector('.tip-box');
+    const isOpen = box.style.opacity === '1';
+    document.querySelectorAll('.tip-box').forEach(b => b.style.opacity = '0');
+    if (!isOpen) box.style.opacity = '1';
+    e.stopPropagation();
+  } else {
+    document.querySelectorAll('.tip-box').forEach(b => b.style.opacity = '0');
+  }
+});
 
 // Psychologie
 function togglePsych(id){ps[id]=!ps[id];s(id).classList.toggle('on',ps[id]);}
@@ -1473,6 +1484,88 @@ function doLog() {
   });
 }
 
+
+/* ── Reset Analyse ── */
+function resetAnalyse() {
+  // Alle Eingabefelder leeren
+  ['netto','steuerR','fixk','lmk','engk','urlaubk',
+   'pBrutto','kita','pendel',
+   'k1p','k1km','k1lfd','k1rep',
+   'k2p','k2km','k2lfd','k2rep',
+   'hausW'].forEach(id => { const el = s(id); if(el) el.value = ''; });
+
+  // Live-Anzeigen zurücksetzen
+  ['nettoAdj','ausgabenLive','pDB','k1live','k2live',
+   'k1wv','k1op','k1ver','k2wv','k2op','k2ver','hausLive'].forEach(id => {
+    const el = s(id); if(el) el.textContent = '—';
+  });
+  s('nettoFormula') && (s('nettoFormula').textContent = 'Netto + (Steuerrückerstattung ÷ 12)');
+  s('ausgabenFormula') && (s('ausgabenFormula').textContent = 'Nebenk. + LM + Energie + Urlaub');
+  s('pFormula') && (s('pFormula').textContent = 'Netto − Kita − Pendelkosten');
+  s('pDBLbl') && (s('pDBLbl').textContent = 'Wahrer Deckungsbeitrag');
+
+  // Checkboxen zurücksetzen
+  Object.keys(psychStatus).forEach(k => { psychStatus[k] = false; const el = s(k); if(el) el.classList.remove('on'); });
+  Object.keys(ps).forEach(k => { ps[k] = false; const el = s(k); if(el) el.classList.remove('on'); });
+
+  // Fahrzeugarten zurücksetzen
+  fahrzeugArt[1] = 'kauf'; fahrzeugArt[2] = 'kauf';
+  ['k1leasingCb','k1finanzCb','k2leasingCb','k2finanzCb'].forEach(id => {
+    const el = s(id); if(el) el.classList.remove('on');
+  });
+
+  // Kfz2 ausblenden
+  kfz2On = false;
+  s('kfz2Cb') && s('kfz2Cb').classList.remove('on');
+  s('kfz2-wrap') && s('kfz2-wrap').classList.add('hidden');
+
+  // Ergebnis verstecken
+  s('results').classList.add('hidden');
+  s('rcBlock').classList.add('hidden');
+  s('loading').classList.add('hidden');
+  s('statusBanner').classList.add('hidden');
+
+  // Analysebutton zurücksetzen
+  const btn = s('aBtn');
+  if(btn) { btn.disabled = false; btn.textContent = '→ Auswertung starten'; }
+
+  // Nach oben scrollen
+  setTimeout(() => {
+    document.getElementById('rechner').scrollIntoView({behavior:'smooth', block:'start'});
+  }, 50);
+}
+
+/* ── Reset Analyse ── */
+function resetAnalyse() {
+  ['netto','steuerR','fixk','lmk','engk','urlaubk',
+   'pBrutto','kita','pendel',
+   'k1p','k1km','k1lfd','k1rep',
+   'k2p','k2km','k2lfd','k2rep','hausW'].forEach(id => {
+    const el = s(id); if(el) el.value = '';
+  });
+  ['nettoAdj','ausgabenLive','pDB','k1live','k2live',
+   'k1wv','k1op','k1ver','k2wv','k2op','k2ver','hausLive'].forEach(id => {
+    const el = s(id); if(el) el.textContent = '—';
+  });
+  Object.keys(psychStatus).forEach(k => { psychStatus[k]=false; const el=s(k); if(el) el.classList.remove('on'); });
+  Object.keys(ps).forEach(k => { ps[k]=false; const el=s(k); if(el) el.classList.remove('on'); });
+  fahrzeugArt[1]='kauf'; fahrzeugArt[2]='kauf';
+  ['k1leasingCb','k1finanzCb','k2leasingCb','k2finanzCb'].forEach(id => {
+    const el=s(id); if(el) el.classList.remove('on');
+  });
+  kfz2On=false;
+  s('kfz2Cb')&&s('kfz2Cb').classList.remove('on');
+  s('kfz2-wrap')&&s('kfz2-wrap').classList.add('hidden');
+  s('results').classList.add('hidden');
+  s('rcBlock').classList.add('hidden');
+  s('loading').classList.add('hidden');
+  s('statusBanner').classList.add('hidden');
+  const btn=s('aBtn');
+  if(btn){btn.disabled=false;btn.textContent='→ Auswertung starten';}
+  setTimeout(()=>{
+    document.getElementById('rechner').scrollIntoView({behavior:'smooth',block:'start'});
+  },50);
+}
 
 /* ── PDF Download ── */
 function downloadPDF() {
