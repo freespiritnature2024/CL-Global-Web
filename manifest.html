@@ -96,22 +96,22 @@ footer{border-top:1px solid #e5e7eb;padding:24px 32px;display:flex;justify-conte
 <!-- HERO -->
 <section class="hero">
   <div class="hero-inner">
-    <span class="hero-tag">Kostenloses Manifest — sofortiger PDF-Download</span>
+    <span class="hero-tag">Kostenloses Manifest — sofort im Browser lesen</span>
     <h1 class="hero-title">Was niemand dir<br>über dein Leben sagt —<br><span class="red">aber die Zahlen schon längst wissen.</span></h1>
     <p class="hero-sub">6 Fakten die dein Bild von Sicherheit, Besitz und Freiheit für immer verändern werden. Keine Meinungen. Keine Motivation. Nur Mathematik.</p>
     <p class="hero-promise"><strong>Wer dieses Dokument liest, stellt danach andere Fragen.</strong> Nicht weil er etwas Neues lernt — sondern weil er zum ersten Mal die Zahlen sieht, die er nie sehen wollte.</p>
 
     <div class="gate">
-      <p class="gate-title">Trag deine E-Mail ein — du bekommst das PDF sofort.</p>
+      <p class="gate-title">Trag deine E-Mail ein — du bekommst das Dokument sofort.</p>
       <p class="gate-desc">Kein Newsletter. Kein Upsell. Nur der Text.</p>
       <form id="manifestForm" onsubmit="submitForm(event)">
         <div class="form-row">
           <input class="email-inp" type="email" id="emailInput" placeholder="deine@email.de" required>
-          <button class="submit-btn" type="submit" id="submitBtn">PDF herunterladen →</button>
+          <button class="submit-btn" type="submit" id="submitBtn">Jetzt herunterladen →</button>
         </div>
         <p class="gate-note">Keine Weitergabe. Jederzeit abmeldbar.</p>
       </form>
-      <div class="success-msg" id="successMsg">✓ Danke. Das PDF wird jetzt heruntergeladen.</div>
+      <div class="success-msg" id="successMsg">✓ Danke. Das Dokument öffnet sich jetzt.</div>
     </div>
   </div>
 </section>
@@ -174,7 +174,7 @@ footer{border-top:1px solid #e5e7eb;padding:24px 32px;display:flex;justify-conte
       </div>
     </div>
     <div class="teaser-overlay">
-      <p>Fakten 4–6 + die vollständige Auswertung — nur im PDF</p>
+      <p>Fakten 4–6 + die vollständige Auswertung — nur im Dokument</p>
       <button class="teaser-btn" onclick="document.querySelector('.hero').scrollIntoView({behavior:'smooth'})">Jetzt kostenlos herunterladen →</button>
     </div>
   </div>
@@ -233,6 +233,12 @@ function generatePDF(email) {
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
 *{margin:0;padding:0;box-sizing:border-box}
+  @media print {
+    body{padding:40px 48px}
+    .cta{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    .conclusion{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    @page{margin:1.5cm}
+  }
 body{font-family:'Inter',sans-serif;color:#0d0d0d;background:#fff;max-width:660px;margin:0 auto;padding:60px 48px;font-size:14px;line-height:1.7}
 .header{display:flex;justify-content:space-between;align-items:center;margin-bottom:56px;padding-bottom:20px;border-bottom:1px solid #e5e7eb}
 .logo{font-size:14px;font-weight:700}.logo .r{color:#DC2626}
@@ -316,15 +322,19 @@ h2{font-size:18px;font-weight:700;letter-spacing:-.02em;margin-bottom:28px}
 </body>
 </html>`;
 
+  // Open in new window and trigger print dialog
   const blob = new Blob([html], {type:'text/html'});
   const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = 'CL-Global-Was-niemand-dir-sagt.html';
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
+  const win = window.open(url, '_blank');
+  if (win) {
+    win.onload = function() {
+      setTimeout(function() {
+        win.print();
+      }, 800);
+    };
+  }
+  // Also offer direct download as fallback
+  setTimeout(function() { URL.revokeObjectURL(url); }, 60000);
 }
 </script>
 </body>
