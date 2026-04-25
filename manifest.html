@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Der Exit-Fahrplan — CL Global Consulting</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --black:#0d0d0d;
+  --white:#ffffff;
+  --red:#DC2626;
+  --gray:#6b7280;
+  --light:#f3f4f6;
+  --border:#e5e7eb;
+}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Inter',sans-serif;
+  background:var(--white);
+  color:var(--black);
+  line-height:1.6;
+}
+.mono{font-family:'JetBrains Mono',monospace}
+
+/* ── HEADER ── */
+header{
+  position:sticky;top:0;z-index:50;
+  background:rgba(255,255,255,0.97);
+  border-bottom:1px solid var(--border);
+  padding:0 32px;height:56px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.logo{display:flex;align-items:center;gap:2px}
+.logo span:first-child{font-size:15px;font-weight:700;color:var(--black);letter-spacing:-.01em}
+.logo span:last-child{font-size:15px;font-weight:700;color:var(--red);letter-spacing:-.01em}
+.back-link{font-size:13px;color:var(--gray);text-decoration:none;transition:color .15s}
+.back-link:hover{color:var(--black)}
+
+/* ── HERO ── */
+.hero{
+  min-height:80vh;
+  display:flex;align-items:center;
+  border-bottom:1px solid var(--border);
+  padding:80px 32px;
+}
+.hero-inner{max-width:640px;margin:0 auto;width:100%}
+.hero-tag{
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--gray);
+  margin-bottom:32px;display:block;
+}
+.hero-title{
+  font-size:clamp(2.2rem,5vw,3.5rem);
+  font-weight:700;line-height:1.1;
+  letter-spacing:-.03em;
+  color:var(--black);
+  margin-bottom:16px;
+}
+.hero-title em{
+  font-style:normal;
+  color:var(--red);
+}
+.hero-sub{
+  font-size:18px;color:var(--gray);
+  line-height:1.65;margin-bottom:48px;
+  max-width:480px;
+}
+
+/* ── EMAIL GATE ── */
+.gate{
+  background:var(--black);
+  padding:32px;
+  border-radius:2px;
+}
+.gate-label{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;letter-spacing:.16em;
+  text-transform:uppercase;color:#9ca3af;
+  margin-bottom:12px;display:block;
+}
+.gate-title{
+  font-size:18px;font-weight:600;
+  color:var(--white);margin-bottom:6px;
+}
+.gate-desc{
+  font-size:13px;color:#9ca3af;
+  margin-bottom:24px;line-height:1.6;
+}
+.form-row{display:flex;gap:8px;flex-wrap:wrap}
+.email-input{
+  flex:1;min-width:220px;
+  height:48px;padding:0 16px;
+  background:#1f2937;border:1px solid #374151;
+  border-radius:2px;
+  font-family:'JetBrains Mono',monospace;
+  font-size:14px;color:var(--white);
+  outline:none;transition:border-color .15s;
+}
+.email-input::placeholder{color:#6b7280}
+.email-input:focus{border-color:#6b7280}
+.submit-btn{
+  height:48px;padding:0 24px;
+  background:var(--red);border:none;
+  border-radius:2px;
+  font-family:'Inter',sans-serif;
+  font-size:13px;font-weight:600;
+  color:var(--white);cursor:pointer;
+  transition:background .15s;white-space:nowrap;
+}
+.submit-btn:hover{background:#b91c1c}
+.submit-btn:disabled{background:#4b5563;cursor:not-allowed}
+.gate-note{
+  font-size:11px;color:#6b7280;
+  margin-top:12px;
+}
+.success-msg{
+  display:none;
+  padding:16px;background:#052e16;
+  border:1px solid #166534;border-radius:2px;
+  color:#4ade80;
+  font-family:'JetBrains Mono',monospace;
+  font-size:13px;
+}
+
+/* ── PREVIEW ── */
+.preview{
+  max-width:640px;margin:0 auto;
+  padding:80px 32px;
+}
+.section-tag{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--gray);
+  margin-bottom:32px;display:block;
+}
+.preview-title{
+  font-size:28px;font-weight:700;
+  letter-spacing:-.02em;
+  margin-bottom:40px;
+}
+.point{
+  display:flex;gap:20px;
+  padding:24px 0;
+  border-bottom:1px solid var(--border);
+}
+.point:first-of-type{border-top:1px solid var(--border)}
+.point-num{
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;color:var(--red);
+  font-weight:500;flex-shrink:0;
+  padding-top:3px;width:24px;
+}
+.point-content{}
+.point-title{
+  font-size:16px;font-weight:600;
+  color:var(--black);margin-bottom:6px;
+}
+.point-text{
+  font-size:14px;color:var(--gray);
+  line-height:1.7;
+}
+
+/* ── QUOTE ── */
+.quote-block{
+  max-width:640px;margin:0 auto;
+  padding:0 32px 80px;
+}
+.quote{
+  border-left:2px solid var(--black);
+  padding:24px 0 24px 28px;
+}
+.quote p{
+  font-size:18px;font-weight:300;
+  font-style:italic;color:var(--black);
+  line-height:1.65;
+}
+.quote-author{
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;color:var(--gray);
+  margin-top:16px;
+}
+
+/* ── FOOTER CTA ── */
+.footer-cta{
+  background:var(--light);
+  border-top:1px solid var(--border);
+  padding:64px 32px;
+  text-align:center;
+}
+.footer-cta p{
+  font-size:14px;color:var(--gray);
+  margin-bottom:8px;
+}
+.footer-cta strong{
+  font-size:18px;font-weight:600;
+  color:var(--black);display:block;
+  margin-bottom:24px;
+}
+.cta-btn{
+  display:inline-block;
+  background:var(--black);color:var(--white);
+  font-size:13px;font-weight:600;
+  padding:12px 28px;
+  text-decoration:none;
+  border-radius:2px;
+  transition:background .15s;
+}
+.cta-btn:hover{background:var(--red)}
+
+/* ── FOOTER ── */
+footer{
+  border-top:1px solid var(--border);
+  padding:24px 32px;
+  display:flex;justify-content:space-between;align-items:center;
+  flex-wrap:wrap;gap:12px;
+}
+footer .logo span:first-child{font-size:13px}
+footer .logo span:last-child{font-size:13px}
+.footer-note{
+  font-size:11px;color:var(--gray);
+  font-family:'JetBrains Mono',monospace;
+}
+
+@media(max-width:600px){
+  header{padding:0 20px}
+  .hero{padding:60px 20px}
+  .preview,.quote-block{padding-left:20px;padding-right:20px}
+  .form-row{flex-direction:column}
+  .email-input,.submit-btn{width:100%}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <span>CL Global</span>
+    <span>Consulting</span>
+  </div>
+  <a href="/" class="back-link">← Zurück zur Website</a>
+</header>
+
+<!-- HERO + GATE -->
+<section class="hero">
+  <div class="hero-inner">
+    <span class="hero-tag">Kostenloses Manifest — PDF</span>
+    <h1 class="hero-title">Der<br><em>Exit-Fahrplan</em></h1>
+    <p class="hero-sub">Warum dein Leben funktioniert — aber nicht dir gehört. Die 5 Mechaniken, die dich festhalten. Klar. Direkt. Ohne Coaching-Sprech.</p>
+
+    <!-- E-MAIL GATE -->
+    <div class="gate">
+      <span class="gate-label">Kostenloser Download</span>
+      <p class="gate-title">Trag deine E-Mail ein.</p>
+      <p class="gate-desc">Du bekommst das Manifest sofort als PDF. Kein Newsletter. Kein Upsell. Nur der Text.</p>
+
+      <form id="manifestForm" onsubmit="submitForm(event)">
+        <div class="form-row">
+          <input
+            class="email-input"
+            type="email"
+            id="emailInput"
+            placeholder="deine@email.de"
+            required
+          >
+          <button class="submit-btn" type="submit" id="submitBtn">
+            PDF herunterladen →
+          </button>
+        </div>
+        <p class="gate-note">Keine Weitergabe. Kein Spam. Jederzeit abmeldbar.</p>
+      </form>
+
+      <div class="success-msg" id="successMsg">
+        ✓ Danke. Das PDF wird jetzt heruntergeladen.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PREVIEW -->
+<section class="preview">
+  <span class="section-tag">Was dich erwartet</span>
+  <h2 class="preview-title">Die 5 Mechaniken,<br>die dich festhalten.</h2>
+
+  <div class="point">
+    <div class="point-num">01</div>
+    <div class="point-content">
+      <p class="point-title">Sicherheit ist organisierte Abhängigkeit.</p>
+      <p class="point-text">Dein festes Einkommen fühlt sich stabil an. Aber es hängt an deinem Job, deinem Umfeld, an Systemen die du nicht kontrollierst.</p>
+    </div>
+  </div>
+
+  <div class="point">
+    <div class="point-num">02</div>
+    <div class="point-content">
+      <p class="point-title">Mehr Geld ändert nichts — solange die Struktur gleich bleibt.</p>
+      <p class="point-text">Dein Lebensstandard steigt. Deine Verpflichtungen wachsen. Dein Spielraum bleibt gleich.</p>
+    </div>
+  </div>
+
+  <div class="point">
+    <div class="point-num">03</div>
+    <div class="point-content">
+      <p class="point-title">Besitz gibt dir das Gefühl von Kontrolle — und nimmt sie dir gleichzeitig.</p>
+      <p class="point-text">Kredit, laufende Kosten, Verantwortung. Haus und Auto besitzen dich mehr als umgekehrt.</p>
+    </div>
+  </div>
+
+  <div class="point">
+    <div class="point-num">04</div>
+    <div class="point-content">
+      <p class="point-title">Du entscheidest weniger frei als du glaubst.</p>
+      <p class="point-text">Erwartungen, Normen, erlernte Muster. Du reagierst mehr als du steuerst.</p>
+    </div>
+  </div>
+
+  <div class="point">
+    <div class="point-num">05</div>
+    <div class="point-content">
+      <p class="point-title">"Später" existiert nicht.</p>
+      <p class="point-text">Wenn mehr Geld da ist. Wenn der Kredit weg ist. Dieser Moment verschiebt sich immer weiter. Das ist kein Zufall — so funktioniert das System.</p>
+    </div>
+  </div>
+</section>
+
+<!-- QUOTE -->
+<div class="quote-block">
+  <div class="quote">
+    <p>Ich habe dieses System nicht nur analysiert — ich habe es gelebt. 15 Jahre selbstständig. Über 200.000 € Lehrgeld. Nicht weil der Markt gegen mich war, sondern weil ich meine eigene Realität verzerrt habe.</p>
+    <p class="quote-author" style="margin-top:20px">Heute lebe ich in einem 15 Jahre alten Van. Freier als je zuvor.</p>
+    <p class="quote-author">— Dominic · CL Global Consulting</p>
+  </div>
+</div>
+
+<!-- FOOTER CTA -->
+<div class="footer-cta">
+  <p>Wenn du dich im Text wiedererkennst,</p>
+  <strong>brauchst du keine weiteren Inhalte — du brauchst Klarheit.</strong>
+  <a href="/#angebote" class="cta-btn">System-Check buchen — 250 €</a>
+  <p style="margin-top:16px;font-size:12px">oder starte mit dem kostenlosen <a href="/#rechner" style="color:var(--black);text-decoration:underline">Analyse-Rechner</a></p>
+</div>
+
+<footer>
+  <div class="logo">
+    <span>CL Global</span>
+    <span>Consulting</span>
+  </div>
+  <span class="footer-note">dominic@cl-global-consulting.com · Freiheit durch Klarheit</span>
+</footer>
+
+<script>
+async function submitForm(e) {
+  e.preventDefault();
+  const email = document.getElementById('emailInput').value.trim();
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = true;
+  btn.textContent = 'Wird vorbereitet...';
+
+  // 1. Send to Formspree (replace YOUR_FORM_ID with real ID)
+  try {
+    await fetch('https://formspree.io/f/YOUR_FORM_ID', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json', 'Accept': 'application/json'},
+      body: JSON.stringify({email, source: 'manifest-download', _subject: 'Neuer Manifest-Download: ' + email})
+    });
+  } catch(err) {
+    // Formspree not configured yet — still generate PDF
+    console.log('Formspree not configured:', err);
+  }
+
+  // 2. Generate and download PDF
+  generatePDF(email);
+
+  // 3. Show success
+  document.getElementById('manifestForm').style.display = 'none';
+  document.getElementById('successMsg').style.display = 'block';
+  btn.disabled = false;
+}
+
+function generatePDF(email) {
+  const date = new Date().toLocaleDateString('de-DE');
+  const html = `<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<title>Der Exit-Fahrplan — CL Global Consulting</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400&display=swap');
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Inter',sans-serif;color:#0d0d0d;background:#fff;max-width:680px;margin:0 auto;padding:60px 48px;font-size:14px;line-height:1.7}
+  .header{display:flex;justify-content:space-between;align-items:center;margin-bottom:60px;padding-bottom:24px;border-bottom:1px solid #e5e7eb}
+  .logo{font-size:14px;font-weight:700;letter-spacing:-.01em}
+  .logo .red{color:#DC2626}
+  .date{font-family:'JetBrains Mono',monospace;font-size:10px;color:#9ca3af}
+  .tag{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:#6b7280;margin-bottom:20px}
+  h1{font-size:42px;font-weight:700;line-height:1.05;letter-spacing:-.03em;margin-bottom:12px}
+  h1 .red{color:#DC2626}
+  .subtitle{font-size:16px;color:#6b7280;margin-bottom:56px;max-width:440px;line-height:1.6}
+  .intro{font-size:15px;color:#374151;line-height:1.75;margin-bottom:48px;padding-bottom:48px;border-bottom:1px solid #e5e7eb}
+  .intro p{margin-bottom:16px}
+  .intro p:last-child{margin-bottom:0}
+  h2{font-size:22px;font-weight:700;letter-spacing:-.02em;margin-bottom:32px}
+  .point{display:flex;gap:24px;padding:28px 0;border-bottom:1px solid #f3f4f6}
+  .point:first-of-type{border-top:1px solid #f3f4f6;margin-top:8px}
+  .num{font-family:'JetBrains Mono',monospace;font-size:11px;color:#DC2626;font-weight:500;flex-shrink:0;padding-top:3px;width:28px}
+  .pt{font-size:15px;font-weight:600;color:#0d0d0d;margin-bottom:6px}
+  .px{font-size:13px;color:#6b7280;line-height:1.7}
+  .reality{margin:56px 0;padding:32px;background:#f9fafb;border-left:3px solid #0d0d0d}
+  .reality h3{font-size:16px;font-weight:700;margin-bottom:16px}
+  .reality p{font-size:13px;color:#374151;line-height:1.75;margin-bottom:12px}
+  .reality p:last-child{margin-bottom:0}
+  .reality strong{color:#0d0d0d;font-weight:600}
+  .cta-block{margin-top:56px;padding:32px;background:#0d0d0d;color:#fff}
+  .cta-block h3{font-size:18px;font-weight:700;margin-bottom:12px}
+  .cta-block p{font-size:13px;color:#9ca3af;line-height:1.7;margin-bottom:20px}
+  .cta-options{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .cta-option{padding:16px;border:1px solid #374151}
+  .cta-option .label{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:#6b7280;margin-bottom:6px}
+  .cta-option .name{font-size:13px;font-weight:600;color:#fff;margin-bottom:4px}
+  .cta-option .price{font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:500;color:#DC2626}
+  .final{font-size:15px;color:#374151;line-height:1.75;margin:48px 0;padding-top:48px;border-top:1px solid #e5e7eb;font-style:italic}
+  .footer{margin-top:48px;padding-top:24px;border-top:1px solid #e5e7eb;display:flex;justify-content:space-between;align-items:center}
+  .footer .logo{font-size:12px}
+  .footer .note{font-family:'JetBrains Mono',monospace;font-size:9px;color:#9ca3af}
+</style>
+</head>
+<body>
+  <div class="header">
+    <div class="logo">CL Global <span class="red">Consulting</span></div>
+    <div class="date">Erstellt: ${date}</div>
+  </div>
+
+  <div class="tag">Kostenloses Manifest</div>
+  <h1>Der<br><span class="red">Exit-Fahrplan</span></h1>
+  <p class="subtitle">Warum dein Leben funktioniert — aber nicht dir gehört.</p>
+
+  <div class="intro">
+    <p>Du funktionierst. Du stehst morgens auf, gehst arbeiten, verdienst Geld, bezahlst Rechnungen. Nach außen betrachtet läuft alles.</p>
+    <p>Und trotzdem bleibt ein Gefühl. Dass etwas nicht stimmt. Nicht laut. Nicht dramatisch. Aber konstant.</p>
+    <p>Dieses Dokument ist kein Ratgeber. Es wird dir nichts verkaufen und nichts schönreden. Es zeigt dir die Mechanik hinter deinem Alltag — und warum dein Leben zwar stabil ist, aber nicht wirklich frei.</p>
+  </div>
+
+  <h2>Die 5 Mechaniken, die dich festhalten.</h2>
+
+  <div class="point"><div class="num">01</div><div><div class="pt">Sicherheit ist organisierte Abhängigkeit.</div><div class="px">Dein festes Einkommen fühlt sich stabil an. Aber es hängt an deinem Job, deinem Umfeld, an Systemen die du nicht kontrollierst. Sicherheit fühlt sich stabil an — ist aber oft nur gut organisierte Abhängigkeit.</div></div></div>
+
+  <div class="point"><div class="num">02</div><div><div class="pt">Mehr Geld löst das Problem nicht.</div><div class="px">Du denkst, wenn du mehr verdienst, wird alles leichter. Doch dein Lebensstandard steigt. Deine Verpflichtungen wachsen. Dein Spielraum bleibt gleich. Mehr Geld verändert nichts, wenn die Struktur gleich bleibt.</div></div></div>
+
+  <div class="point"><div class="num">03</div><div><div class="pt">Besitz gibt dir das Gefühl von Kontrolle — und nimmt sie dir gleichzeitig.</div><div class="px">Haus, Auto, Status, Sicherheit. Es wirkt wie Aufbau. In Wirklichkeit entstehen Bindungen: Kredite, laufende Kosten, Verantwortung. Besitz gibt dir das Gefühl von Kontrolle, nimmt dir aber oft genau diese wieder.</div></div></div>
+
+  <div class="point"><div class="num">04</div><div><div class="pt">Du triffst deine Entscheidungen weniger frei als du glaubst.</div><div class="px">Du glaubst, du entscheidest selbst. In Wahrheit handelst du oft aus Mustern: Erwartungen deines Umfelds, gesellschaftliche Normen, erlernte Denkweisen. Du reagierst mehr als du steuerst.</div></div></div>
+
+  <div class="point"><div class="num">05</div><div><div class="pt">"Später" existiert nicht.</div><div class="px">Wenn mehr Geld da ist. Wenn der Kredit weg ist. Wenn die Situation ruhiger wird. Doch dieser Moment verschiebt sich immer weiter. Nicht weil du falsch entscheidest — sondern weil das System genau so funktioniert.</div></div></div>
+
+  <div class="reality">
+    <h3>Was ich darüber weiß</h3>
+    <p>Ich habe dieses System nicht nur verstanden — ich habe es gelebt. 15 Jahre selbstständig. Eigenes Unternehmen mit 6 Angestellten. Immobilien in Kolumbien. Expeditionsmobil und SUV. Nach außen: Erfolg. Von innen: maximale Abhängigkeit.</p>
+    <p>Im Laufe der Zeit habe ich über <strong>200.000 € Lehrgeld gezahlt</strong>. Nicht weil der Markt gegen mich war — sondern weil ich meine eigene Realität verzerrt habe. Das System hatte mich. Nicht ich das System.</p>
+    <p>2024 habe ich alles beendet. Nicht aus Scheitern. Aus Klarheit. Heute lebe ich in einem 15 Jahre alten Van. Mein Leben kostet monatlich weniger als allein das durchschnittliche Fahrzeug in Deutschland. Ich bin freier als je zuvor.</p>
+    <p><strong>Mein Ziel ist nicht, dir meinen Weg zu verkaufen.</strong> Ich helfe dir, deinen eigenen zu finden — mit dem Wissen das mich 200.000 Euro gekostet hat. Damit du das nicht zahlen musst.</p>
+  </div>
+
+  <div class="final">
+    „Du brauchst keine Motivation. Du brauchst Klarheit über deine Struktur. Wo geht dein Geld wirklich hin? Was hält dich tatsächlich fest? Solange diese Fragen nicht beantwortet sind, ändert sich nichts — egal wie sehr du dich anstrengst."
+  </div>
+
+  <div class="cta-block">
+    <h3>Der nächste Schritt</h3>
+    <p>Wenn du dich in diesem Text wiedererkennst, brauchst du keine weiteren Inhalte. Du brauchst eine ehrliche Analyse deiner Situation.</p>
+    <div class="cta-options">
+      <div class="cta-option">
+        <div class="label">Consulting · 60 Min</div>
+        <div class="name">Der System-Check</div>
+        <div class="price">250 €</div>
+      </div>
+      <div class="cta-option">
+        <div class="label">Consulting · 90 Min</div>
+        <div class="name">Die Matrix-Strategie</div>
+        <div class="price">350 €</div>
+      </div>
+    </div>
+    <p style="margin-top:16px;font-size:12px;color:#6b7280">dominic@cl-global-consulting.com · cl-global-consulting.com · Kein Upsell. Keine Verpflichtung.</p>
+  </div>
+
+  <div class="footer">
+    <div class="logo">CL Global <span class="red">Consulting</span></div>
+    <div class="note">Freiheit durch Klarheit · ${date}</div>
+  </div>
+</body>
+</html>`;
+
+  const blob = new Blob([html], {type:'text/html'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'Der-Exit-Fahrplan-CL-Global.html';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+</script>
+</body>
+</html>
